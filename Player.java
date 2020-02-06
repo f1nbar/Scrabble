@@ -1,5 +1,4 @@
-package scrabble;
-
+package scrab;
 /**
  * Player class which stores and manipulates Player name and score.
  * @author Conor Knowles - 18398031
