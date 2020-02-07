@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+/*.class
+.classpath
+.settings
+.project
+=======
+/Player.class
+/PlayerTest.class
+>>>>>>> 8be3b24f0e838ad4750ac097d584ad11fb72334f
