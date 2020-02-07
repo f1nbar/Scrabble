@@ -44,7 +44,7 @@ public class Frame {
 			if (result == null) {
 				result = frame.get(i).getLetter();
 			} else {
-				result = result + frame.get(i).getLetter();
+				result = result + "," + frame.get(i).getLetter();
 			}
 		}
 		return result;

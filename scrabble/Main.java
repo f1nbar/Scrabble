@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System. in);
-		System.out.println("Enter your name: ");
+		System.out.print("Enter your name: ");
 		String name = input.next();
 		input.close();
 	
@@ -17,10 +17,12 @@ public class Main {
 		
 		pool.fillPool();
 	
-	   while(frame.size())
+	    while(frame.frameSize() < 7) {
+	    	frame.fillFrame(pool.randomTile());
+	    }
 		
 		
-		System.out.println(frame.toString());
+		System.out.println("Your frame is: " + frame.toString());
 	}
 
 }
