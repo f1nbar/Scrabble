@@ -17,7 +17,6 @@ public class Frame {
 	public void removeLetter(Tile... c) { // This function removes the tiles from the frame
 		for (int i = 0; i < c.length; i++) {
 			frame.remove(c[i]);
-			System.out.println(toString());
 		}
 	}
 
