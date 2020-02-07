@@ -91,199 +91,184 @@ class PlayerTest {
 		assertEquals("Test", player.getName());
 		assertEquals(0, player.getScore());
 	}
-	
+
 	@Test
-	public void testIsEmptyTrue () {
+	public void testIsEmptyTrue() {
 		Frame frame = new Frame();
-		assertEquals(true,frame.isempty());
+		assertEquals(true, frame.isempty());
 	}
-	
+
 	@Test
 	public void testIsEmptyFalse() {
 		Frame frame = new Frame();
-		frame.fill_frame(new Tile("X",10));
-		assertEquals(false,frame.isempty());
+		frame.fill_frame(new Tile("X", 10));
+		assertEquals(false, frame.isempty());
 	}
+
 	@Test
 	public void testtoStringfullarray() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
-		Tile tile3 = new Tile("Z",3);
-		frame.fill_frame(tile1,tile2,tile3);
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
+		Tile tile3 = new Tile("Z", 3);
+		frame.fill_frame(tile1, tile2, tile3);
 		assertEquals("XYZ", frame.toString());
 	}
+
 	@Test
 	public void testtoStringemptyarray() {
 		Frame frame = new Frame();
-		assertEquals(null,frame.toString());
+		assertEquals(null, frame.toString());
 	}
-	
+
 	@Test
 	public void testFillArray1Letter() {
 		Frame frame = new Frame();
-		Tile tile = new Tile("X",10);
+		Tile tile = new Tile("X", 10);
 		frame.fill_frame(tile);
-		assertEquals("X",frame.toString());
+		assertEquals("X", frame.toString());
 	}
-	
+
 	@Test
 	public void testFillArray3Letters() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
-		Tile tile3 = new Tile("Z",3);
-		frame.fill_frame(tile1,tile2,tile3);
-		assertEquals("XYZ",frame.toString());
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
+		Tile tile3 = new Tile("Z", 3);
+		frame.fill_frame(tile1, tile2, tile3);
+		assertEquals("XYZ", frame.toString());
 	}
-	
-	
-	
+
 	@Test
 	public void testRemoveLetter1Letter() {
 		Frame frame = new Frame();
-		Tile tile = new Tile("X",10);
+		Tile tile = new Tile("X", 10);
 		frame.fill_frame(tile);
 		frame.remove_letter(tile);
 		assertEquals(true, frame.isempty());
 	}
-	
+
 	@Test
 	public void testRemoveLetter3Letters() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
-		Tile tile3 = new Tile("Z",3);
-		frame.fill_frame(tile1,tile2,tile3);
-		frame.remove_letter(tile3,tile1,tile2);
-		assertEquals(true,frame.isempty());
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
+		Tile tile3 = new Tile("Z", 3);
+		frame.fill_frame(tile1, tile2, tile3);
+		frame.remove_letter(tile3, tile1, tile2);
+		assertEquals(true, frame.isempty());
 	}
-	
-	
-	
-	
+
 	@Test
 	public void testcheckLetter1LetterTrue() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
+		Tile tile1 = new Tile("X", 10);
 		frame.fill_frame(tile1);
 		assertEquals(true, frame.check_letters(tile1));
 	}
-	
+
 	@Test
 	public void testcheckLetter3LettersTrue() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
-		Tile tile3 = new Tile("Z",3);
-		frame.fill_frame(tile1,tile2,tile3);
-		assertEquals(true, frame.check_letters(tile1,tile2,tile3));
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
+		Tile tile3 = new Tile("Z", 3);
+		frame.fill_frame(tile1, tile2, tile3);
+		assertEquals(true, frame.check_letters(tile1, tile2, tile3));
 	}
-	
+
 	@Test
 	public void testcheckLetter1LetterFalse() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
 		frame.fill_frame(tile1);
 		assertEquals(false, frame.check_letters(tile2));
 	}
-	
+
 	@Test
 	public void testcheckLetter3LettersFalse() {
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
-		Tile tile3 = new Tile("Z",3);
-		Tile tile4 = new Tile("O",46);
-		frame.fill_frame(tile1,tile2,tile3);
-		assertEquals(false, frame.check_letters(tile1,tile2,tile4));
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
+		Tile tile3 = new Tile("Z", 3);
+		Tile tile4 = new Tile("O", 46);
+		frame.fill_frame(tile1, tile2, tile3);
+		assertEquals(false, frame.check_letters(tile1, tile2, tile4));
 	}
-	
+
 	@Test
 	public void testgetTile() {
-		
+
 		Frame frame = new Frame();
-		Tile tile1 = new Tile("X",10);
-		Tile tile2 = new Tile("Y",6);
-		Tile tile3 = new Tile("Z",3);
-		frame.fill_frame(tile1,tile2,tile3);
-		
-		assertEquals(tile1,frame.getTile(0));
-		assertEquals(tile2,frame.getTile(1));
-		assertEquals(tile3,frame.getTile(2));
-		
+		Tile tile1 = new Tile("X", 10);
+		Tile tile2 = new Tile("Y", 6);
+		Tile tile3 = new Tile("Z", 3);
+		frame.fill_frame(tile1, tile2, tile3);
+
+		assertEquals(tile1, frame.getTile(0));
+		assertEquals(tile2, frame.getTile(1));
+		assertEquals(tile3, frame.getTile(2));
+
 	}
 
 	@Test
-	public void poolFilled() throws Exception { // calls pool fill method followed by checking the number of tiles
+	public void poolFilled() throws Exception { 
 
 		testPool.fillPool();
-		assertEquals(100, testPool.checkNumTiles()); // checks if pool contains the expected 100 tiles, throws
-														// excep
+		assertEquals(100, testPool.checkNumTiles()); /
 	}
 
 	@Test
-	public void poolNotEmpty() throws Exception { // verifies that the pool empty method is functioning correctly when
-													// the pool isn't empty, throws exception if not
+	public void poolNotEmpty() throws Exception { 
 
 		testPool.fillPool();
-		Tile testTileX = new Tile("X", 10); // creates test tile object
-		// fills pool
-		assertEquals(true, testPool.checkEmptyPool()); // should return false as pool contains 100 tiles
+		Tile testTileX = new Tile("X", 10); 
+		l
+		assertEquals(true, testPool.checkEmptyPool()); 
 
 	}
 
 	@Test
-	public void poolEmpty() throws Exception { // verifies that the pool empty method is functioning correctly when the
-												// pool
-		// is empty, throws exception if not
-		assertEquals(false, testPool.checkEmptyPool()); // should return false as pool contains 100 tiles
+	public void poolEmpty() throws Exception {
+		assertEquals(false, testPool.checkEmptyPool());
 	}
 
 	@Test
-	public void valueCheck() throws Exception { // should return the value of the test tile initialized in this testing
-												// class
-		assertEquals(10, testPool.checkValue(testTileX)); // value of the test tile should be 10
+	public void valueCheck() throws Exception {
+		assertEquals(10, testPool.checkValue(testTileX));
 	}
 
 	@Test
-	public void removeTiles() throws Exception { // checks to see if tiles can be removed from the pool using the random
-													// tile method
+	public void removeTiles() throws Exception {
 		testPool.fillPool();
-		testPool.randomTile(); // after filling the pool and running the random tile method once there should
-								// be 99 tiles remaining in the pool
+		testPool.randomTile();
 		assertEquals(99, testPool.checkNumTiles());
 
 	}
 
 	@Test
-	public void poolReset() throws Exception { // checks if pool is reset correctly by filling the pool, removing 10
-												// tiles,
+	public void poolReset() throws Exception {
 		testPool.fillPool();
-		for (int i = 0; i < 10; i++) { // for loop iterates 10 times, calling the random tile method each time in
-										// order to remove 10 tiles
+		for (int i = 0; i < 10; i++) {
 			testPool.randomTile();
 		}
-		testPool.resetPool(); // reset pool method should restore pool to original size
-		assertEquals(100, testPool.checkNumTiles()); // checks if there are 100 tiles in the pool after the reset,
-														// throws exception if not
+		testPool.resetPool();
+		assertEquals(100, testPool.checkNumTiles());
 	}
 
 	@Test
-	public void removeAllTiles() throws Exception { // removes all tiles in the pool by running the random tile method
-													// simulate all the tiles being taken out by hand
+	public void removeAllTiles() throws Exception { 
 		testPool.fillPool();
 		for (int i = 0; i < 100; i++) {
 			testPool.randomTile();
 		}
-		assertEquals(false, testPool.checkEmptyPool()); // pool should be empty, throws exception if not
+		assertEquals(false, testPool.checkEmptyPool()); 
 
 	}
 
 	@Test
-	public void getAndSetTile() throws Exception { // tests the tile class getters and setters, sets letter to F and
-													// score to 47 then calls getters using assertEqual to verify them
+	public void getAndSetTile() throws Exception { 
 		testTileX.setLetter("F");
 		testTileX.setScore(47);
 		assertEquals(47, testTileX.getScore());
