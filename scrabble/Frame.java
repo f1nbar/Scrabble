@@ -4,13 +4,13 @@ import java.util.LinkedList;
 
 /**
  * Frame class which stores and allows manipulation of Player's frames.
- *
+ * 
  * @author Peter O'Donnell
  *
  */
 public class Frame {
 
-	public transient int FRAME_SIZE = 7;
+    public transient int FRAME_SIZE = 7;
 
 	LinkedList<Tile> frame = new LinkedList<Tile>(); // linked list to store tile objects
 
@@ -69,7 +69,7 @@ public class Frame {
 			throw new IllegalArgumentException("INDEX OUT OF BOUNDS:getTile");
 		}
 	}
-
+	
 	public int frameSize() { //returns size of frame
 		return frame.size();
 	}
