@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class PlayerTest {
 
+	/*-----Player.java Tests-----*/
 	Player player = new Player("Test");
 	Pool testPool = new Pool();
 	Tile testTileX = new Tile("X", 10);
@@ -92,17 +93,18 @@ class PlayerTest {
 		assertEquals(0, player.getScore());
 	}
 
+	/*-----Frame.java Tests-----*/
 	@Test
 	public void testIsEmptyTrue() {
 		Frame frame = new Frame();
-		assertEquals(true, frame.isempty());
+		assertEquals(true, frame.isEmpty());
 	}
 
 	@Test
 	public void testIsEmptyFalse() {
 		Frame frame = new Frame();
-		frame.fill_frame(new Tile("X", 10));
-		assertEquals(false, frame.isempty());
+		frame.fillFrame(new Tile("X", 10));
+		assertEquals(false, frame.isEmpty());
 	}
 
 	@Test
@@ -111,7 +113,7 @@ class PlayerTest {
 		Tile tile1 = new Tile("X", 10);
 		Tile tile2 = new Tile("Y", 6);
 		Tile tile3 = new Tile("Z", 3);
-		frame.fill_frame(tile1, tile2, tile3);
+		frame.fillFrame(tile1, tile2, tile3);
 		assertEquals("XYZ", frame.toString());
 	}
 
@@ -125,7 +127,7 @@ class PlayerTest {
 	public void testFillArray1Letter() {
 		Frame frame = new Frame();
 		Tile tile = new Tile("X", 10);
-		frame.fill_frame(tile);
+		frame.fillFrame(tile);
 		assertEquals("X", frame.toString());
 	}
 
@@ -135,7 +137,7 @@ class PlayerTest {
 		Tile tile1 = new Tile("X", 10);
 		Tile tile2 = new Tile("Y", 6);
 		Tile tile3 = new Tile("Z", 3);
-		frame.fill_frame(tile1, tile2, tile3);
+		frame.fillFrame(tile1, tile2, tile3);
 		assertEquals("XYZ", frame.toString());
 	}
 
@@ -143,9 +145,9 @@ class PlayerTest {
 	public void testRemoveLetter1Letter() {
 		Frame frame = new Frame();
 		Tile tile = new Tile("X", 10);
-		frame.fill_frame(tile);
-		frame.remove_letter(tile);
-		assertEquals(true, frame.isempty());
+		frame.fillFrame(tile);
+		frame.removeLetter(tile);
+		assertEquals(true, frame.isEmpty());
 	}
 
 	@Test
@@ -154,17 +156,17 @@ class PlayerTest {
 		Tile tile1 = new Tile("X", 10);
 		Tile tile2 = new Tile("Y", 6);
 		Tile tile3 = new Tile("Z", 3);
-		frame.fill_frame(tile1, tile2, tile3);
-		frame.remove_letter(tile3, tile1, tile2);
-		assertEquals(true, frame.isempty());
+		frame.fillFrame(tile1, tile2, tile3);
+		frame.removeLetter(tile3, tile1, tile2);
+		assertEquals(true, frame.isEmpty());
 	}
 
 	@Test
 	public void testcheckLetter1LetterTrue() {
 		Frame frame = new Frame();
 		Tile tile1 = new Tile("X", 10);
-		frame.fill_frame(tile1);
-		assertEquals(true, frame.check_letters(tile1));
+		frame.fillFrame(tile1);
+		assertEquals(true, frame.isEmpty());
 	}
 
 	@Test
@@ -173,8 +175,8 @@ class PlayerTest {
 		Tile tile1 = new Tile("X", 10);
 		Tile tile2 = new Tile("Y", 6);
 		Tile tile3 = new Tile("Z", 3);
-		frame.fill_frame(tile1, tile2, tile3);
-		assertEquals(true, frame.check_letters(tile1, tile2, tile3));
+		frame.fillFrame(tile1, tile2, tile3);
+		assertEquals(true, frame.checkLetters(tile1, tile2, tile3));
 	}
 
 	@Test
@@ -182,8 +184,8 @@ class PlayerTest {
 		Frame frame = new Frame();
 		Tile tile1 = new Tile("X", 10);
 		Tile tile2 = new Tile("Y", 6);
-		frame.fill_frame(tile1);
-		assertEquals(false, frame.check_letters(tile2));
+		frame.fillFrame(tile1);
+		assertEquals(false, frame.checkLetters(tile2));
 	}
 
 	@Test
@@ -193,18 +195,18 @@ class PlayerTest {
 		Tile tile2 = new Tile("Y", 6);
 		Tile tile3 = new Tile("Z", 3);
 		Tile tile4 = new Tile("O", 46);
-		frame.fill_frame(tile1, tile2, tile3);
-		assertEquals(false, frame.check_letters(tile1, tile2, tile4));
+		frame.fillFrame(tile1, tile2, tile3);
+		assertEquals(false, frame.checkLetters(tile1, tile2, tile4));
 	}
 
 	@Test
-	public void testgetTile() {
+	public void testGetTile() {
 
 		Frame frame = new Frame();
 		Tile tile1 = new Tile("X", 10);
 		Tile tile2 = new Tile("Y", 6);
 		Tile tile3 = new Tile("Z", 3);
-		frame.fill_frame(tile1, tile2, tile3);
+		frame.fillFrame(tile1, tile2, tile3);
 
 		assertEquals(tile1, frame.getTile(0));
 		assertEquals(tile2, frame.getTile(1));
@@ -212,19 +214,17 @@ class PlayerTest {
 
 	}
 
+	/*-----Pool Test-----*/
 	@Test
-	public void poolFilled() throws Exception { 
-
+	public void poolFilled() throws Exception {
 		testPool.fillPool();
-		assertEquals(100, testPool.checkNumTiles()); 
+		assertEquals(100, testPool.checkNumTiles());
 	}
 
 	@Test
-	public void poolNotEmpty() throws Exception { 
-
-		testPool.fillPool();		
-		assertEquals(true, testPool.checkEmptyPool()); 
-
+	public void poolNotEmpty() throws Exception {
+		testPool.fillPool();
+		assertEquals(true, testPool.checkEmptyPool());
 	}
 
 	@Test
@@ -256,21 +256,20 @@ class PlayerTest {
 	}
 
 	@Test
-	public void removeAllTiles() throws Exception { 
+	public void removeAllTiles() throws Exception {
 		testPool.fillPool();
 		for (int i = 0; i < 100; i++) {
 			testPool.randomTile();
 		}
-		assertEquals(false, testPool.checkEmptyPool()); 
+		assertEquals(false, testPool.checkEmptyPool());
 
 	}
 
 	@Test
-	public void getAndSetTile() throws Exception { 
+	public void getAndSetTile() throws Exception {
 		testTileX.setLetter("F");
 		testTileX.setScore(47);
 		assertEquals(47, testTileX.getScore());
 
 	}
-
 }
