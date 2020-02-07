@@ -141,6 +141,9 @@ class PlayerTest {
 		assertEquals("XYZ", frame.toString());
 	}
 
+	/*
+	 * Tests which check whether removing letters work correctly.
+	 */
 	@Test
 	public void testRemoveLetterOneLetter() {
 		Frame frame = new Frame();
@@ -161,6 +164,9 @@ class PlayerTest {
 		assertEquals(true, frame.isEmpty());
 	}
 
+	/*
+	 * Tests which check whether adding letters work correctly.
+	 */
 	@Test
 	public void testCheckLetterOneLetterTrue() {
 		Frame frame = new Frame();
