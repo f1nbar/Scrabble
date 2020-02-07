@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class Frame {
 
-	public transient  int FRAME_SIZE = 7;
+    public transient int FRAME_SIZE = 7;
 
 	LinkedList<Tile> frame = new LinkedList<Tile>(); // linked list to store tile objects
 
