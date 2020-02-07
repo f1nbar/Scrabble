@@ -6,7 +6,8 @@ import org.junit.runners.Parameterized.Parameter;
 
 /**
  * Pool class which simulates the bag containing all 100 Scrabble tiles
- * @author Finbar Ó Deaghaidh - 18410234 
+ * 
+ * @author Finbar Ó Deaghaidh - 18410234
  *
  */
 
@@ -14,7 +15,7 @@ public class Pool {
 
 	// create a Hashmap for pool, using the tile letter as a key and number of tiles
 	// as the value
-	
+
 	static HashMap<Tile, Integer> letters = new HashMap<Tile, Integer>();
 
 	int sum;
@@ -48,7 +49,8 @@ public class Pool {
 	private static Tile Blank = new Tile(" ", 0);
 
 	/**
-	 * Fills the letters Hashmap with Object tile as the key and their quantity as the value
+	 * Fills the letters Hashmap with Object tile as the key and their quantity as
+	 * the value
 	 */
 	public void fillPool() {
 
@@ -84,7 +86,8 @@ public class Pool {
 
 	/**
 	 * Checks if the pool has any tiles or not
-	 * @return false if the pool  is empty
+	 * 
+	 * @return false if the pool is empty
 	 * @return true if pool isn't empty
 	 */
 	public boolean checkEmptyPool() {
@@ -93,7 +96,7 @@ public class Pool {
 		}
 		// TODO think about what should happen when pool is emptied
 		else {
-			return true; 
+			return true;
 		}
 	}
 
@@ -113,18 +116,19 @@ public class Pool {
 		return check.getScore();
 	}
 
-   /**
-    * 
-    * @param check, tile object to be checked
-    * @return Tile letter
-    */
+	/**
+	 * 
+	 * @param check, tile object to be checked
+	 * @return Tile letter
+	 */
 	public String checkLetter(Tile check) {
 		return check.getLetter();
 	}
 
 	/**
-	 * Checks the number of tiles in the pool 
-	 * Loop that sums all int values in hashmap letters
+	 * Checks the number of tiles in the pool Loop that sums all int values in
+	 * hashmap letters
+	 * 
 	 * @return sum
 	 */
 	public int checkNumTiles() {
@@ -137,7 +141,8 @@ public class Pool {
 
 	/**
 	 * Randomly picks a tile from the hashmap letters
-	 * @return selected, tile object 
+	 * 
+	 * @return selected, tile object
 	 */
 	public Tile randomTile() {
 		// converts the letters hashmap in order to randomly select by the key, in this
@@ -156,7 +161,5 @@ public class Pool {
 		}
 		return selected;
 	}
-	
-
 
 }
