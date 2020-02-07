@@ -216,15 +216,13 @@ class PlayerTest {
 	public void poolFilled() throws Exception { 
 
 		testPool.fillPool();
-		assertEquals(100, testPool.checkNumTiles()); /
+		assertEquals(100, testPool.checkNumTiles()); 
 	}
 
 	@Test
 	public void poolNotEmpty() throws Exception { 
 
-		testPool.fillPool();
-		Tile testTileX = new Tile("X", 10); 
-		l
+		testPool.fillPool();		
 		assertEquals(true, testPool.checkEmptyPool()); 
 
 	}
