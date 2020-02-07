@@ -69,5 +69,9 @@ public class Frame {
 			throw new IllegalArgumentException("INDEX OUT OF BOUNDS:getTile");
 		}
 	}
+	
+	public int frameSize() { //returns size of frame
+		return frame.size();
+	}
 
 }
