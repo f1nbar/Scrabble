@@ -114,7 +114,7 @@ class PlayerTest {
 		Tile tileTwo = new Tile("Y", 6);
 		Tile tileThree = new Tile("Z", 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
-		assertEquals("XYZ", frame.toString());
+		assertEquals("X,Y,Z", frame.toString());
 	}
 
 	@Test
@@ -138,7 +138,7 @@ class PlayerTest {
 		Tile tileTwo = new Tile("Y", 6);
 		Tile tileThree = new Tile("Z", 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
-		assertEquals("XYZ", frame.toString());
+		assertEquals("X,Y,Z", frame.toString());
 	}
 
 	/*
@@ -162,6 +162,13 @@ class PlayerTest {
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		frame.removeLetter(tileThree, tileOne, tileTwo);
 		assertEquals(true, frame.isEmpty());
+	}
+	
+	@Test
+	public void testrefill() {
+		Pool p = new Pool();
+		Frame frame = new Frame();
+		frame.refill(p);
 	}
 
 	/*
@@ -274,4 +281,9 @@ class PlayerTest {
 		testTileX.setScore(47);
 		assertEquals(47, testTileX.getScore());
 	}
+	
+	
+
+	
+	
 }
