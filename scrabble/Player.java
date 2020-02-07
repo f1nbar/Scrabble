@@ -49,7 +49,7 @@ public class Player {
 
 	// Sanitizers
 	private void sanitizeName(String name) {
-		if (!(name.matches(shortNameRegex)) && !(name.matches(fullNameRegex)) || name == "") {
+		if (!(name.matches(shortNameRegex)) && !(name.matches(fullNameRegex)) && name == "") {
 			throw new IllegalArgumentException("Incorrect format for name, can only contain letters A-Z a-z.");
 		}
 	}
