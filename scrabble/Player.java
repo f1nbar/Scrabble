@@ -12,13 +12,9 @@ public class Player {
 	private int score;
 	private Frame playerFrame;
 
-	private String fullNameRegex = ("(^([A-z\\-]*)( )([A-z\\-]*))*"); // this regular expression accepts one upper/lower
-																		// case character followed by any number of
-																		// lower case characters, a space then the same
-																		// pattern as the first name
-	private String shortNameRegex = ("(^[A-z\\-]*$)"); // this regular expression accepts one upper/lower case character
-														// followed by any number of lower case characters, the pattern
-														// only accepts one match as it's just for a first name
+	private final String nameRegex = "[a-zA-Z]*(\\s[a-zA-Z]*)?"; // checks to see if the string contains a word made of
+																	// only alphabet characters for a maximum of two
+																	// words. Will return true if the input is valid.
 
 	// Constructor
 	public Player(String name) {
@@ -49,7 +45,7 @@ public class Player {
 
 	// Sanitizers
 	private void sanitizeName(String name) {
-		if (!(name.matches(shortNameRegex)) && !(name.matches(fullNameRegex)) && name == "") {
+		if (!(name.matches(nameRegex)) || name.isEmpty() || name.contentEquals(" ")) {
 			throw new IllegalArgumentException("Incorrect format for name, can only contain letters A-Z a-z.");
 		}
 	}

@@ -28,23 +28,37 @@ class PlayerTest {
 	}
 
 	@Test
-	public void testNameSymbols() {
+	public void testNameSymbols() throws Exception {
 		assertThrows(IllegalArgumentException.class, () -> {
 			player.setName("Conor$");
 		});
 	}
 
 	@Test
-	public void testNameThree() {
+	public void testNameThree() throws Exception {
 		assertThrows(IllegalArgumentException.class, () -> {
 			player.setName("Conor James Knowles");
 		});
 	}
 
 	@Test
-	public void testNameSpaces() {
+	public void testNameSpaces() throws Exception {
 		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("   ");
+			player.setName(" ");
+		});
+	}
+
+	@Test
+	public void testNameMultipleSpaces() throws Exception {
+		assertThrows(IllegalArgumentException.class, () -> {
+			player.setName("    ");
+		});
+	}
+
+	@Test
+	public void testSecondNameNumbers() throws Exception {
+		assertThrows(IllegalArgumentException.class, () -> {
+			player.setName("Conor 123");
 		});
 	}
 
@@ -163,7 +177,7 @@ class PlayerTest {
 		frame.removeLetter(tileThree, tileOne, tileTwo);
 		assertEquals(true, frame.isEmpty());
 	}
-	
+
 	@Test
 	public void testrefill() {
 		Pool p = new Pool();
@@ -281,9 +295,5 @@ class PlayerTest {
 		testTileX.setScore(47);
 		assertEquals(47, testTileX.getScore());
 	}
-	
-	
 
-	
-	
 }
