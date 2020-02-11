@@ -15,8 +15,6 @@
 7. Code review, refactor and refining.
 8. Submit executable 1.
 
-## Class Diagram:
-=======
 ## Executable Instructions
 1. Launch .jar file (java -jar scrabble-assignment1.jar)
 2. Enter name
@@ -25,4 +23,3 @@
 
 ## Class Diagram:
 ![assignment_one_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_one_diagram.png)
->>>>>>> eb9298be731c0cb868539361174431d2e6cf7584
