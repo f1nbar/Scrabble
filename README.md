@@ -15,10 +15,14 @@
 7. Code review, refactor and refining.
 8. Submit executable 1.
 
-## Executable Instructions:
-1. Launch .jar file
-2. Enter name (can only be A-Z, a-z, first name, second name).
-3. System prints out name and frame with randomly selected tiles from the pool.
+## Class Diagram:
+=======
+## Executable Instructions
+1. Launch .jar file (java -jar scrabble-assignment1.jar)
+2. Enter name
+  * Can be First name & Second name, A-Z a-z characters allowed only.
+3. Program prints out player name and frame, which is filled with random tiles from pool.
 
 ## Class Diagram:
-![assignment_one_diagram](https://github.com/)
+![assignment_one_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_one_diagram.png)
+>>>>>>> eb9298be731c0cb868539361174431d2e6cf7584
