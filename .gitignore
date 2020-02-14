@@ -1,4 +1,5 @@
 scrabble/*.class
+*.zip
 .classpath
 .settings
 .project
