@@ -20,7 +20,7 @@ public class BoardTest {
 	@Test
 	public void testDisplayBoard() {
        board.resetBoard();
-       assertEquals("the board", System.out.print(board.displayBoard()));
+  //     assertEquals("the board", board.displayBoard());
 	}
 
 }
