@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class Board {
 
+	private static char letterBoard [][] = new char[15][15];
 
 	private static HashMap<Integer, String> tilePoints;
 
@@ -122,8 +123,8 @@ public class Board {
        }		
 	}
 
-	public void placeTile() {
-
+	public void placeTile(int x,int y, Tile tile) {
+        letterBoard[x][y] = tile.getLetter();
 	}
 
 	public int numTiles() {

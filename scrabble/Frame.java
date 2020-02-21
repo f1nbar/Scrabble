@@ -64,7 +64,7 @@ public class Frame {
 		String result = null;
 		for (int i = 0; i < frame.size(); i++) {
 			if (result == null) {
-				result = frame.get(i).getLetter();
+				result = "" + frame.get(i).getLetter();
 			} else {
 				result = result + "," + frame.get(i).getLetter();
 			}

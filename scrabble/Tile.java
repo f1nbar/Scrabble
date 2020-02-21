@@ -9,10 +9,10 @@ package scrabble;
 
 public class Tile {
 
-	private String letter;
+	private char letter;
 	private int score;
 
-	public Tile(String letter, int score) {
+	public Tile(char letter, int score) {
 
 		this.setLetter(letter);
 		this.setScore(score);
@@ -26,11 +26,11 @@ public class Tile {
 		this.score = score;
 	}
 
-	public String getLetter() {
+	public char getLetter() {
 		return letter;
 	}
 
-	public void setLetter(String letter) {
+	public void setLetter(char letter) {
 		this.letter = letter;
 	}
 

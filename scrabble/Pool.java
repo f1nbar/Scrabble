@@ -20,33 +20,33 @@ public class Pool {
 
 	int sum;
 	// creating tile objects with letter and points per tile
-	private static Tile A = new Tile("A", 1);
-	private static Tile B = new Tile("B", 3);
-	private static Tile C = new Tile("C", 3);
-	private static Tile D = new Tile("D", 2);
-	private static Tile E = new Tile("E", 1);
-	private static Tile F = new Tile("F", 4);
-	private static Tile G = new Tile("G", 2);
-	private static Tile H = new Tile("H", 2);
-	private static Tile I = new Tile("I", 1);
-	private static Tile J = new Tile("J", 8);
-	private static Tile K = new Tile("K", 5);
-	private static Tile L = new Tile("L", 4);
-	private static Tile M = new Tile("M", 3);
-	private static Tile N = new Tile("N", 6);
-	private static Tile O = new Tile("O", 1);
-	private static Tile P = new Tile("P", 3);
-	private static Tile Q = new Tile("Q", 10);
-	private static Tile R = new Tile("R", 1);
-	private static Tile S = new Tile("S", 1);
-	private static Tile T = new Tile("T", 1);
-	private static Tile U = new Tile("U", 1);
-	private static Tile V = new Tile("V", 4);
-	private static Tile W = new Tile("W", 4);
-	private static Tile X = new Tile("X", 8);
-	private static Tile Y = new Tile("Y", 4);
-	private static Tile Z = new Tile("Z", 10);
-	private static Tile Blank = new Tile(" ", 0);
+	private static Tile A = new Tile('A', 1);
+	private static Tile B = new Tile('B', 3);
+	private static Tile C = new Tile('C', 3);
+	private static Tile D = new Tile('D', 2);
+	private static Tile E = new Tile('E', 1);
+	private static Tile F = new Tile('F', 4);
+	private static Tile G = new Tile('G', 2);
+	private static Tile H = new Tile('H', 2);
+	private static Tile I = new Tile('I', 1);
+	private static Tile J = new Tile('J', 8);
+	private static Tile K = new Tile('K', 5);
+	private static Tile L = new Tile('L', 4);
+	private static Tile M = new Tile('M', 3);
+	private static Tile N = new Tile('N', 6);
+	private static Tile O = new Tile('O', 1);
+	private static Tile P = new Tile('P', 3);
+	private static Tile Q = new Tile('Q', 10);
+	private static Tile R = new Tile('R', 1);
+	private static Tile S = new Tile('S', 1);
+	private static Tile T = new Tile('T', 1);
+	private static Tile U = new Tile('U', 1);
+	private static Tile V = new Tile('V', 4);
+	private static Tile W = new Tile('W', 4);
+	private static Tile X = new Tile('X', 8);
+	private static Tile Y = new Tile('Y', 4);
+	private static Tile Z = new Tile('Z', 10);
+	private static Tile Blank = new Tile(' ', 0);
 
 	/**
 	 * Fills the letters Hashmap with Object tile as the key and their quantity as
@@ -121,7 +121,7 @@ public class Pool {
 	 * @param check, tile object to be checked
 	 * @return Tile letter
 	 */
-	public String checkLetter(Tile check) {
+	public char checkLetter(Tile check) {
 		return check.getLetter();
 	}
 
