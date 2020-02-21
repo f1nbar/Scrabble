@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Board {
 
-	private static Tile letterBoard [][] = new Tile[15][15];
+	private static char letterBoard [][] = new char[15][15];
 
 	private static HashMap<Integer, String> tilePoints;
 
@@ -110,8 +110,8 @@ public class Board {
 		{
 		int position = concatInt(i, y);  //concats i and y to one int "position" to use as key for hashmap 
 		System.out.print("  |" );   
-		if(letterBoard[i][y].getLetter() != 0) {
-			System.out.print(letterBoard[i][y].getLetter());
+		if(letterBoard[i][y] != 0) {
+			System.out.print(letterBoard[i][y]);
 		}
 		else if(tilePoints.get(position) == null) {
 			System.out.print("  ");
@@ -140,7 +140,11 @@ public class Board {
 		return num;
 	}
 	
-
+	public static void main(String[] args) {
+		Board board = new Board();
+		board.displayBoard();
+	}
+	
 	public int concatInt(int a,int b) { //concats integers rather than adding them
 		String s = "" + a + b;
 		int pos = Integer.parseInt(s);
