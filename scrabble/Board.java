@@ -80,6 +80,10 @@ public class Board {
         tilePoints.put(812, "DL");
         tilePoints.put(314, "DL");
         tilePoints.put(1114, "DL");
+        
+        //Middle
+        tilePoints.put(707,"*");
+        
     }
 
     public static String getSquareValue(int location) {
