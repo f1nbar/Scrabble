@@ -87,14 +87,6 @@ public class Board {
 		tilePoints.put(77, "*");
 	}
 
-    public static String getSquareValue(int location) {
-        if (Board.tilePoints.containsKey(location)) {
-            return Board.tilePoints.get(location);
-        } else {
-            return null;
-        }
-    }
-
 	public static String getSquareValue(int location) {
 		if (Board.tilePoints.containsKey(location)) {
 			return Board.tilePoints.get(location);
