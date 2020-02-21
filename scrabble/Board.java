@@ -106,7 +106,10 @@ public class Board {
 		{
 		int position = concatInt(i, y);  //concats i and y to one int "position" to use as key for hashmap 
 		System.out.print("  |" );   
-		if(tilePoints.get(position) == null) {
+		if(letterBoard[i][y] != 0) {
+			System.out.print(letterBoard[i][y]);
+		}
+		else if(tilePoints.get(position) == null) {
 			System.out.print("  ");
 		}
 		else {

@@ -9,7 +9,7 @@ class PlayerTest {
 	/*-----Player.java Tests-----*/
 	Player player = new Player("Test");
 	Pool testPool = new Pool();
-	Tile testTileX = new Tile("X", 10);
+	Tile testTileX = new Tile('X', 10);
 
 	// Testing what's accepted as a name.
 	@Test
@@ -117,16 +117,16 @@ class PlayerTest {
 	@Test
 	public void testIsEmptyFalse() {
 		Frame frame = new Frame();
-		frame.fillFrame(new Tile("X", 10));
+		frame.fillFrame(new Tile('X', 10));
 		assertEquals(false, frame.isEmpty());
 	}
 
 	@Test
 	public void testToStringFullarray() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
-		Tile tileThree = new Tile("Z", 3);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
+		Tile tileThree = new Tile('Z', 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		assertEquals("X,Y,Z", frame.toString());
 	}
@@ -140,17 +140,17 @@ class PlayerTest {
 	@Test
 	public void testFillArrayOneLetter() {
 		Frame frame = new Frame();
-		Tile tile = new Tile("X", 10);
+		Tile tile = new Tile('X', 10);
 		frame.fillFrame(tile);
-		assertEquals("X", frame.toString());
+		assertEquals('X', frame.toString());
 	}
 
 	@Test
 	public void testFillArrayThreeLetters() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
-		Tile tileThree = new Tile("Z", 3);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
+		Tile tileThree = new Tile('Z', 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		assertEquals("X,Y,Z", frame.toString());
 	}
@@ -161,7 +161,7 @@ class PlayerTest {
 	@Test
 	public void testRemoveLetterOneLetter() {
 		Frame frame = new Frame();
-		Tile tile = new Tile("X", 10);
+		Tile tile = new Tile('X', 10);
 		frame.fillFrame(tile);
 		frame.removeLetter(tile);
 		assertEquals(true, frame.isEmpty());
@@ -170,9 +170,9 @@ class PlayerTest {
 	@Test
 	public void testRemoveLetterThreeLetters() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
-		Tile tileThree = new Tile("Z", 3);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
+		Tile tileThree = new Tile('Z', 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		frame.removeLetter(tileThree, tileOne, tileTwo);
 		assertEquals(true, frame.isEmpty());
@@ -191,7 +191,7 @@ class PlayerTest {
 	@Test
 	public void testCheckLetterOneLetterTrue() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
+		Tile tileOne = new Tile('X', 10);
 		frame.fillFrame(tileOne);
 		assertEquals(true, frame.checkLetters(tileOne));
 	}
@@ -199,9 +199,9 @@ class PlayerTest {
 	@Test
 	public void testCheckLetterThreeLettersTrue() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
-		Tile tileThree = new Tile("Z", 3);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
+		Tile tileThree = new Tile('Z', 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		assertEquals(true, frame.checkLetters(tileOne, tileTwo, tileThree));
 	}
@@ -209,8 +209,8 @@ class PlayerTest {
 	@Test
 	public void testCheckLetterOneLetterFalse() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
 		frame.fillFrame(tileOne);
 		assertEquals(false, frame.checkLetters(tileTwo));
 	}
@@ -218,10 +218,10 @@ class PlayerTest {
 	@Test
 	public void testCheckLetterThreeLettersFalse() {
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
-		Tile tileThree = new Tile("Z", 3);
-		Tile tile4 = new Tile("O", 46);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
+		Tile tileThree = new Tile('Z', 3);
+		Tile tile4 = new Tile('O', 46);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		assertEquals(false, frame.checkLetters(tileOne, tileTwo, tile4));
 	}
@@ -230,9 +230,9 @@ class PlayerTest {
 	public void testGetTile() {
 
 		Frame frame = new Frame();
-		Tile tileOne = new Tile("X", 10);
-		Tile tileTwo = new Tile("Y", 6);
-		Tile tileThree = new Tile("Z", 3);
+		Tile tileOne = new Tile('X', 10);
+		Tile tileTwo = new Tile('Y', 6);
+		Tile tileThree = new Tile('Z', 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 
 		assertEquals(tileOne, frame.getTile(0));
@@ -291,7 +291,7 @@ class PlayerTest {
 
 	@Test
 	public void getAndSetTile() throws Exception {
-		testTileX.setLetter("F");
+		testTileX.setLetter('F');
 		testTileX.setScore(47);
 		assertEquals(47, testTileX.getScore());
 	}

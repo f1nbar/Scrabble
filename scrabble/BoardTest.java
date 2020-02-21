@@ -11,7 +11,7 @@ public class BoardTest {
 	@Test
 	public void testResetBoard() {
 		for (int i = 0; i < 10; i++) {
-			board.placeTile();
+		//	board.placeTile();
 		}
 		board.resetBoard();
 		assertEquals(0, board.numTiles());
