@@ -127,7 +127,7 @@ public class Board {
 	}
 
 	public void placeTile(int x,int y, Tile tile) {
-        letterBoard[x][y] = tile.getLetter();
+        
 	}
 
 	public int numTiles() {
