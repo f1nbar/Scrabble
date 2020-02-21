@@ -82,7 +82,7 @@ public class Board {
         tilePoints.put(1114, "DL");
         
         //Middle
-        tilePoints.put(707,"*");
+        tilePoints.put(77," *");
         
     }
 
