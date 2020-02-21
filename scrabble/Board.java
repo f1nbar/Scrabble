@@ -103,7 +103,7 @@ public class Board {
 
 		for(int y = 0; y<15; y++)
 		{
-		int position = concatInt(i, y); 
+		int position = concatInt(i, y);  //concats i and y to one int "position" to use as key for hashmap 
 		System.out.print("  |" );   
 		if(tilePoints.get(position) == null) {
 			System.out.print("  ");
@@ -112,7 +112,10 @@ public class Board {
 		System.out.print(tilePoints.get(position)); 
 		}
 		System.out.print(" "); 
+		if(y == 14) {
+			System.out.print("  |"); 
 		}   
+		}
 		System.out.println();
         System.out.println("  |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|  ");
 		
@@ -134,7 +137,7 @@ public class Board {
 		board.displayBoard();
 	}
 	
-	public int concatInt(int a,int b) {
+	public int concatInt(int a,int b) { //concats integers rather than adding them
 		String s = "" + a + b;
 		int pos = Integer.parseInt(s);
 		return pos;
