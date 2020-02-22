@@ -130,7 +130,7 @@ public class Board {
 			if (i < 10) {
 				boardDisplay.append("  " + i + "        ");
 			} else {
-				boardDisplay.append(" " + i + "      ");
+				boardDisplay.append(" " + i + "        ");
 			}
 			for (int j = 0; j < 15; j++) {
 				int position = concatInt(i, j);
