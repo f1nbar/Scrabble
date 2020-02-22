@@ -4,13 +4,15 @@ import java.util.HashMap;
 
 public class Board {
 
-	private static Tile letterBoard [][];
-
+	private static Tile letterBoard[][];
 
 	private static HashMap<Integer, String> tilePoints;
 
+	private boolean firstMove;
+
 	public Board() {
 		letterBoard = new Tile[15][15];
+		firstMove = true;
 		initBoardScores();
 	}
 
@@ -100,35 +102,92 @@ public class Board {
 		initBoardScores();
 	}
 
-	public void displayBoard() {
+	/*
+	 * public void displayBoard() {
+	 * 
+	 * System.out.println(
+	 * "                                           SCRABBLE                                            "
+	 * ); System.out.println(
+	 * "   _________________________________________________________________________________________   "
+	 * ); for (int i = 14; i >= 0; i--) { for (int y = 0; y < 15; y++) { int
+	 * position = concatInt(i, y); // concats i and y to one int "position" to use
+	 * as key for hashmap System.out.print("   |"); if (letterBoard[i][y] != null) {
+	 * System.out.print(letterBoard[i][y].getLetter()); } else if
+	 * (tilePoints.get(position) == null) { System.out.print(" "); } else {
+	 * System.out.print(tilePoints.get(position)); } System.out.print(" "); if (y ==
+	 * 14) { System.out.print("   |"); } } System.out.println(); System.out.println(
+	 * "  |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|  "
+	 * ); } }
+	 */
 
-		for(int y = 0; y<15; y++)
-		{
-		int position = concatInt(i, y);  //concats i and y to one int "position" to use as key for hashmap 
-		System.out.print("  |" );   
-		if(letterBoard[i][y].getLetter() != 0) {
-			System.out.print(letterBoard[i][y].getLetter());
+	@Override
+	public String toString() {
+		StringBuilder boardDisplay = new StringBuilder();
+		boardDisplay.append(
+				" \n\n            0       1       2       3       4       5       6       7       8       9      10    11    12     13    14\n\n");
+
+		for (int i = 0; i < 15; i++) {
+			if (i < 10) {
+				boardDisplay.append("  " + i + "        ");
+			} else {
+				boardDisplay.append(" " + i + "      ");
+			}
+			for (int j = 0; j < 15; j++) {
+				int position = concatInt(i, j);
+				if (letterBoard[i][j] != null) {
+					boardDisplay.append(letterBoard[i][j].getLetter() + "      ");
+				} else if (Board.getSquareValue(position) != null) {
+					switch (Board.getSquareValue(position)) {
+					case "TW":
+						boardDisplay.append("#       "); // seven spaces
+						break;
+					case "TL":
+						boardDisplay.append("+       "); // seven spaces
+						break;
+					case "DW":
+						boardDisplay.append("$       "); // seven spaces
+						break;
+					case "DL":
+						boardDisplay.append("^       "); // seven spaces
+						break;
+					case "*":
+						boardDisplay.append("*       "); // seven spaces
+						break;
+					default:
+						boardDisplay.append("‒       "); // seven spaces
+					}
+				} else {
+					boardDisplay.append("‒       "); // seven spaces
+				}
+			}
+			boardDisplay.append("\n");
 		}
-		else if(tilePoints.get(position) == null) {
-			System.out.print("  ");
-		}
+		return (boardDisplay.toString());
 	}
 
-	public void placeTile(int x, int y, Tile tile) {
-		letterBoard[x][y] = tile.getLetter();
+	public void displayLegend() {
+		System.out
+				.print("Triple Word: '#'\tDouble Word: '$'\tTriple Letter: '+'\tDouble Letter: '^'\tMiddle: '*''\n\n");
+	}
+
+	public boolean placeTile(int x, int y, Player player, Tile tile, int direction) {
+		Move move = new Move(x, y, firstMove, direction, player.getFrame(), tile);
+		if (isMoveValid(move)) {
+			letterBoard[x][y] = tile;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public int numTiles() {
 		int num = 0;
-
 		return num;
 	}
 
 	private boolean isMoveValid(Move move) {
-		if (move.valid && letterBoard[move.getRow()][move.getColumn()] == ' ') {
-			if (!move.getFirstMove() && (letterBoard[move.getRow() + 1][move.getColumn()] != ' '
-					|| letterBoard[move.getRow() - 1][move.getColumn()] != ' ' || letterBoard[move.getRow()][move.getColumn() + 1] != ' '
-					|| letterBoard[move.getRow()][move.getColumn() - 1] != ' ')) {
+		if (move.valid && letterBoard[move.getRow()][move.getColumn()] == null) {
+			if (checkTouch(move.getRow(), move.getColumn())) {
 				return true;
 			} else if (move.getFirstMove()) {
 				return true;
@@ -137,10 +196,84 @@ public class Board {
 		return false;
 	}
 
+	private boolean checkTouch(int x, int y) {
+		if (y == 0 && x == 0) {
+			for (int i = x ; i <= x + 1; i++) {
+				for (int j = y ; j <= y + 1; j++) {
+					System.out.println("i " + i + " j " + j);
+					if (letterBoard[i][j] != null) {
+						return true;
+					}
+				}
+			}
+		} 
+		else if (y == 14 && x == 14) {
+			for (int i = x-1 ; i <= x; i++) {
+				for (int j = y-1 ; j <= y; j++) {
+					if (letterBoard[i][j] != null) {
+						return true;
+					}
+				}
+			}
+		} 
+		else if (x == 0) {
+			for (int i = x; i <= x + 1; i++) {
+				for (int j = y - 1; j <= y + 1; j++) {
+					if (letterBoard[i][j] != null) {
+						return true;
+					}
+				}
+			}
+		}
+		else if (x == 14) {
+			for (int i = x - 1; i <=x; i++) {
+				for (int j = y - 1; j <= y + 1; j++) {
+					if (letterBoard[i][j] != null) {
+						return true;
+					}
+				}
+			}
+		}
+		else if (y == 0) {
+			for (int i = x - 1; i <= x + 1; i++) {
+				for (int j = y; j <= y + 1; j++) {
+					if (letterBoard[i][j] != null) {
+						return true;
+					}
+				}
+			}
+		}
+		else if (y == 14) {
+			for (int i = x - 1; i <= x + 1; i++) {
+				for (int j = y - 1; j <= y; j++) {
+					if (letterBoard[i][j] != null) {
+						return true;
+					}
+				}
+			}
+		}
+		else {
+		for(int i = x-1; i <= x+1; i++) {
+			for(int j = y-1; j <= y+1; j++) {
+				if(letterBoard[i][j] != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+		}
+		return false;
+	}
 
-	public int concatInt(int a,int b) { //concats integers rather than adding them
+	private int concatInt(int a, int b) { // concatenate integers rather than adding them
 		String s = "" + a + b;
 		int pos = Integer.parseInt(s);
 		return pos;
 	}
+
+	public static void main(String[] args) {
+		Board board = new Board();
+		System.out.println(board);
+	}
 }
+

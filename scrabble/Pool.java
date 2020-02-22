@@ -46,7 +46,7 @@ public class Pool {
 	private static Tile X = new Tile('X', 8);
 	private static Tile Y = new Tile('Y', 4);
 	private static Tile Z = new Tile('Z', 10);
-	private static Tile Blank = new Tile(' ', 0);
+	private static Tile Blank = new Tile('_', 0);
 
 	/**
 	 * Fills the letters Hashmap with Object tile as the key and their quantity as
