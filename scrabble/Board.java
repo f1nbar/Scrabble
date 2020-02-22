@@ -154,10 +154,10 @@ public class Board {
 						boardDisplay.append("*       "); // seven spaces
 						break;
 					default:
-						boardDisplay.append("‒       "); // seven spaces
+						boardDisplay.append("-       "); // seven spaces
 					}
 				} else {
-					boardDisplay.append("‒       "); // seven spaces
+					boardDisplay.append("-       "); // seven spaces
 				}
 			}
 			boardDisplay.append("\n");
