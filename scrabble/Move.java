@@ -1,24 +1,25 @@
 package scrabble;
 
 public class Move {
-	static int movesMade;
+	private static int movesMade;
+	public static final int horizontal = 1;
+	public static final int veritical = 2;
 
 	private Tile tile;
-	private int row, column;
-	private boolean firstMove;
+	private int row, column, direction;
+	private static boolean firstMove = true;
 	private Frame playerFrame;
 	
 	public boolean valid;
 
-	public Move(int row, int column,  boolean firstMove, Frame playerFrame, Tile tile) {
-		if(isPlacementValid()) {
-		Move.movesMade++;
+	public Move(int row, int column,  boolean firstMove, int direction, Frame playerFrame, Tile tile) {
 		this.row = row;
 		this.column = column;
-		this.firstMove = firstMove;
+		this.direction = direction;
+		if(isPlacementValid()) {
+		Move.movesMade++;
 		this.playerFrame = playerFrame;
 		} else {
-			System.out.println("Invalid move.");
 			this.valid = false;
 		}
 	}
@@ -31,10 +32,13 @@ public class Move {
 		return this.column;
 	}
 	public boolean getFirstMove() {
-		return this.firstMove;
+		return Move.firstMove;
 	}
 	public static int getMovesMade() {
 		return movesMade;
+	}
+	public static void firstMoveMade() {
+		Move.firstMove = false;
 	}
 
 	// TODO: add boolean per turn that locks player into horizontal/vertical
@@ -47,8 +51,6 @@ public class Move {
 	// placed in the position of the board.
 	private boolean isPlacementValid() {
 		if (firstMove && row != 7 && column != 7) {
-			return false;
-		} else if (firstMove) {
 			return false;
 		} else {
 			if ((row < 0 || row > 15) || (column < 0 || column > 15)) { // bounds of board
