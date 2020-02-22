@@ -8,7 +8,6 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter your name: ");
 		String name = input.nextLine();
-		input.close();
 
 		Pool pool = new Pool();
 		Player player = new Player(name);
@@ -22,5 +21,15 @@ public class Main {
 
 		System.out.println("Name: " + player.getName());
 		System.out.println("Your frame is: " + frame.toString());
+		
+		Board board = new Board();
+		board.displayBoard();
+		
+		int selectTile = input.nextInt();
+		input.close();
+		
+		board.placeTile(7, 7, player, frame.getTile(selectTile));
+		frame.removeLetter(frame.getTile(selectTile));
+		board.displayBoard();
 	}
 }

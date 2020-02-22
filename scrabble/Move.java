@@ -54,13 +54,8 @@ public class Move {
 			if ((row < 0 || row > 15) || (column < 0 || column > 15)) { // bounds of board
 				return false;
 			}
-			if (!playerFrame.checkLetters(tile)) {
-				return false; 
-			}
 			this.valid = true;
 			return true;
 		}
 	}
-	
-	
 }

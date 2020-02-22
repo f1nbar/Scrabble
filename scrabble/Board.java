@@ -7,9 +7,12 @@ public class Board {
 	private static char letterBoard[][];
 
 	private static HashMap<Integer, String> tilePoints;
+	
+	private boolean firstMove;
 
 	public Board() {
 		letterBoard = new char[15][15];
+		firstMove = true;
 		initBoardScores();
 	}
 
@@ -127,13 +130,14 @@ public class Board {
 		}
 	}
 
-	public void placeTile(int x, int y, Tile tile) {
-		letterBoard[x][y] = tile.getLetter();
+	public void placeTile(int x, int y, Player player, Tile tile) {
+		Move move = new Move(x, y, firstMove, player.getFrame(), tile);
+		if(isMoveValid(move))
+			letterBoard[x][y] = tile.getLetter();
 	}
 
 	public int numTiles() {
 		int num = 0;
-
 		return num;
 	}
 
@@ -148,11 +152,6 @@ public class Board {
 			}
 		}
 		return false;
-	}
-
-	public static void main(String[] args) {
-		Board board = new Board();
-		board.displayBoard();
 	}
 
 	private int concatInt(int a, int b) { // concatenate integers rather than adding them
