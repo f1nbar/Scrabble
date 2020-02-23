@@ -36,14 +36,15 @@ public class Frame {
 	 * @return false, if letter is not in frame
 	 */
 
-	public boolean checkLetters(Tile... c) { // This checks if the letters are avalaible or not returning a suitable
+	public boolean checkLetters(Tile c) { // This checks if the letters are avalaible or not returning a suitable
 												// boolean
-		for (int i = 0; i < c.length; i++) {
-			if (frame.indexOf(c[i]) == -1) {
-				return false;
+		for(int i = 0;i<frame.size();i++) {
+			if(frame.get(i).getLetter() == c.getLetter()) {
+				return true;
 			}
 		}
-		return true;
+		
+		return false;
 	}
 
 	/**

@@ -196,15 +196,6 @@ class PlayerTest {
 		assertEquals(true, frame.checkLetters(tileOne));
 	}
 
-	@Test
-	public void testCheckLetterThreeLettersTrue() {
-		Frame frame = new Frame();
-		Tile tileOne = new Tile('X', 10);
-		Tile tileTwo = new Tile('Y', 6);
-		Tile tileThree = new Tile('Z', 3);
-		frame.fillFrame(tileOne, tileTwo, tileThree);
-		assertEquals(true, frame.checkLetters(tileOne, tileTwo, tileThree));
-	}
 
 	@Test
 	public void testCheckLetterOneLetterFalse() {
@@ -213,17 +204,6 @@ class PlayerTest {
 		Tile tileTwo = new Tile('Y', 6);
 		frame.fillFrame(tileOne);
 		assertEquals(false, frame.checkLetters(tileTwo));
-	}
-
-	@Test
-	public void testCheckLetterThreeLettersFalse() {
-		Frame frame = new Frame();
-		Tile tileOne = new Tile('X', 10);
-		Tile tileTwo = new Tile('Y', 6);
-		Tile tileThree = new Tile('Z', 3);
-		Tile tile4 = new Tile('O', 46);
-		frame.fillFrame(tileOne, tileTwo, tileThree);
-		assertEquals(false, frame.checkLetters(tileOne, tileTwo, tile4));
 	}
 
 	@Test

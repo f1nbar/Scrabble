@@ -59,9 +59,20 @@ public class Main {
 		while (!playerFrame.isEmpty()) {
 			System.out.print("Frame: " + playerFrame.toString());
 
-			System.out.print("\nPlease pick a letter: ");
-			char letter = Character.toUpperCase((in.next(".").charAt(0)));
+			char letter = '#';
 
+			while (letter == '#') {
+				System.out.print("\nPlease pick a letter: ");
+				letter = Character.toUpperCase((in.next(".").charAt(0)));
+
+				if (playerFrame.checkLetters(new Tile(letter, 100))) {
+					break;
+				} else {
+					letter = '#';
+					System.out.println("Letter is not in frame");
+				}
+
+			}
 			if (direction != Move.horizontal && direction != Move.veritical) {
 				direction = selectDirection(in);
 			}
