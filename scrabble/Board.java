@@ -110,7 +110,7 @@ public class Board {
 	public String toString() {
 		StringBuilder boardDisplay = new StringBuilder();
 		boardDisplay.append(
-				" \n\n            0       1       2       3       4       5       6       7       8       9      10    11    12     13    14\n\n");
+				" \n\n           0       1       2       3       4       5       6       7       8       9       10      11      12      13      14\n\n");
 
 		for (int i = 0; i < 15; i++) {
 			if (i < 10) {
@@ -121,7 +121,7 @@ public class Board {
 			for (int j = 0; j < 15; j++) {
 				int position = concatInt(i, j);
 				if (letterBoard[i][j] != null) {
-					boardDisplay.append(letterBoard[i][j].getLetter() + "      ");
+					boardDisplay.append(letterBoard[i][j].getLetter() + "       ");
 				} else if (Board.getSquareValue(position) != null) {
 					switch (Board.getSquareValue(position)) {
 					case "TW":
