@@ -134,5 +134,7 @@ public class Main {
 		Main.concurrentMoves(input, board, player, frame);
 
 		input.close();
+		
+	
 	}
 }

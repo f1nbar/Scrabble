@@ -9,6 +9,8 @@ public class Board {
 	private static HashMap<Integer, String> tilePoints;
 
 	private boolean firstMove;
+	
+	private int numTiles = 0;
 
 	public Board() {
 		letterBoard = new Tile[15][15];
@@ -17,6 +19,7 @@ public class Board {
 	}
 
 	private void initBoardScores() {
+		numTiles = 0;
 		Board.tilePoints = new HashMap<Integer, String>();
 		// Triple word
 		tilePoints.put(00, "TW");
@@ -174,6 +177,7 @@ public class Board {
 		Move move = new Move(x, y, firstMove, direction, player.getFrame(), tile);
 		if (isMoveValid(move)) {
 			letterBoard[x][y] = tile;
+			numTiles++;
 			return true;
 		} else {
 			return false;
@@ -181,8 +185,7 @@ public class Board {
 	}
 
 	public int numTiles() {
-		int num = 0;
-		return num;
+		return numTiles;
 	}
 
 	private boolean isMoveValid(Move move) {
@@ -271,5 +274,6 @@ public class Board {
 		return pos;
 	}
 
+	
 }
 

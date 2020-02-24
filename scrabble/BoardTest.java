@@ -6,28 +6,27 @@ import org.junit.jupiter.api.Test;
 
 public class BoardTest {
 
-	Board board = new Board();
-	
-
 	@Test
 	public void testResetBoard() {
-		for (int i = 0; i < 10; i++) {
-			board.placeTile(i, i, null, null, i);
-		}
+
+		Board board = new Board();
+		Player player = new Player("Test");
+		board.placeTile(7, 7, player, new Tile('S', 100), 2);
+		board.placeTile(7, 8, player, new Tile('S', 100), 2);
 		board.resetBoard();
+		System.out.println(board.numTiles());
 		assertEquals(0, board.numTiles());
 	}
 
 //	@Test
 //	public void testDisplayBoard() {
 //       board.toString();
-//       assertEquals("the board", board.toString());			can we test this anymore????
+//       assertEquals("the board", board.toString());			
 //	}
-	
 
 	@Test
 	public void testGetSquareValue() {
-		
+
 		Board Board2 = new Board();
 		// triple word tests
 		assertEquals("TW", Board2.getSquareValue(00));
@@ -68,8 +67,20 @@ public class BoardTest {
 
 	@Test
 	public void testMoveLegal() {
-		
-	
 
-}
+	}
+
+	@Test
+	public void testPlaceTile() {
+		Board board = new Board();
+		Frame frame = new Frame();
+		Player player = new Player("Test");
+
+		assertEquals(0, board.numTiles());
+		board.placeTile(7, 7, player, new Tile('S', 100), 1);
+		System.out.println(board.numTiles());
+		assertEquals(1, board.numTiles());
+
+	}
+
 }
