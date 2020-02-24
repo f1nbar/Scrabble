@@ -13,7 +13,7 @@
 7. Code review, refactor and refining.
 8. Submit executable 1.
 
-## Executable Instructions
+## Executable Instructions:
 1. Launch .jar file (java -jar scrabble-assignment1.jar)
 2. Enter name
   * Can be First name & Second name, A-Z a-z characters allowed only.
@@ -32,7 +32,7 @@
 5. Wrote Main class to take user input and to give a visual representation of our implementation.
 6. Created execuatable Jar and submitted executable 2.
 
-## Executable Instructions
+## Executable Instructions:
 1. Launch .jar file (java -jar scrabble-assignment2.jar)
 2. Enter name, pick tile from frame. Places tile in centre of board.
 3. Pick tile to move again, pick whether you wish to move vertically or horizontally. This limits your moves to the direction chosen relative to the axis. Pick the coordinates in that direction for your respective tile. 
