@@ -2,6 +2,7 @@ package scrabble;
 
 import java.util.Scanner;
 
+
 public class Main {
 	private static final int neutralDirection = 0;
 	private static final int middleRow = 7;
@@ -37,6 +38,8 @@ public class Main {
 	}
 
 	private static void firstMove(Scanner in, Board board, Player player_one, Frame playerFrame) {
+		Tile blank = null;
+		
 		int row = Main.middleRow, column = Main.middleColumn;
 		System.out.print("\n\nFirst Move\nPlease pick a letter: ");
 		char letter = Character.toUpperCase(in.next(".").charAt(0)); // takes ONLY one character from scanner and makes it uppercase
@@ -48,6 +51,7 @@ public class Main {
 			System.out.println("Letter not in frame, pick again");
 			firstMove(in, board, player_one, playerFrame);
 		} 
+
 		while (!board.placeTile(row, column, player_one, playerFrame.getTileFromChar(letter), neutralDirection)) { 
 			System.out.println("Invalid move");
 			firstMove(in, board, player_one, playerFrame);
@@ -59,6 +63,8 @@ public class Main {
 	}
 
 	private static void concurrentMoves(Scanner in, Board board, Player player_one, Frame playerFrame) {
+		Tile blank = null;
+
 		int column, row;
 		while (!playerFrame.isEmpty()) {
 			System.out.print("Frame: " + playerFrame.toString());
@@ -107,6 +113,8 @@ public class Main {
 			Board.displayLegend();
 		}
 	}
+	
+	
 
 	// driver code
 	public static void main(String[] args) {

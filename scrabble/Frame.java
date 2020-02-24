@@ -109,6 +109,13 @@ public class Frame {
 			throw new IllegalArgumentException("INDEX OUT OF BOUNDS:getTile");
 		}
 	}
+	
+	public Tile replaceTile(Tile old,Tile replacement) {
+		if(checkLetters(old) == true) {
+			old = replacement;
+		}
+		return replacement;
+	}
 
 	public Tile getTileFromChar(char letter) {
 		for (int i = 0; i < frame.size(); i++) {
