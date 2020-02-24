@@ -40,7 +40,7 @@
 5. After each move the updated board will be displayed along with the frame.
 
 ## Class Diagram:
-!{assignment_two_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_two_diagram.PNG)
+![assignment_two_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_two_diagram.PNG)
 
 
 
