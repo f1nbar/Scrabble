@@ -256,6 +256,10 @@ public class Board {
 		int pos = Integer.parseInt(s);
 		return pos;
 	}
+	
+	public char letterboardPos(int x,int y) {
+		return letterBoard[x][y].getLetter();
+	}
 
 	
 }

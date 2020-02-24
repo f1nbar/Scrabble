@@ -23,7 +23,10 @@ public class BoardTest {
 	@Test
 	public void testDisplayBoard() {
 		Board board = new Board();
-		board.toString();
+		System.out.println(board.toString());
+		Player player = new Player("Test");
+		board.placeTile(7, 7, player, new Tile('S', 100), 2);
+		System.out.println(board.toString());		
 	}
 
 	@Test
@@ -73,18 +76,31 @@ public class BoardTest {
 	public void testMoveLegal() {
 
 	}
-
+	
 	@Test
 	public void testPlaceTile() {
+
 		Board board = new Board();
 		Frame frame = new Frame();
 		Player player = new Player("Test");
-
 		assertEquals(0, board.numTiles());
 		board.placeTile(7, 7, player, new Tile('S', 100), 1);
 		System.out.println(board.numTiles());
 		assertEquals(1, board.numTiles());
+		
 
 	}
+	/*@Test
+	public void testForceFirstMovePlace(){
+
+		Board board = new Board();
+		Frame frame = new Frame();
+		Player player = new Player("Test");
+		board.placeTile(10, 1, player, new Tile('X',100), 1);
+	    assertEquals('X',board.letterboardPos(7, 7));
+	
+
+	}*/
+
 
 }
