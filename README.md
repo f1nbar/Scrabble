@@ -35,15 +35,13 @@
 ## Executable Instructions:
 1. Launch .jar file (java -jar scrabble-assignment2.jar)
 2. Enter name, pick tile from frame. Places tile in centre of board.
-3. Pick tile to move again, pick whether you wish to move vertically or horizontally. This limits your moves to the direction chosen relative to the axis. Pick the coordinates in that direction for your respective tile. 
+3. Pick tile to move again, pick whether you wish to move vertically or horizontally. This limits your moves to the direction chosen relative to the axis. Pick the coordinates in that direction for your respective tile.
 4. Continue with placing tiles until your frame is empty, turns aren't implemented as of yet.
 5. After each move the updated board will be displayed along with the frame.
 
 ## Class Diagram:
-//TODO 
+!{assignment_two_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_two_diagram.PNG)
 
-
-  
 
 
 
