@@ -151,7 +151,7 @@ public class Board {
 		return (boardDisplay.toString());
 	}
 
-	public void displayLegend() {
+	public static void displayLegend() {
 		System.out
 				.print("Triple Word: '#'\tDouble Word: '$'\tTriple Letter: '+'\tDouble Letter: '^'\tMiddle: '*''\n\n");
 	}

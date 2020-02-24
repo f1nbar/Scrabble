@@ -39,7 +39,7 @@ public class Main {
 	private static void firstMove(Scanner in, Board board, Player player_one, Frame playerFrame) {
 		int row = Main.middleRow, column = Main.middleColumn;
 		System.out.print("\n\nFirst Move\nPlease pick a letter: ");
-		char letter = Character.toUpperCase(in.next(".").charAt(0)); // takes ONLY one character from scanner and makes
+		char letter = Character.toUpperCase(in.next(".").charAt(0)); // takes ONLY one character from scanner and makes it uppercase
 		
 		try {
 			playerFrame.getTileFromChar(letter);
@@ -47,12 +47,8 @@ public class Main {
 			System.out.println();
 			System.out.println("Letter not in frame, pick again");
 			firstMove(in, board, player_one, playerFrame);
-		} // it uppercase.
-
-		while (!board.placeTile(row, column, player_one, playerFrame.getTileFromChar(letter), neutralDirection)) { // loop
-																													// for
-																													// invalid
-																													// input
+		} 
+		while (!board.placeTile(row, column, player_one, playerFrame.getTileFromChar(letter), neutralDirection)) { 
 			System.out.println("Invalid move");
 			firstMove(in, board, player_one, playerFrame);
 		}
@@ -85,13 +81,13 @@ public class Main {
 				direction = selectDirection(in);
 			}
 
-			System.out.print("\n Please select coordinate\n "); // limits player to one axis
+			System.out.print("\n Please select coordinate "); // limits player to one axis
 			if (direction == Move.horizontal) {
-				System.out.print("Column: ");
+				System.out.print("column: ");
 				column = in.nextInt();
 				row = Main.previousRow;
 			} else {
-				System.out.print("Row: ");
+				System.out.print("row: ");
 				row = in.nextInt();
 				column = Main.previousColumn;
 			}
@@ -108,6 +104,7 @@ public class Main {
 			Main.previousColumn = column;
 			playerFrame.removeLetter(playerFrame.getTileFromChar(letter));
 			System.out.println(board);
+			Board.displayLegend();
 		}
 	}
 
