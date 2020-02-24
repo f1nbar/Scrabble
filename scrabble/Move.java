@@ -40,15 +40,11 @@ public class Move {
 	public static void firstMoveMade() {
 		Move.firstMove = false;
 	}
-
-	// TODO: add boolean per turn that locks player into horizontal/vertical
-	// placement of tiles. Cannot implement at this sprint as player turns is out of
-	// scope for the assignment. Boolean stored in turn method of scrabble class and
-	// passed to this method.
-
+	
 	// Not currently included - better to be contained in Board class: check whether
 	// tile is touching a previously placed tile and if there is already a tile
 	// placed in the position of the board.
+	
 	private boolean isPlacementValid() {
 		if (firstMove && row != 7 && column != 7) {
 			return false;

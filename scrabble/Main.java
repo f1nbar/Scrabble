@@ -40,7 +40,15 @@ public class Main {
 		int row = Main.middleRow, column = Main.middleColumn;
 		System.out.print("\n\nFirst Move\nPlease pick a letter: ");
 		char letter = Character.toUpperCase(in.next(".").charAt(0)); // takes ONLY one character from scanner and makes
-																		// it uppercase.
+		
+		try {
+			playerFrame.getTileFromChar(letter);
+		} catch (Exception e) {
+			System.out.println();
+			System.out.println("Letter not in frame, pick again");
+			firstMove(in, board, player_one, playerFrame);
+		} // it uppercase.
+
 		while (!board.placeTile(row, column, player_one, playerFrame.getTileFromChar(letter), neutralDirection)) { // loop
 																													// for
 																													// invalid
@@ -88,7 +96,7 @@ public class Main {
 				column = Main.previousColumn;
 			}
 
-			while (!board.placeTile(row, column, player_one, playerFrame.getTileFromChar(letter), direction)
+			if (!board.placeTile(row, column, player_one, playerFrame.getTileFromChar(letter), direction)
 					|| !directionValid) { // for invalid input
 				System.out.println(board);
 				System.out.print("Frame:\n" + playerFrame.toString());
@@ -134,7 +142,6 @@ public class Main {
 		Main.concurrentMoves(input, board, player, frame);
 
 		input.close();
-		
-	
+
 	}
 }

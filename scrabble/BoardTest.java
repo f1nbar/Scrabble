@@ -90,17 +90,7 @@ public class BoardTest {
 		
 
 	}
-	/*@Test
-	public void testForceFirstMovePlace(){
 
-		Board board = new Board();
-		Frame frame = new Frame();
-		Player player = new Player("Test");
-		board.placeTile(10, 1, player, new Tile('X',100), 1);
-	    assertEquals('X',board.letterboardPos(7, 7));
-	
-
-	}*/
 
 
 }
