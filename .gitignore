@@ -5,3 +5,4 @@ scrabble/*.class
 .project
 /Player.class
 /PlayerTest.class
+/UI.class
