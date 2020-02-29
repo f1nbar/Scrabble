@@ -32,44 +32,46 @@ public class BoardTest {
 	@Test
 	public void testGetSquareValue() {
 
+		Board board = new Board();
+		
 		// triple word tests
-		assertEquals("TW", scrabble.Board.getSquareValue(00));
-		assertEquals("TW", scrabble.Board.getSquareValue(14));
-		assertEquals("TW", scrabble.Board.getSquareValue(147));
-		assertEquals("TW", scrabble.Board.getSquareValue(714));
-		assertEquals("TW", scrabble.Board.getSquareValue(07));
+		assertEquals("TW", board.getSquareValue(00));
+		assertEquals("TW", board.getSquareValue(14));
+		assertEquals("TW", board.getSquareValue(147));
+		assertEquals("TW", board.getSquareValue(714));
+		assertEquals("TW", board.getSquareValue(07));
 
 		// double word tests
-		assertEquals("DW", scrabble.Board.getSquareValue(11));
-		assertEquals("DW", scrabble.Board.getSquareValue(22));
-		assertEquals("DW", scrabble.Board.getSquareValue(33));
-		assertEquals("DW", scrabble.Board.getSquareValue(311));
-		assertEquals("DW", scrabble.Board.getSquareValue(1313));
+		assertEquals("DW", board.getSquareValue(11));
+		assertEquals("DW", board.getSquareValue(22));
+		assertEquals("DW", board.getSquareValue(33));
+		assertEquals("DW", board.getSquareValue(311));
+		assertEquals("DW", board.getSquareValue(1313));
 
 		// triple letter tests
-		assertEquals("TL", scrabble.Board.getSquareValue(91));
-		assertEquals("TL", scrabble.Board.getSquareValue(55));
-		assertEquals("TL", scrabble.Board.getSquareValue(135));
-		assertEquals("TL", scrabble.Board.getSquareValue(19));
-		assertEquals("TL", scrabble.Board.getSquareValue(59));
-		assertEquals("TL", scrabble.Board.getSquareValue(913));
+		assertEquals("TL", board.getSquareValue(91));
+		assertEquals("TL", board.getSquareValue(55));
+		assertEquals("TL", board.getSquareValue(135));
+		assertEquals("TL", board.getSquareValue(19));
+		assertEquals("TL", board.getSquareValue(59));
+		assertEquals("TL", board.getSquareValue(913));
 
 		// double letter tests
-		assertEquals("DL", scrabble.Board.getSquareValue(62));
-		assertEquals("DL", scrabble.Board.getSquareValue(03));
-		assertEquals("DL", scrabble.Board.getSquareValue(117));
-		assertEquals("DL", scrabble.Board.getSquareValue(28));
-		assertEquals("DL", scrabble.Board.getSquareValue(1114));
+		assertEquals("DL", board.getSquareValue(62));
+		assertEquals("DL", board.getSquareValue(03));
+		assertEquals("DL", board.getSquareValue(117));
+		assertEquals("DL", board.getSquareValue(28));
+		assertEquals("DL", board.getSquareValue(1114));
 
 		// regular tiles
-		assertEquals(null, scrabble.Board.getSquareValue(01));
-		assertEquals(null, scrabble.Board.getSquareValue(100));
-		assertEquals(null, scrabble.Board.getSquareValue(1115));
-		assertEquals(null, scrabble.Board.getSquareValue(613));
-		assertEquals(null, scrabble.Board.getSquareValue(38));
+		assertEquals(null, board.getSquareValue(01));
+		assertEquals(null, board.getSquareValue(100));
+		assertEquals(null, board.getSquareValue(1115));
+		assertEquals(null, board.getSquareValue(613));
+		assertEquals(null, board.getSquareValue(38));
 		
 		//middle test
-		assertEquals("*", scrabble.Board.getSquareValue(77));
+		assertEquals("*", board.getSquareValue(77));
 	}
 
 	@Test

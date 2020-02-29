@@ -11,6 +11,8 @@ public class Board {
 	private boolean firstMove;
 	
 	private int numTiles = 0;
+	
+	
 
 	public Board() {
 		letterBoard = new Tile[15][15];
@@ -93,9 +95,9 @@ public class Board {
 		tilePoints.put(77, "*");
 	}
 
-	public static String getSquareValue(int location) {
-		if (Board.tilePoints.containsKey(location)) {
-			return Board.tilePoints.get(location);
+	public String getSquareValue(int location) {
+		if (tilePoints.containsKey(location)) {
+			return tilePoints.get(location);
 		} else {
 			return null;
 		}
@@ -122,8 +124,8 @@ public class Board {
 				int position = concatInt(i, j);
 				if (letterBoard[i][j] != null) {
 					boardDisplay.append(letterBoard[i][j].getLetter() + "       ");
-				} else if (Board.getSquareValue(position) != null) {
-					switch (Board.getSquareValue(position)) {
+				} else if (getSquareValue(position) != null) {
+					switch (getSquareValue(position)) {
 					case "TW":
 						boardDisplay.append("#       "); // seven spaces
 						break;
@@ -251,7 +253,7 @@ public class Board {
 		return false;
 	}
 
-	private int concatInt(int a, int b) { // concatenate integers rather than adding them
+	public static int concatInt(int a, int b) { // concatenate integers rather than adding them
 		String s = "" + a + b;
 		int pos = Integer.parseInt(s);
 		return pos;
@@ -259,6 +261,19 @@ public class Board {
 	
 	public char letterboardPos(int x,int y) {
 		return letterBoard[x][y].getLetter();
+	}
+	
+	
+	public Tile[][] getBoard(){
+		return letterBoard;
+	}
+	
+	public HashMap<Integer, String> getTilePoints() {
+		return tilePoints;
+	}
+	
+	public void setLetter(Tile tile) {
+		letterBoard[7][7] = tile;
 	}
 
 	

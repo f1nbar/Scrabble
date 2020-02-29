@@ -122,10 +122,13 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter your name: ");
 		String name = input.nextLine();
+		
 
 		Pool pool = new Pool();
 		Player player = new Player(name);
 		Frame frame = new Frame();
+		
+		
 
 		pool.fillPool();
 
@@ -136,8 +139,14 @@ public class Main {
 		System.out.println("Name: " + player.getName());
 
 		Board board = new Board();
+		
+		board.setLetter(new Tile('S',10));
+		UI user_i = new UI(board,player,player,input);
 		System.out.println(board);
-		board.displayLegend();
+	//	board.displayLegend();
+		
+		user_i.intialize_screen();
+		user_i.repaint();
 		System.out.print("Frame:\n" + frame.toString());
 
 		// First Move
