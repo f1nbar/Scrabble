@@ -139,15 +139,22 @@ public class Main {
 
 		pool.fillPool();
 
-		while (frame.frameSize() < 7) {
-			frame.fillFrame(pool.randomTile());
+		while(player.getFrame().frameSize() != player.getFrame().FRAME_SIZE) {
+		player.getFrame().fillFrame(pool.randomTile());
 		}
-
+		
+		
+		System.out.println(player.getFrame().toString());
+		
 		System.out.println("Name: " + player.getName());
 
 		Board board = new Board();
 		
-		board.setLetter(new Tile('S',10));
+		for(char alphabet = 'A'; alphabet <='Z'; alphabet++ )
+	    {
+			board.setLetter(new Tile(alphabet,10));	
+	    }
+		
 		UI user_i = new UI(board,player,player,input);
 		System.out.println(board);
 	//	board.displayLegend();

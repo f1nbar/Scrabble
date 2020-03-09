@@ -273,8 +273,20 @@ public class Board {
 		return tilePoints;
 	}
 	
+	int counterx = 0;
+	int countery = 0;
 	public void setLetter(Tile tile) {
-		letterBoard[7][7] = tile;
+		if(counterx > 10) {
+			counterx = 0;
+			countery++;
+		}
+		
+		if(countery > 10) {
+			countery = 0;
+		} else {
+		letterBoard[counterx][countery] = tile;
+		counterx++;
+	}
 	}
 
 	
