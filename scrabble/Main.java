@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 
 public class Main {
+	
 	private static final int neutralDirection = 0;
 	private static final int middleRow = 7;
 	private static final int middleColumn = 7;
@@ -119,6 +120,12 @@ public class Main {
 	// driver code
 	public static void main(String[] args) {
 		// Initialize game
+		
+
+		int sub = 104;
+		System.out.println(sub);
+		
+		
 		Scanner input = new Scanner(System.in);
 		System.out.print("Enter your name: ");
 		String name = input.nextLine();

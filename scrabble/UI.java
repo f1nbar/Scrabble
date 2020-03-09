@@ -43,52 +43,17 @@ public class UI extends JPanel {
 		f.add(this);
 
 	}
+	
+	
+	int PIECE_SIZE = 33;
+	int PIECE_GAP = 2;
 
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setColor(Color.white);
 		g.fillRect(0, 0, 1000, 1000);
 
-//		for (int i = 0; i < letterBoard.length; i++) {
-//			for (int j = 0; j < letterBoard.length; j++) {
-//
-//
-//				int position = Board.concatInt(i, j);
-//				if (letterBoard[i][j] != null) {
-//					
-//
-//				} else if (board.getSquareValue(position) != null) {
-//					switch (board.getSquareValue(position)) {
-//					case "TW":
-//						g.setColor(Color.red);
-//						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
-//						break;
-//					case "TL":
-//						g.setColor(Color.getHSBColor(0.575f, 0.85f, 0.72f));
-//						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
-//						break;
-//					case "DW":
-//						g.setColor(Color.pink);
-//						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
-//						break;
-//					case "DL":
-//						g.setColor(Color.cyan);
-//						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
-//						break;
-//					case "*":
-//						g.setColor(Color.pink);
-//						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
-//						break;
-//					default:
-//						g.setColor(Color.gray);
-//						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
-//					}
-//
-//				}
-//
-//			}
-//
-//		}
+
 		
 		
 		Font font1 = new Font("San seif", Font.BOLD, 10);
@@ -96,59 +61,63 @@ public class UI extends JPanel {
 		g.setFont(font1);
 		
 		
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 15; j++) {
-				int position = Board.concatInt(i, j);
-				if (letterBoard[i][j] != null) {
+		for (int x = 0; x < 15; x++) {   // x is x axis and y is y axis
+			for (int y = 0; y < 15; y++) {
+				int position = Board.concatInt(x, y);
+				if (letterBoard[x][y] != null) {
 					g.setColor(Color.yellow);
-					g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+					g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 					g.setColor(Color.black);
 					g.setFont(font2);
-					g.drawString(Character.toString(letterBoard[i][j].getLetter()),8 + (35 * i), 27 + (35 * j));
+					g.drawString(Character.toString(letterBoard[x][y].getLetter()),8 + ((PIECE_GAP + PIECE_SIZE) * x), 27 + ((PIECE_GAP + PIECE_SIZE) * y));
 					g.setFont(font1);
-					g.drawString(Integer.toString(letterBoard[i][j].getScore()),22 + (35 * i), 27 + (35 * j));
+					g.drawString(Integer.toString(letterBoard[x][y].getScore()),22 + ((PIECE_GAP + PIECE_SIZE) * x), 27 + ((PIECE_GAP + PIECE_SIZE) * y));
 				} else if (board.getSquareValue(position) != null) {
 					switch (board.getSquareValue(position)) {
 					case "TW":
 						g.setColor(Color.red);
-						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 						g.setColor(Color.black);
-						g.drawString("Triple", 5+(35*i), 17 + (35 * j));
-						g.drawString("Word", 6+(35*i), 25 + (35 * j));
+						g.drawString("Triple", 5+((PIECE_GAP + PIECE_SIZE)*x), 17 + ((PIECE_GAP + PIECE_SIZE) * y));
+						g.drawString("Word", 6+((PIECE_GAP + PIECE_SIZE)*x), 25 + ((PIECE_GAP + PIECE_SIZE) * y));
 						break;
 					case "TL":
 						g.setColor(Color.getHSBColor(0.575f, 0.85f, 0.72f));
-						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 						g.setColor(Color.black);
-						g.drawString("Triple", 5+(35*i), 17 + (35 * j));
-						g.drawString("Letter", 5+(35*i), 25 + (35 * j));
+						g.drawString("Triple", 5+((PIECE_GAP + PIECE_SIZE)*x), 17 + ((PIECE_GAP + PIECE_SIZE) * y));
+						g.drawString("Letter", 5+((PIECE_GAP + PIECE_SIZE)*x), 25 + ((PIECE_GAP + PIECE_SIZE) * y));
 						break;
 					case "DW":
 						g.setColor(Color.pink);
-						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 						g.setColor(Color.black);
-						g.drawString("Double", 2+(35*i), 17 + (35 * j));
-						g.drawString("Word", 6+(35*i), 25 + (35 * j));
+						g.drawString("Double", PIECE_GAP+((PIECE_GAP + PIECE_SIZE)*x), 17 + ((PIECE_GAP + PIECE_SIZE) * y));
+						g.drawString("Word", 6+((PIECE_GAP + PIECE_SIZE)*x), 25 + ((PIECE_GAP + PIECE_SIZE) * y));
 						break;
 					case "DL":
 						g.setColor(Color.cyan);
-						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 						g.setColor(Color.black);
-						g.drawString("Double", 2+(35*i), 17 + (35 * j));
-						g.drawString("Letter", 5+(35*i), 25 + (35 * j));
+						g.drawString("Double", PIECE_GAP+((PIECE_GAP + PIECE_SIZE)*x), 17 + ((PIECE_GAP + PIECE_SIZE) * y));
+						g.drawString("Letter", 5+((PIECE_GAP + PIECE_SIZE)*x), 25 + ((PIECE_GAP + PIECE_SIZE) * y));
 						break;
 					case "*":
 						g.setColor(Color.pink);
-						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 						break;
 					default:
 						g.setColor(Color.gray);
-						g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 					}
 				} else {
 					g.setColor(Color.gray);
-					g.fillRect(2 + (35 * i), 2 + (35 * j), 33, 33);
+					g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 				}
+				
+//				//Printing Players frames
+//				g.fillRect(, y, width, height);
+				
 			}
 		}
 

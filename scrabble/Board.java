@@ -27,7 +27,7 @@ public class Board {
 		tilePoints.put(00, "TW");
 		tilePoints.put(70, "TW");
 		tilePoints.put(07, "TW");
-		tilePoints.put(14, "TW");
+		tilePoints.put(14, "TW");  
 		tilePoints.put(140, "TW");
 		tilePoints.put(147, "TW");
 		tilePoints.put(714, "TW");
@@ -48,7 +48,7 @@ public class Board {
 		tilePoints.put(913, "TL");
 
 		// Double word
-		tilePoints.put(11, "DW");
+		//tilePoints.put(11, "DW"); ERROR shouldnt be here
 		tilePoints.put(22, "DW");
 		tilePoints.put(33, "DW");
 		tilePoints.put(44, "DW");
@@ -66,8 +66,9 @@ public class Board {
 		tilePoints.put(1313, "DW");
 
 		// Double letter
+		tilePoints.put(11, "DL");  //error testing
 		tilePoints.put(30, "DL");
-		tilePoints.put(110, "DL");
+		//tilePoints.put(110, "DL"); //error testing should be void?
 		tilePoints.put(62, "DL");
 		tilePoints.put(82, "DL");
 		tilePoints.put(03, "DL");
