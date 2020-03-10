@@ -83,4 +83,8 @@ public class Player {
 	public boolean getTurn() {
 		return turn;
 	}
+	
+	public void changeTurn() {
+		this.turn = !turn;
+	}
 }

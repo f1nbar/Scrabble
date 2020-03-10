@@ -150,11 +150,6 @@ public class Main {
 
 		Board board = new Board();
 		
-		for(char alphabet = 'A'; alphabet <='Z'; alphabet++ )
-	    {
-			board.setLetter(new Tile(alphabet,10));	
-	    }
-		
 		UI user_i = new UI(board,player,player,input);
 		System.out.println(board);
 	//	board.displayLegend();
@@ -162,8 +157,7 @@ public class Main {
 		user_i.intialize_screen();
 		user_i.repaint();
 		
-		System.out.println("Please press x");
-		input.next();
+		player.changeTurn();
 		
 		user_i.repaint();
 		
@@ -171,7 +165,7 @@ public class Main {
 
 		// First Move
 		Main.firstMove(input, board, player, frame);
-
+		user_i.repaint();
 		// Concurrent moves
 		Main.concurrentMoves(input, board, player, frame);
 

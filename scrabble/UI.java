@@ -117,6 +117,22 @@ public class UI extends JPanel {
 		g.drawString("Turn", FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4) + TURN_SIGNAL_WIDTH/3,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT/2) + (NORMAL_LETTER_FONT.getSize()/2) );
 		g.drawString("Turn", FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4)+ PIECE_GAP + ((PIECE_GAP +PIECE_SIZE) * 7)  + TURN_SIGNAL_WIDTH/3,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT/2) + (NORMAL_LETTER_FONT.getSize()/2) );
 		g.drawImage(gooseImage,548,525,this);
+	
+		g.setColor(Color.DARK_GRAY);
+		if(player1.getTurn()) {
+			
+			g.fillRect(FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH,
+					PIECE_GAP + (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, (PIECE_GAP * 2) + PIECE_SIZE);
+			
+		} else {
+			g.fillRect(
+					FRAME_DISTANCE_FROM_LEFT_BORDER + (PIECE_GAP * 2) + PIECE_GAP
+							+ (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE,
+					FRAME_DEPTH, PIECE_GAP + (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE,
+					(PIECE_GAP * 2) + PIECE_SIZE);
+		}
+		
+		
 	}
 
 	private void paintFrames(Graphics g) {
