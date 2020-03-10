@@ -1,5 +1,9 @@
 package scrabble;
 
-public class Scrabble {
+import java.util.Scanner;
 
+public class Scrabble {
+    public static void playerTurn(){
+
+    }
 }

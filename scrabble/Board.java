@@ -159,10 +159,9 @@ public class Board {
 				.print("Triple Word: '#'\tDouble Word: '$'\tTriple Letter: '+'\tDouble Letter: '^'\tMiddle: '*''\n\n");
 	}
 
-	public boolean placeTile(int x, int y, Player player, Tile tile, int direction) {
-		Move move = new Move(x, y, firstMove, direction, player.getFrame(), tile);
+	public boolean placeTile(Move move) {
 		if (isMoveValid(move)) {
-			letterBoard[x][y] = tile;
+			letterBoard[move.getRow()][move.getColumn()] = move.getTile();
 			numTiles++;
 			return true;
 		} else {

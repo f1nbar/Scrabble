@@ -27,7 +27,7 @@ public class Main {
 				invalid = false;
 				break;
 			case 'V':
-				direction = Move.veritical;
+				direction = Move.vertical;
 				invalid = false;
 				break;
 			default:
@@ -84,7 +84,7 @@ public class Main {
 				}
 
 			}
-			if (direction != Move.horizontal && direction != Move.veritical) {
+			if (direction != Move.horizontal && direction != Move.vertical) {
 				direction = selectDirection(in);
 			}
 
