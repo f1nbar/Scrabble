@@ -11,6 +11,7 @@ public class Player {
 	private String name;
 	private int score;
 	private Frame playerFrame;
+	private boolean turn;
 
 	private final String nameRegex = "[a-zA-Z]*(\\s[a-zA-Z]*)?"; // checks to see if the string contains a word made of
 																	// only alphabet characters for a maximum of two
@@ -77,5 +78,9 @@ public class Player {
 	public void increaseScore(int points) {
 		sanitizeScore(points);
 		this.score += points;
+	}
+	
+	public boolean getTurn() {
+		return turn;
 	}
 }

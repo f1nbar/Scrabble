@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -17,7 +19,6 @@ public class UI extends JPanel {
 	private Player player1;
 	private Player player2;
 	private Tile[][] letterBoard;
-	private HashMap<Integer, String> tilePoints;
 	private JFrame f = new JFrame("Scrabble");
 
 	private Scanner in;
@@ -45,25 +46,28 @@ public class UI extends JPanel {
 
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setBackground(Color.BLACK);
-		f.setSize(543, 700);
+		f.setSize(625, 700);
 		f.setVisible(true);
 		f.add(this);
 		f.setResizable(false);
 
 	}
 
-	int PIECE_SIZE = 33;
+	int PIECE_SIZE = 34;
 	int PIECE_GAP = 2;
-	int FRAME_DEPTH = 560; // Distance Frames are down the screen
-	Font NORMAL_LETTER_FONT = new Font("San seif", Font.BOLD, 10);
+	int FRAME_DEPTH = 575; // Distance Frames are down the screen
+	Font SMALL_LETTER_FONT = new Font("San seif", Font.BOLD, 10);
+	Font NORMAL_LETTER_FONT = new Font("San seif",Font.BOLD,15);
 	Font BIG_LETTER_FONT = new Font("San seif", Font.BOLD, 22);
-	int FRAME_DISTANCE_FROM_LEFT_BORDER = 10;
+	Image starImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Star.png")).getImage();
+	Image gooseImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Goose.png")).getImage();
+	int FRAME_DISTANCE_FROM_LEFT_BORDER = 15;
 
 	public void paint(Graphics g) {
 		super.paint(g);
 		paintBoard(g);
 		paintFrames(g);
-
+		paintInformationBoard(g);
 	}
 	
 	private void paintTile(Graphics g,int x,int y,Tile tile) {		//given the x and y cords of a tile on the board it can print the tile onto the screen
@@ -77,13 +81,47 @@ public class UI extends JPanel {
 		} else {
 			g.drawString(Character.toString(tile.getLetter()),x+ 5 +BIG_LETTER_FONT_PIECE_TEXT_OFFSET_X,y +BIG_LETTER_FONT_PIECE_TEXT_OFFSET_Y);//exception for I spacing is different
 		}
-		g.setFont(NORMAL_LETTER_FONT);
+		g.setFont(SMALL_LETTER_FONT);
 		g.drawString(Integer.toString(tile.getScore()),x + NORMAL_LETTER_FONT_PIECE_TEXT_OFFSET_X,y +NORMAL_LETTER_FONT_PIECE_TEXT_OFFSET_Y);
+	}
+	
+	
+	private void paintInformationBoard(Graphics g) {
+		
+		int TURN_SIGNAL_WIDTH = 100;
+		int TURN_SIGNAL_HEIGHT = 30;
+	
+		
+		g.setColor(Color.BLACK);
+		g.setFont(NORMAL_LETTER_FONT);
+		g.drawString(player1.getName() + "'s Frame", FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH - 5);
+		g.drawString(player2.getName() + "'s Frame", FRAME_DISTANCE_FROM_LEFT_BORDER + (PIECE_GAP * 2) + PIECE_GAP
+				+ (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, FRAME_DEPTH - 5);
+		g.drawString("Score: " + player1.getScore(), FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH + (PIECE_GAP * 2) + PIECE_SIZE + 15);
+		g.drawString("Score: " + player2.getScore(), FRAME_DISTANCE_FROM_LEFT_BORDER + (PIECE_GAP * 2) + PIECE_GAP
+				+ (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, FRAME_DEPTH + (PIECE_GAP * 2) + PIECE_SIZE + 15);
+		if(player1.getTurn()) {
+			g.setColor(Color.GREEN);
+		} else {
+			g.setColor(Color.RED);
+		}
+		g.fillRect(FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4),FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10,  TURN_SIGNAL_WIDTH, TURN_SIGNAL_HEIGHT);
+		
+		if(player2.getTurn()) {
+			g.setColor(Color.GREEN);
+		} else {
+			g.setColor(Color.RED);
+		}
+		g.fillRect((FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP + PIECE_SIZE) * 4))+((PIECE_GAP + PIECE_SIZE) * 7) + PIECE_GAP * 2,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10,  TURN_SIGNAL_WIDTH, TURN_SIGNAL_HEIGHT);
+		g.setColor(Color.BLACK);
+		g.drawString("Turn", FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4) + TURN_SIGNAL_WIDTH/3,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT/2) + (NORMAL_LETTER_FONT.getSize()/2) );
+		g.drawString("Turn", FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4)+ PIECE_GAP + ((PIECE_GAP +PIECE_SIZE) * 7)  + TURN_SIGNAL_WIDTH/3,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT/2) + (NORMAL_LETTER_FONT.getSize()/2) );
+		g.drawImage(gooseImage,548,525,this);
 	}
 
 	private void paintFrames(Graphics g) {
 
-		g.setColor(Color.magenta);
+		g.setColor(Color.CYAN);
 		g.fillRect(FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH,
 				PIECE_GAP + (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, (PIECE_GAP * 2) + PIECE_SIZE);
 		g.fillRect(
@@ -111,9 +149,9 @@ public class UI extends JPanel {
 
 	private void paintBoard(Graphics g) {
 
-		g.setColor(Color.white);
+		g.setColor(Color.GRAY);
 		g.fillRect(0, 0, 1000, 1000);
-		g.setFont(NORMAL_LETTER_FONT);
+		g.setFont(SMALL_LETTER_FONT);
 
 		for (int x = 0; x < 15; x++) { // x is x axis and y is y axis of the scrabble board
 			for (int y = 0; y < 15; y++) {
@@ -152,7 +190,7 @@ public class UI extends JPanel {
 						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x),
 								PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 						g.setColor(Color.black);
-						g.drawString("Double", PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x),
+						g.drawString("Double", PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x) ,
 								17 + ((PIECE_GAP + PIECE_SIZE) * y));
 						g.drawString("Letter", 5 + ((PIECE_GAP + PIECE_SIZE) * x), 25 + ((PIECE_GAP + PIECE_SIZE) * y));
 						break;
@@ -160,14 +198,15 @@ public class UI extends JPanel {
 						g.setColor(Color.pink);
 						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x),
 								PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
+						g.drawImage(starImage,PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x) ,PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE , this);
 						break;
 					default:
-						g.setColor(Color.gray);
+						g.setColor(Color.LIGHT_GRAY);
 						g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x),
 								PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), PIECE_SIZE, PIECE_SIZE);
 					}
 				} else {
-					g.setColor(Color.gray);
+					g.setColor(Color.LIGHT_GRAY);
 					g.fillRect(PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y),
 							PIECE_SIZE, PIECE_SIZE);
 				}

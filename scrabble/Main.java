@@ -161,6 +161,12 @@ public class Main {
 		
 		user_i.intialize_screen();
 		user_i.repaint();
+		
+		System.out.println("Please press x");
+		input.next();
+		
+		user_i.repaint();
+		
 		System.out.print("Frame:\n" + frame.toString());
 
 		// First Move
