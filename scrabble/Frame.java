@@ -1,5 +1,6 @@
 package scrabble;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -13,7 +14,7 @@ public class Frame {
 
 	public transient int FRAME_SIZE = 7;
 
-	private LinkedList<Tile> frame = new LinkedList<Tile>(); // linked list to store tile objects
+	private LinkedList<Tile> frame = new LinkedList<>(); // linked list to store tile objects
 
 	/**
 	 * Removes letter from frame
@@ -21,10 +22,10 @@ public class Frame {
 	 * @param c,tile object to be removed
 	 */
 	public void removeLetter(Tile... c) { // This function removes the tiles from the frame
-		for (int i = 0; i < c.length; i++) {
-			
-			if(checkLetters(c[i]))
-			frame.remove(c[i]);
+		for (Tile tile : c) {
+
+			if (checkLetters(tile))
+				frame.remove(tile);
 		}
 	}
 
@@ -33,13 +34,12 @@ public class Frame {
 	 * 
 	 * @param c,tile object to be checked
 	 * @return true,if letter is in frame
-	 * @return false, if letter is not in frame
 	 */
 
 	public boolean checkLetters(Tile c) { // This checks if the letters are avalaible or not returning a suitable
 												// boolean
-		for(int i = 0;i<frame.size();i++) {
-			if(frame.get(i).getLetter() == c.getLetter()) {
+		for (Tile tile : frame) {
+			if (tile.getLetter() == c.getLetter()) {
 				return true;
 			}
 		}
@@ -54,24 +54,21 @@ public class Frame {
 	 */
 
 	public boolean isEmpty() { // returns true if frame is empty
-		if (frame.isEmpty()) {
-			return true;
-		}
-		return false;
+		return frame.isEmpty();
 	}
 
 	@Override
 	public String toString() { // returns the string
-		String result = null;
-		for (int i = 0; i < frame.size(); i++) {
+		StringBuilder result = null;
+		for (Tile tile : frame) {
 			if (result == null) {
-				result = "" + frame.get(i).getLetter();
+				result = new StringBuilder("" + tile.getLetter());
 			} else {
-				result = result + ", " + frame.get(i).getLetter();
+				result.append(", ").append(tile.getLetter());
 			}
 		}
-		result = ("[ " + result + " ]");
-		return result;
+		result = new StringBuilder(("[ " + result + " ]"));
+		return result.toString();
 	}
 
 	/**
@@ -85,9 +82,7 @@ public class Frame {
 	public boolean fillFrame(Tile... t) {
 
 		if (t.length <= FRAME_SIZE - frame.size()) {
-			for (int i = 0; i < t.length; i++) {
-				frame.add(t[i]);
-			}
+			Collections.addAll(frame, t);
 			return true;
 		} else {
 			return false;
@@ -110,17 +105,10 @@ public class Frame {
 		}
 	}
 	
-	public Tile replaceTile(Tile old,Tile replacement) {
-		if(checkLetters(old) == true) {
-			old = replacement;
-		}
-		return replacement;
-	}
-
 	public Tile getTileFromChar(char letter) {
-		for (int i = 0; i < frame.size(); i++) {
-			if (frame.get(i).getLetter() == letter) {
-				return frame.get(i);
+		for (Tile tile : frame) {
+			if (tile.getLetter() == letter) {
+				return tile;
 			}
 		}
 		throw new IllegalArgumentException("Letter not found: getTileFromChar");
@@ -143,8 +131,17 @@ public class Frame {
 	 */
 
 	public void refill(Pool p) {
-		while (frame.size() < 7) {
+		while (frame.size() < 7 && !p.checkEmptyPool()) {
 			this.fillFrame(p.randomTile());
+		}
+		if(p.checkEmptyPool()){
+			System.out.println("Pool is empty.");
+		}
+	}
+
+	public void addTile(Tile tile){
+		if(frame.size() < 7) {
+			frame.add(tile);
 		}
 	}
 
