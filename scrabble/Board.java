@@ -6,11 +6,13 @@ public class Board {
 
 	private static Tile letterBoard[][];
 
-	private static HashMap<Integer, String> tilePoints;
+	private static HashMap<String, String> tilePoints;
 
 	private boolean firstMove;
 	
 	private int numTiles = 0;
+
+	public final int BOARD_SIZE = 15;
 	
 	
 
@@ -22,81 +24,81 @@ public class Board {
 
 	private void initBoardScores() {
 		numTiles = 0;
-		Board.tilePoints = new HashMap<Integer, String>();
+		Board.tilePoints = new HashMap<String, String>();
 		// Triple word
-		tilePoints.put(00, "TW");
-		tilePoints.put(70, "TW");
-		tilePoints.put(07, "TW");
-		tilePoints.put(14, "TW");  
-		tilePoints.put(140, "TW");
-		tilePoints.put(147, "TW");
-		tilePoints.put(714, "TW");
-		tilePoints.put(1414, "TW");
+		tilePoints.put("00", "TW");
+		tilePoints.put("70", "TW");
+		tilePoints.put("07", "TW");
+		tilePoints.put("014", "TW");
+		tilePoints.put("140", "TW");
+		tilePoints.put("147", "TW");
+		tilePoints.put("714", "TW");
+		tilePoints.put("1414", "TW");
 
 		// Double letter
-		tilePoints.put(51, "TL");
-		tilePoints.put(91, "TL");
-		tilePoints.put(15, "TL");
-		tilePoints.put(55, "TL");
-		tilePoints.put(95, "TL");
-		tilePoints.put(135, "TL");
-		tilePoints.put(19, "TL");
-		tilePoints.put(59, "TL");
-		tilePoints.put(99, "TL");
-		tilePoints.put(139, "TL");
-		tilePoints.put(513, "TL");
-		tilePoints.put(913, "TL");
+		tilePoints.put("51", "TL");
+		tilePoints.put("91", "TL");
+		tilePoints.put("15", "TL");
+		tilePoints.put("55", "TL");
+		tilePoints.put("95", "TL");
+		tilePoints.put("135", "TL");
+		tilePoints.put("19", "TL");
+		tilePoints.put("59", "TL");
+		tilePoints.put("99", "TL");
+		tilePoints.put("13", "TL");
+		tilePoints.put("513", "TL");
+		tilePoints.put("913", "TL");
 
 		// Double word
 		//tilePoints.put(11, "DW"); ERROR shouldnt be here
-		tilePoints.put(22, "DW");
-		tilePoints.put(33, "DW");
-		tilePoints.put(44, "DW");
-		tilePoints.put(113, "DW");
-		tilePoints.put(212, "DW");
-		tilePoints.put(311, "DW");
-		tilePoints.put(410, "DW");
-		tilePoints.put(131, "DW");
-		tilePoints.put(122, "DW");
-		tilePoints.put(113, "DW");
-		tilePoints.put(104, "DW");
-		tilePoints.put(1010, "DW");
-		tilePoints.put(1111, "DW");
-		tilePoints.put(1212, "DW");
-		tilePoints.put(1313, "DW");
+		tilePoints.put("22", "DW");
+		tilePoints.put("33", "DW");
+		tilePoints.put("44", "DW");
+		tilePoints.put("113", "DW");
+		tilePoints.put("212", "DW");
+		tilePoints.put("311", "DW");
+		tilePoints.put("410", "DW");
+		tilePoints.put("131", "DW");
+		tilePoints.put("122", "DW");
+		tilePoints.put("113", "DW");
+		tilePoints.put("104", "DW");
+		tilePoints.put("1010", "DW");
+		tilePoints.put("1111", "DW");
+		tilePoints.put("1212", "DW");
+		tilePoints.put("1313", "DW");
 
 		// Double letter
-		tilePoints.put(11, "DL");  //error testing
-		tilePoints.put(30, "DL");
+		tilePoints.put("11", "DL");  //error testing
+		tilePoints.put("30", "DL");
 		//tilePoints.put(110, "DL"); //error testing should be void?
-		tilePoints.put(62, "DL");
-		tilePoints.put(82, "DL");
-		tilePoints.put(03, "DL");
-		tilePoints.put(73, "DL");
-		tilePoints.put(143, "DL");
-		tilePoints.put(26, "DL");
-		tilePoints.put(66, "DL");
-		tilePoints.put(86, "DL");
-		tilePoints.put(126, "DL");
-		tilePoints.put(37, "DL");
-		tilePoints.put(117, "DL");
-		tilePoints.put(28, "DL");
-		tilePoints.put(68, "DL");
-		tilePoints.put(88, "DL");
-		tilePoints.put(128, "DL");
-		tilePoints.put(011, "DL");
-		tilePoints.put(711, "DL");
-		tilePoints.put(1411, "DL");
-		tilePoints.put(612, "DL");
-		tilePoints.put(812, "DL");
-		tilePoints.put(314, "DL");
-		tilePoints.put(1114, "DL");
+		tilePoints.put("62", "DL");
+		tilePoints.put("82", "DL");
+		tilePoints.put("03", "DL");
+		tilePoints.put("73", "DL");
+		tilePoints.put("143", "DL");
+		tilePoints.put("26", "DL");
+		tilePoints.put("66", "DL");
+		tilePoints.put("86", "DL");
+		tilePoints.put("126", "DL");
+		tilePoints.put("37", "DL");
+		tilePoints.put("117", "DL");
+		tilePoints.put("28", "DL");
+		tilePoints.put("68", "DL");
+		tilePoints.put("88", "DL");
+		tilePoints.put("128", "DL");
+		tilePoints.put("011", "DL");
+		tilePoints.put("711", "DL");
+		tilePoints.put("1411", "DL");
+		tilePoints.put("612", "DL");
+		tilePoints.put("812", "DL");
+		tilePoints.put("314", "DL");
+		tilePoints.put("1114", "DL");
 
 		// Middle
-		tilePoints.put(77, "*");
+		tilePoints.put("77", "*");
 	}
 
-	public String getSquareValue(int location) {
+	public String getSquareValue(String location) {
 		if (tilePoints.containsKey(location)) {
 			return tilePoints.get(location);
 		} else {
@@ -122,7 +124,7 @@ public class Board {
 				boardDisplay.append(" " + i + "        ");
 			}
 			for (int j = 0; j < 15; j++) {
-				int position = concatInt(i, j);
+				String position = concatInt(i, j);
 				if (letterBoard[i][j] != null) {
 					boardDisplay.append(letterBoard[i][j].getLetter() + "       ");
 				} else if (getSquareValue(position) != null) {
@@ -159,116 +161,33 @@ public class Board {
 				.print("Triple Word: '#'\tDouble Word: '$'\tTriple Letter: '+'\tDouble Letter: '^'\tMiddle: '*''\n\n");
 	}
 
-	public boolean placeTile(Move move) {
-		if (isMoveValid(move)) {
-			letterBoard[move.getRow()][move.getColumn()] = move.getTile();
+	public void placeTile(int row, int column, Tile chosenTile) {
+			letterBoard[row][column] = chosenTile;
 			numTiles++;
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	public int numTiles() {
 		return numTiles;
 	}
 
-	private boolean isMoveValid(Move move) {
-		if (move.valid && letterBoard[move.getRow()][move.getColumn()] == null) {
-			if (checkTouch(move.getRow(), move.getColumn())) {
-				return true;
-			} else if (move.getFirstMove()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean checkTouch(int x, int y) {
-		if (y == 0 && x == 0) {
-			for (int i = x ; i <= x + 1; i++) {
-				for (int j = y ; j <= y + 1; j++) {
-					System.out.println("i " + i + " j " + j);
-					if (letterBoard[i][j] != null) {
-						return true;
-					}
-				}
-			}
-		} 
-		else if (y == 14 && x == 14) {
-			for (int i = x-1 ; i <= x; i++) {
-				for (int j = y-1 ; j <= y; j++) {
-					if (letterBoard[i][j] != null) {
-						return true;
-					}
-				}
-			}
-		} 
-		else if (x == 0) {
-			for (int i = x; i <= x + 1; i++) {
-				for (int j = y - 1; j <= y + 1; j++) {
-					if (letterBoard[i][j] != null) {
-						return true;
-					}
-				}
-			}
-		}
-		else if (x == 14) {
-			for (int i = x - 1; i <=x; i++) {
-				for (int j = y - 1; j <= y + 1; j++) {
-					if (letterBoard[i][j] != null) {
-						return true;
-					}
-				}
-			}
-		}
-		else if (y == 0) {
-			for (int i = x - 1; i <= x + 1; i++) {
-				for (int j = y; j <= y + 1; j++) {
-					if (letterBoard[i][j] != null) {
-						return true;
-					}
-				}
-			}
-		}
-		else if (y == 14) {
-			for (int i = x - 1; i <= x + 1; i++) {
-				for (int j = y - 1; j <= y; j++) {
-					if (letterBoard[i][j] != null) {
-						return true;
-					}
-				}
-			}
-		}
-		else {
-		for(int i = x-1; i <= x+1; i++) {
-			for(int j = y-1; j <= y+1; j++) {
-				if(letterBoard[i][j] != null) {
-					return true;
-				}
-			}
-		}
-		return false;
-		}
-		return false;
-	}
-
-	public static int concatInt(int a, int b) { // concatenate integers rather than adding them
+	public static String concatInt(int a, int b) { // concatenate integers rather than adding them
 		String s = "" + a + b;
-		int pos = Integer.parseInt(s);
-		return pos;
+		return s;
 	}
 	
 	public char letterboardPos(int x,int y) {
 		return letterBoard[x][y].getLetter();
 	}
-	
-	
+
+	public static Tile[][] getLetterBoard() {
+		return letterBoard;
+	}
+
 	public Tile[][] getBoard(){
 		return letterBoard;
 	}
 	
-	public HashMap<Integer, String> getTilePoints() {
+	public HashMap<String, String> getTilePoints() {
 		return tilePoints;
 	}
 	
