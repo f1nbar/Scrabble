@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static Player intialisePlayer(Pool pool, Scanner input) {
+    private static Player initialisePlayer(Pool pool, Scanner input) {
         System.out.print("Enter player name: ");
         String name = input.nextLine();
         Player player = new Player(name);
@@ -15,6 +15,7 @@ public class Main {
     }
 
     private static void playerTurn(Player player, Board board, Scanner input, Pool pool) {
+        player.setTurn(true);
         System.out.println(player.getName() + "'s turn:");
         Move move = new Move(board, player.getFrame());
         boolean validMove = move.makeMove(input);
@@ -25,6 +26,7 @@ public class Main {
         } else{
             player.getFrame().refill(pool);
         }
+        player.setTurn(false);
     }
 
     // driver code
@@ -33,8 +35,8 @@ public class Main {
         Pool pool = new Pool();
         pool.fillPool();
         Board board = new Board();
-        Player playerOne = intialisePlayer(pool, in);
-        Player playerTwo = intialisePlayer(pool, in);
+        Player playerOne = initialisePlayer(pool, in);
+        Player playerTwo = initialisePlayer(pool, in);
 
         System.out.println(board);
         int turns = 0;
