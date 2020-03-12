@@ -1,8 +1,9 @@
 package scrabble;
 
-import java.util.*;
-
-import org.junit.runners.Parameterized.Parameter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Pool class which simulates the bag containing all 100 Scrabble tiles
