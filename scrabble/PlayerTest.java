@@ -1,8 +1,8 @@
 package scrabble;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
@@ -21,52 +21,38 @@ class PlayerTest {
 	}
 
 	@Test
-	public void testNameNumbers() throws Exception {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("Conor1");
-		});
+	public void testNameNumbers() {
+		assertThrows(IllegalArgumentException.class, () -> player.setName("Conor1"));
 	}
 
 	@Test
-	public void testNameSymbols() throws Exception {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("Conor$");
-		});
+	public void testNameSymbols() {
+		assertThrows(IllegalArgumentException.class, () -> player.setName("Conor$"));
 	}
 
 	@Test
-	public void testNameThree() throws Exception {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("Conor James Knowles");
-		});
+	public void testNameThree() {
+		assertThrows(IllegalArgumentException.class, () -> player.setName("Conor James Knowles"));
 	}
 
 	@Test
-	public void testNameSpaces() throws Exception {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName(" ");
-		});
+	public void testNameSpaces() {
+		assertThrows(IllegalArgumentException.class, () -> player.setName(" "));
 	}
 
 	@Test
-	public void testNameMultipleSpaces() throws Exception {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("    ");
-		});
+	public void testNameMultipleSpaces() {
+		assertThrows(IllegalArgumentException.class, () -> player.setName("    "));
 	}
 
 	@Test
-	public void testSecondNameNumbers() throws Exception {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("Conor 123");
-		});
+	public void testSecondNameNumbers() {
+		assertThrows(IllegalArgumentException.class, () -> player.setName("Conor 123"));
 	}
 
 	@Test
 	public void testNameEmpty() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.setName("");
-		});
+		assertThrows(IllegalArgumentException.class, () -> player.setName(""));
 	}
 
 	// Score tests
@@ -82,16 +68,12 @@ class PlayerTest {
 
 	@Test
 	public void testScoreNegative() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.increaseScore(-5);
-		});
+		assertThrows(IllegalArgumentException.class, () -> player.increaseScore(-5));
 	}
 
 	@Test
 	public void testScoreLarge() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			player.increaseScore(10000);
-		});
+		assertThrows(IllegalArgumentException.class, () -> player.increaseScore(10000));
 	}
 
 	// Reset method test
@@ -111,30 +93,20 @@ class PlayerTest {
 	@Test
 	public void testIsEmptyTrue() {
 		Frame frame = new Frame();
-		assertEquals(true, frame.isEmpty());
+		assertTrue(frame.isEmpty());
 	}
 
 	@Test
 	public void testIsEmptyFalse() {
 		Frame frame = new Frame();
 		frame.fillFrame(new Tile('X', 10));
-		assertEquals(false, frame.isEmpty());
-	}
-
-	@Test
-	public void testToStringFullarray() {
-		Frame frame = new Frame();
-		Tile tileOne = new Tile('X', 10);
-		Tile tileTwo = new Tile('Y', 6);
-		Tile tileThree = new Tile('Z', 3);
-		frame.fillFrame(tileOne, tileTwo, tileThree);
-		assertEquals("X,Y,Z", frame.toString());
+		assertFalse(frame.isEmpty());
 	}
 
 	@Test
 	public void testToStringEmptyArray() {
 		Frame frame = new Frame();
-		assertEquals(null, frame.toString());
+		assertNull(frame.toString());
 	}
 
 	@Test
@@ -142,7 +114,7 @@ class PlayerTest {
 		Frame frame = new Frame();
 		Tile tile = new Tile('X', 10);
 		frame.fillFrame(tile);
-		assertEquals('X', frame.toString());
+		assertEquals("X", frame.toString());
 	}
 
 	@Test
@@ -164,7 +136,7 @@ class PlayerTest {
 		Tile tile = new Tile('X', 10);
 		frame.fillFrame(tile);
 		frame.removeLetter(tile);
-		assertEquals(true, frame.isEmpty());
+		assertTrue(frame.isEmpty());
 	}
 
 	@Test
@@ -175,11 +147,11 @@ class PlayerTest {
 		Tile tileThree = new Tile('Z', 3);
 		frame.fillFrame(tileOne, tileTwo, tileThree);
 		frame.removeLetter(tileThree, tileOne, tileTwo);
-		assertEquals(true, frame.isEmpty());
+		assertTrue(frame.isEmpty());
 	}
 
 	@Test
-	public void testrefill() {
+	public void testRefill() {
 		Pool p = new Pool();
 		Frame frame = new Frame();
 		frame.refill(p);
@@ -193,7 +165,7 @@ class PlayerTest {
 		Frame frame = new Frame();
 		Tile tileOne = new Tile('X', 10);
 		frame.fillFrame(tileOne);
-		assertEquals(true, frame.checkLetters(tileOne));
+		assertTrue(frame.checkLetters(tileOne));
 	}
 
 
@@ -203,7 +175,7 @@ class PlayerTest {
 		Tile tileOne = new Tile('X', 10);
 		Tile tileTwo = new Tile('Y', 6);
 		frame.fillFrame(tileOne);
-		assertEquals(false, frame.checkLetters(tileTwo));
+		assertFalse(frame.checkLetters(tileTwo));
 	}
 
 	@Test
@@ -222,36 +194,36 @@ class PlayerTest {
 
 	/*-----Pool Test-----*/
 	@Test
-	public void poolFilled() throws Exception {
+	public void poolFilled() {
 		testPool.fillPool();
 		assertEquals(100, testPool.checkNumTiles());
 	}
 
 	@Test
-	public void poolNotEmpty() throws Exception {
+	public void poolNotEmpty() {
 		testPool.fillPool();
-		assertEquals(true, testPool.checkEmptyPool());
+		assertFalse(testPool.emptyPool());
 	}
 
 	@Test
-	public void poolEmpty() throws Exception {
-		assertEquals(false, testPool.checkEmptyPool());
+	public void poolEmpty() {
+		assertTrue(testPool.emptyPool());
 	}
 
 	@Test
-	public void valueCheck() throws Exception {
+	public void valueCheck() {
 		assertEquals(10, testPool.checkValue(testTileX));
 	}
 
 	@Test
-	public void removeTiles() throws Exception {
+	public void removeTiles() {
 		testPool.fillPool();
 		testPool.randomTile();
 		assertEquals(99, testPool.checkNumTiles());
 	}
 
 	@Test
-	public void poolReset() throws Exception {
+	public void poolReset() {
 		testPool.fillPool();
 		for (int i = 0; i < 10; i++) {
 			testPool.randomTile();
@@ -261,19 +233,18 @@ class PlayerTest {
 	}
 
 	@Test
-	public void removeAllTiles() throws Exception {
+	public void removeAllTiles() {
 		testPool.fillPool();
 		for (int i = 0; i < 100; i++) {
 			testPool.randomTile();
 		}
-		assertEquals(false, testPool.checkEmptyPool());
+		assertTrue(testPool.emptyPool());
 	}
 
 	@Test
-	public void getAndSetTile() throws Exception {
+	public void getAndSetTile() {
 		testTileX.setLetter('F');
 		testTileX.setScore(47);
 		assertEquals(47, testTileX.getScore());
 	}
-
 }
