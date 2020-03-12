@@ -146,7 +146,7 @@ public class UI extends JPanel {
 		g.drawImage(gooseImage,548,525,this);
 	
 		g.setColor(Color.DARK_GRAY);
-		if(player1.getTurn()) {
+		if(!player1.getTurn()) {
 			
 			g.fillRect(FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH,
 					PIECE_GAP + (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, (PIECE_GAP * 2) + PIECE_SIZE);

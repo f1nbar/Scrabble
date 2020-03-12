@@ -27,6 +27,7 @@ public class Main {
             player.getFrame().refill(pool);
         }
         player.setTurn(false);
+        userInterface.repaint();
     }
 
     // driver code
