@@ -256,6 +256,21 @@ public class UI extends JPanel {
 
 			}
 		}
+		for (int i = 0; i < letterBoard.length; i++) {
+			g.setFont(BIG_LETTER_FONT);
+			g.setColor(Color.white);
+			if (i <= 9) {
+				g.drawString(Integer.toString(i), 8, ((PIECE_GAP + PIECE_SIZE) * i) + 50);		// spacing for double digit letters is different so this compensates for it
+			} else {
+				g.drawString(Integer.toString(i), 0, ((PIECE_GAP + PIECE_SIZE) * i) + 50);
+			}
+			if (i <= 9) {
+				g.drawString(Integer.toString(i), ((PIECE_GAP + PIECE_SIZE) * i) + BOARD_X_CORD + 10, BOARD_Y_CORD - 2);	// spacing for double digit letters is different so this compensates for it
+			} else {
+				g.drawString(Integer.toString(i), ((PIECE_GAP + PIECE_SIZE) * i) + BOARD_X_CORD + 3, BOARD_Y_CORD - 2);
+			}
+			g.setFont(SMALL_LETTER_FONT);
+		}
 
 	}
 	
