@@ -14,15 +14,15 @@ public class Main {
         return player;
     }
 
-    private static void playerTurn(Player player, Board board, Scanner input, Pool pool) {
+    private static void playerTurn(Player player, Board board, Scanner input, Pool pool, UI userInterface) {
         player.setTurn(true);
         System.out.println(player.getName() + "'s turn:");
         Move move = new Move(board, player.getFrame());
-        boolean validMove = move.makeMove(input);
+        boolean validMove = move.makeMove(input, userInterface);
 
         if (!validMove) {
-            move.undoMove();
-            playerTurn(player, board, input, pool);
+            move.undoMove(userInterface);
+            playerTurn(player, board, input, pool, userInterface);
         } else{
             player.getFrame().refill(pool);
         }
@@ -38,15 +38,20 @@ public class Main {
         Player playerOne = initialisePlayer(pool, in);
         Player playerTwo = initialisePlayer(pool, in);
 
+        UI userInterface = new UI(board,playerOne,playerTwo, in);
+        userInterface.intialize_screen();
+        userInterface.repaint();
+
         System.out.println(board);
         int turns = 0;
         while (true) { //TODO: add end clause to game.
             if (turns % 2 == 0) {
-                playerTurn(playerOne, board, in, pool);
+                playerTurn(playerOne, board, in, pool, userInterface);
             } else {
-                playerTurn(playerTwo, board, in, pool);
+                playerTurn(playerTwo, board, in, pool, userInterface);
             }
             System.out.println(board);
+            userInterface.repaint();
             turns++;
         }
     }

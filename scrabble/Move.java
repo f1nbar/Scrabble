@@ -13,6 +13,7 @@ public class Move {
     private Frame playerFrame;
     private Board board;
 
+    // History arrays
     int[] previousRows = new int[7];
     int[] previousColumns = new int[7];
     Tile[] chosenTile = new Tile[7];
@@ -26,11 +27,12 @@ public class Move {
         this.playerFrame = playerFrame;
     }
 
-    //getters
+    /* getters */
     public static int getMovesMade() {
         return movesMade;
     }
 
+    /* input getters */
     private int getRowInput(Scanner in) {
         int row;
         System.out.print("Please enter row: ");
@@ -66,12 +68,25 @@ public class Move {
         return playerFrame.getTileFromChar(letter);
     }
 
+    /* move validation */
     private boolean isPlacementValid(int row, int column) {
         if (row < 0 || row > 15 || column < 0 || column > 15) {
             ERROR = "Co-ordinates are out of bounds.";
             return false;
         }
         //Connection
+        if (!findConnection(row, column)) {
+            return false;
+        }
+
+        if (board.getBoard()[row][column] != null) {
+            ERROR = "Cannot place a tile on a space already containing a tile.";
+            return false;
+        }
+        return true;
+    }
+
+    private boolean findConnection(int row, int column) {
         if (tileCounter != 1) {
             int boxTop = Math.max(row - 1, 0);
             int boxBottom = Math.min(row + 1, board.BOARD_SIZE - 1);
@@ -88,17 +103,14 @@ public class Move {
             }
             if (!foundConnection) {
                 ERROR = "Cannot place a tile not connecting to any other tiles.";
-                return false;
             }
+            return foundConnection;
         }
-        if (board.getBoard()[row][column] != null) {
-            ERROR = "Cannot place a tile on a space already containing a tile.";
-            return false;
-        }
-        return true;
+        return true; // automatically true if it is the first tile being placed.
     }
 
-    public boolean makeMove(Scanner in) {
+    /* make move driver */
+    public boolean makeMove(Scanner in, UI userInterface) {
         boolean moveMade = false;
 
         final int THIRD_PLACEMENT = 3; // for ease of reading
@@ -108,6 +120,7 @@ public class Move {
             int row;
             int column;
             boolean undo = false;
+            boolean validPlacement;
             System.out.print("Frame: " + playerFrame.toString());
 
             chosenTile[tileCounter++] = getTileInput(in);
@@ -135,14 +148,17 @@ public class Move {
                 }
             }
 
-            if (isPlacementValid(row, column)) {
+            validPlacement = isPlacementValid(row, column);
+            if (validPlacement) {
                 board.placeTile(row, column, chosenTile[tileCounter - 1]);
                 playerFrame.removeLetter(chosenTile[tileCounter - 1]);
+                userInterface.repaint();
             } else {
                 System.out.println(ERROR);
+                chosenTile[tileCounter] = null; // remove invalid move from history
+                tileCounter--;
             }
 
-            System.out.println(board);
             // Break out
             System.out.println("Type: 'exit' to finish your turn, or 'undo' to undo your last placement. Press any other key to continue.");
             String playerChoice = in.next();
@@ -150,7 +166,12 @@ public class Move {
                 moveMade = true;
                 movesMade++;
             } else if (playerChoice.toLowerCase().contentEquals("undo")) {
-                undoPlace(chosenTile, tileCounter, row, column);
+                if (validPlacement) { // i.e if move is valid, undo current move, otherwise undo last valid move
+                    undoPlace(chosenTile, tileCounter, row, column, userInterface);
+                } else {
+                    undoPlace(chosenTile, tileCounter, previousRows[previousCounter - 1], previousColumns[previousCounter - 1], userInterface);
+                }
+                System.out.println("Previous row: " + previousRows[previousCounter] + " Previous column: " + previousColumns[previousCounter]);
                 undo = true;
                 tileCounter--;
             }
@@ -159,26 +180,30 @@ public class Move {
                 ERROR = "First move has to intersect middle tile.";
                 return false;
             }
-            if (!undo) {
+            if (!undo || validPlacement) { // undo check so that the undid move is not added into memory, validPlacement check to ensure that the invalid move is not added into memory.
+                System.out.println("REACHED HERE");
                 previousRows[previousCounter] = row;
                 previousColumns[previousCounter++] = column;
             }
-            System.out.println("Tile Counter:" + tileCounter + " previousCounter: " + previousCounter);
+            System.out.println("Previous row: " + previousRows[previousCounter - 1] + " Previous column: " + previousColumns[previousCounter - 1]);
         }
 
         return true;
     }
 
-    private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column) {
+    /* undo move driver */
+    private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column, UI userInterface) {
         int workingTile = tileCounter - 1;
+        System.out.println("Undo place: " + chosenTile[workingTile].getLetter() + " from " + row + " " + column);
         playerFrame.addTile(chosenTile[workingTile]);
         board.removeTile(row, column);
         chosenTile[workingTile] = null;
+        userInterface.repaint();
     }
 
-    public void undoMove() {
+    public void undoMove(UI userInterface) {
         while (tileCounter != 0) {
-            undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1]);
+            undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1], userInterface);
             previousCounter--;
         }
     }
