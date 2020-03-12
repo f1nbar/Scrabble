@@ -198,9 +198,9 @@ public class UI extends JPanel {
 
 		for (int x = 0; x < 15; x++) { // x is x axis and y is y axis of the scrabble board
 			for (int y = 0; y < 15; y++) {
-				String position = Board.concatInt(x, y);
-				if (letterBoard[x][y] != null) {
-					paintTile(g, PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), letterBoard[x][y]);
+				String position = Board.concatInt(y, x);
+				if (letterBoard[y][x] != null) {
+					paintTile(g, PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * x), PIECE_GAP + ((PIECE_GAP + PIECE_SIZE) * y), letterBoard[y][x]);
 				} else if (board.getSquareValue(position) != null) {
 					switch (board.getSquareValue(position)) {
 					case "TW":
