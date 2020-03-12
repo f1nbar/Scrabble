@@ -17,7 +17,7 @@ public class Pool {
 	// create a Hashmap for pool, using the tile letter as a key and number of tiles
 	// as the value
 
-	static HashMap<Tile, Integer> letters = new HashMap<Tile, Integer>();
+	static HashMap<Tile, Integer> letters = new HashMap<>();
 
 	int sum;
 	// creating tile objects with letter and points per tile
@@ -88,24 +88,18 @@ public class Pool {
 	/**
 	 * Checks if the pool has any tiles or not
 	 * 
-	 * @return false if the pool is empty
-	 * @return true if pool isn't empty
+	 * @return true if the pool is empty
 	 */
-	public boolean checkEmptyPool() {
-		if (checkNumTiles() == 0) {
-			return false;
-		}
+	public boolean emptyPool() {
 		// TODO think about what should happen when pool is emptied
-		else {
-			return true;
-		}
+		return checkNumTiles() == 0;
 	}
 
 	/**
 	 * Reinitialize Hashmap and then fill it, thus resetting the pool
 	 */
 	public void resetPool() {
-		HashMap<Tile, Integer> letters = new HashMap<Tile, Integer>();
+		HashMap<Tile, Integer> letters = new HashMap<>();
 		fillPool();
 	}
 
@@ -148,7 +142,7 @@ public class Pool {
 	public Tile randomTile() {
 		// converts the letters hashmap in order to randomly select by the key, in this
 		// case the letters
-		List<Tile> keys = new ArrayList<Tile>(letters.keySet());
+		List<Tile> keys = new ArrayList<>(letters.keySet());
 		// creating a tile to temporarily store the randomly selected tile and randomly
 		// chooses a Tile from the list keys
 		Tile selected = keys.get(new Random().nextInt(keys.size()));

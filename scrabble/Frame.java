@@ -131,10 +131,10 @@ public class Frame {
 	 */
 
 	public void refill(Pool p) {
-		while (frame.size() < 7 && !p.checkEmptyPool()) {
+		while (frame.size() < 7 && !p.emptyPool()) {
 			this.fillFrame(p.randomTile());
 		}
-		if(p.checkEmptyPool()){
+		if(p.emptyPool()){
 			System.out.println("Pool is empty.");
 		}
 	}
