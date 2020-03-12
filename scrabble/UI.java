@@ -39,7 +39,25 @@ public class UI extends JPanel {
 
 	private int NORMAL_LETTER_FONT_PIECE_TEXT_OFFSET_Y = 29; // The Difference between The y Cordinate of the Piece and
 																// they cordinate of the String on the piece
+	
+	int PIECE_SIZE = 34;										//Dimensions of Square Piece
+	int PIECE_GAP = 2;											//Gap between Pieces
+	int FRAME_DEPTH = 603; // Distance Frames are down the screen	//Y value of Player's Frames
+	Font SMALL_LETTER_FONT = new Font("San seif", Font.BOLD, 10);
+	Font NORMAL_LETTER_FONT = new Font("San seif", Font.BOLD, 15);
+	Font BIG_LETTER_FONT = new Font("San seif", Font.BOLD, 22);
+	Image starImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Star.png")).getImage();	//Resources
+	Image gooseImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Goose.png")).getImage();
+	int FRAME_DISTANCE_FROM_LEFT_BORDER = 15;					
+	int BOARD_X_CORD = 28;										//Coordinates of Scrabble Board 
+	int BOARD_Y_CORD = 28;
+	int HELP_BOARD_POSITION_X = 140;							//Help Board Coordinates 
+	int HELP_BOARD_POSITION_Y = 130;
+	int HELP_BOARD_LENGTH = 400;								//Help Board Dimensions
+	int HELP_BOARD_WIDTH = 300;
 
+	
+	
 	public UI(Board board, Player player1, Player player2, Scanner in) {
 
 		this.board = board;
@@ -50,10 +68,6 @@ public class UI extends JPanel {
 
 	}
 
-	int HELP_BOARD_POSITION_X = 140;
-	int HELP_BOARD_POSITION_Y = 130;
-	int HELP_BOARD_LENGTH = 400;
-	int HELP_BOARD_WIDTH = 300;
 
 	public void paintHelpBoard(Graphics g) {
 		int FONT_MARGIN = 50;
@@ -80,24 +94,13 @@ public class UI extends JPanel {
 
 	}
 
-	int PIECE_SIZE = 34;
-	int PIECE_GAP = 2;
-	int FRAME_DEPTH = 603; // Distance Frames are down the screen
-	Font SMALL_LETTER_FONT = new Font("San seif", Font.BOLD, 10);
-	Font NORMAL_LETTER_FONT = new Font("San seif", Font.BOLD, 15);
-	Font BIG_LETTER_FONT = new Font("San seif", Font.BOLD, 22);
-	Image starImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Star.png")).getImage();
-	Image gooseImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Goose.png")).getImage();
-	int FRAME_DISTANCE_FROM_LEFT_BORDER = 15;
-	int BOARD_X_CORD = 28;
-	int BOARD_Y_CORD = 28;
 
 	public void paint(Graphics g) {
 		super.paint(g);
 		paintBoard(g);
 		paintFrames(g);
 		paintInformationBoard(g);
-		if (helpMenuState)
+		if (helpMenuState)				//Only paints Help Board when the Help Function is Called
 			paintHelpBoard(g);
 	}
 
@@ -109,7 +112,7 @@ public class UI extends JPanel {
 		g.setColor(Color.black);
 		g.setFont(BIG_LETTER_FONT);
 		if (tile.getLetter() != 'I') {
-			g.drawString(Character.toString(tile.getLetter()), x + BIG_LETTER_FONT_PIECE_TEXT_OFFSET_X,
+			g.drawString(Character.toString(tile.getLetter()), x + BIG_LETTER_FONT_PIECE_TEXT_OFFSET_X,		// This accounts for the spacing of I as it is very far left compared ot the other letters
 					y + BIG_LETTER_FONT_PIECE_TEXT_OFFSET_Y);
 		} else {
 			g.drawString(Character.toString(tile.getLetter()), x + 5 + BIG_LETTER_FONT_PIECE_TEXT_OFFSET_X,
@@ -124,18 +127,22 @@ public class UI extends JPanel {
 
 		int TURN_SIGNAL_WIDTH = 100;
 		int TURN_SIGNAL_HEIGHT = 30;
-
+		
+		
+		// paints Players names above frame
 		g.setColor(Color.BLACK);
 		g.setFont(NORMAL_LETTER_FONT);
 		g.drawString(player1.getName() + "'s Frame", FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH - 5);
 		g.drawString(player2.getName() + "'s Frame", FRAME_DISTANCE_FROM_LEFT_BORDER + (PIECE_GAP * 2) + PIECE_GAP
 				+ (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, FRAME_DEPTH - 5);
+		//paints players core underneath frame
 		g.drawString("Score: " + player1.getScore(), FRAME_DISTANCE_FROM_LEFT_BORDER,
 				FRAME_DEPTH + (PIECE_GAP * 2) + PIECE_SIZE + 15);
 		g.drawString("Score: " + player2.getScore(),
 				FRAME_DISTANCE_FROM_LEFT_BORDER + (PIECE_GAP * 2) + PIECE_GAP
 						+ (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE,
 				FRAME_DEPTH + (PIECE_GAP * 2) + PIECE_SIZE + 15);
+		//paints turn signals either green(if its their turn) or red (not their turn);
 		if (player1.getTurn()) {
 			g.setColor(Color.GREEN);
 		} else {
@@ -162,8 +169,11 @@ public class UI extends JPanel {
 						+ ((PIECE_GAP + PIECE_SIZE) * 7) + TURN_SIGNAL_WIDTH / 3,
 				FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT / 2)
 						+ (NORMAL_LETTER_FONT.getSize() / 2));
+		//paints goose
 		g.drawImage(gooseImage, 566, 553, this);
 
+		
+		//paints cover to hide other players pieces
 		g.setColor(Color.DARK_GRAY);
 		if (!player1.getTurn()) {
 
@@ -283,22 +293,8 @@ public class UI extends JPanel {
 
 			}
 		}
-		for (int i = 0; i < letterBoard.length; i++) {
-			g.setFont(BIG_LETTER_FONT);
-			g.setColor(Color.white);
-			if (i <= 9) {
-				g.drawString(Integer.toString(i), 8, ((PIECE_GAP + PIECE_SIZE) * i) + 50);		// spacing for double digit letters is different so this compensates for it
-			} else {
-				g.drawString(Integer.toString(i), 0, ((PIECE_GAP + PIECE_SIZE) * i) + 50);
-			}
-			if (i <= 9) {
-				g.drawString(Integer.toString(i), ((PIECE_GAP + PIECE_SIZE) * i) + BOARD_X_CORD + 10, BOARD_Y_CORD - 2);	// spacing for double digit letters is different so this compensates for it
-			} else {
-				g.drawString(Integer.toString(i), ((PIECE_GAP + PIECE_SIZE) * i) + BOARD_X_CORD + 3, BOARD_Y_CORD - 2);
-			}
-			g.setFont(SMALL_LETTER_FONT);
-		}
 
+		//paints numbers for coordinates
 		for (int i = 0; i < letterBoard.length; i++) {
 			g.setFont(BIG_LETTER_FONT);
 			g.setColor(Color.white);
@@ -317,6 +313,7 @@ public class UI extends JPanel {
 
 	}
 
+	//Takes input from user
 	public void systemInput(Scanner input) throws InterruptedException {
 
 		String command = input.next();
