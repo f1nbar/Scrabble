@@ -83,6 +83,7 @@ public class Player {
 	public boolean getTurn() {
 		return turn;
 	}
+  
 	public void setTurn(boolean turn){
 		this.turn = turn;
 	}

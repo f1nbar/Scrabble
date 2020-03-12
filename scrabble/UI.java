@@ -2,12 +2,16 @@ package scrabble;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,6 +24,7 @@ public class UI extends JPanel {
 	private Player player2;
 	private Tile[][] letterBoard;
 	private JFrame f = new JFrame("Scrabble");
+	private boolean helpMenuState = false;
 
 	private Scanner in;
 	
@@ -39,7 +44,28 @@ public class UI extends JPanel {
 		this.player2 = player2;
 		this.in = in;
 		this.letterBoard = board.getBoard();
+		
 
+	}
+	
+	
+	int HELP_BOARD_POSITION_X = 140;
+	int HELP_BOARD_POSITION_Y = 130;
+	int HELP_BOARD_LENGTH = 400;
+	int HELP_BOARD_WIDTH = 300;
+	
+	public void paintHelpBoard(Graphics g) {
+		int FONT_MARGIN = 50;
+		
+		g.setColor(Color.magenta);
+		g.fillRect(HELP_BOARD_POSITION_X,HELP_BOARD_POSITION_Y	, HELP_BOARD_WIDTH,HELP_BOARD_LENGTH );
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(HELP_BOARD_POSITION_X+PIECE_GAP, HELP_BOARD_POSITION_Y +PIECE_GAP, HELP_BOARD_WIDTH-(PIECE_GAP*2), HELP_BOARD_LENGTH-(PIECE_GAP*2));
+		g.setColor(Color.black);
+		g.setFont(BIG_LETTER_FONT);
+		g.drawString("Help Menu", HELP_BOARD_POSITION_X + 100, HELP_BOARD_POSITION_Y + 20);
+
+	
 	}
 
 	public void intialize_screen() {
@@ -68,6 +94,8 @@ public class UI extends JPanel {
 		paintBoard(g);
 		paintFrames(g);
 		paintInformationBoard(g);
+		if(helpMenuState)
+		paintHelpBoard(g);
 	}
 	
 	private void paintTile(Graphics g,int x,int y,Tile tile) {		//given the x and y cords of a tile on the board it can print the tile onto the screen
@@ -83,8 +111,7 @@ public class UI extends JPanel {
 		}
 		g.setFont(SMALL_LETTER_FONT);
 		g.drawString(Integer.toString(tile.getScore()),x + NORMAL_LETTER_FONT_PIECE_TEXT_OFFSET_X,y +NORMAL_LETTER_FONT_PIECE_TEXT_OFFSET_Y);
-	}
-	
+	}	
 	
 	private void paintInformationBoard(Graphics g) {
 		
@@ -117,6 +144,22 @@ public class UI extends JPanel {
 		g.drawString("Turn", FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4) + TURN_SIGNAL_WIDTH/3,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT/2) + (NORMAL_LETTER_FONT.getSize()/2) );
 		g.drawString("Turn", FRAME_DISTANCE_FROM_LEFT_BORDER + ((PIECE_GAP +PIECE_SIZE) * 4)+ PIECE_GAP + ((PIECE_GAP +PIECE_SIZE) * 7)  + TURN_SIGNAL_WIDTH/3,FRAME_DEPTH + (PIECE_GAP * 2) + (PIECE_SIZE) + 10 + (TURN_SIGNAL_HEIGHT/2) + (NORMAL_LETTER_FONT.getSize()/2) );
 		g.drawImage(gooseImage,548,525,this);
+	
+		g.setColor(Color.DARK_GRAY);
+		if(player1.getTurn()) {
+			
+			g.fillRect(FRAME_DISTANCE_FROM_LEFT_BORDER, FRAME_DEPTH,
+					PIECE_GAP + (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE, (PIECE_GAP * 2) + PIECE_SIZE);
+			
+		} else {
+			g.fillRect(
+					FRAME_DISTANCE_FROM_LEFT_BORDER + (PIECE_GAP * 2) + PIECE_GAP
+							+ (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE,
+					FRAME_DEPTH, PIECE_GAP + (PIECE_GAP + PIECE_SIZE) * player1.getFrame().FRAME_SIZE,
+					(PIECE_GAP * 2) + PIECE_SIZE);
+		}
+		
+		
 	}
 
 	private void paintFrames(Graphics g) {
@@ -214,6 +257,29 @@ public class UI extends JPanel {
 			}
 		}
 
+	}
+	
+	public void systemInput(Scanner input) throws InterruptedException {
+		
+		String command = input.next();
+		
+		if(command.contains("QUIT")) {
+			System.exit(0);
+		}
+		
+		if(command.contains("PASS")) {
+			//TODO PLAYER PASSES TURN 
+		}
+		
+		if(command.contains("HELP")) {
+			helpMenuState = true;
+			repaint();
+			TimeUnit.SECONDS.sleep(30);
+			helpMenuState = false;
+			repaint();
+		}
+		
+		
 	}
 
 }
