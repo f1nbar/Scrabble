@@ -40,7 +40,6 @@ public class Main {
         Player playerTwo = initialisePlayer(pool, in);
 
         UI userInterface = new UI(board,playerOne,playerTwo, in);
-        userInterface.intialize_screen();
         userInterface.repaint();
 
         System.out.println(board);
