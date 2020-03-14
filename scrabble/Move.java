@@ -77,11 +77,17 @@ public class Move {
 		Tile remove = playerFrame.getTileFromChar('_');
 		playerFrame.removeLetter(remove);
 		char letter = Character.toUpperCase(in.next(".").charAt(0));
+		if(!(Character.isLetter(letter))){
+			System.out.println("Enter a valid character in the alphabet!");
+			chooseBlank(in);
+		}
 		Tile add = new Tile(letter, 0);
 		playerFrame.addTile(add);
 
 		return letter;
 	}
+	
+
 
 	/* move validation */
 	private boolean isPlacementValid(int row, int column) {
