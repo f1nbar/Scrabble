@@ -172,39 +172,8 @@ public class Board {
         return "" + a + b;
     }
 
-    public char letterboardPos(int x, int y) {
-        return letterBoard[x][y].getLetter();
-    }
-
     public Tile[][] getBoard() {
         return letterBoard;
     }
-
-    public void setBoard(Tile[][] newBoard) {
-        this.letterBoard = newBoard.clone();
-    }
-
-    public HashMap<String, String> getTilePoints() {
-        return tilePoints;
-    }
-
-    int counterx = 0;
-    int countery = 0;
-
-    public void setLetter(Tile tile) {
-        if (counterx > 10) {
-            counterx = 0;
-            countery++;
-        }
-
-        if (countery > 10) {
-            countery = 0;
-        } else {
-            letterBoard[counterx][countery] = tile;
-            counterx++;
-        }
-    }
-
-
 }
 

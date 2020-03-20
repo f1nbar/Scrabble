@@ -1,60 +1,29 @@
 package scrabble;
 
-import java.util.Scanner;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application{
 
-    private static Player initialisePlayer(Pool pool, Scanner input) {
-        System.out.print("Enter player name: ");
-        String name = input.nextLine();
-        Player player = new Player(name);
-        while (player.getFrame().frameSize() != player.getFrame().FRAME_SIZE) {
-            player.getFrame().fillFrame(pool.randomTile());
-        }
-        return player;
-    }
+    public static Scrabble scrabble; // variable holding scrabble game object
 
-    private static void playerTurn(Player player, Board board, Scanner input, Pool pool, UI userInterface) {
-        player.setTurn(true);
-        System.out.println(player.getName() + "'s turn:");
-        Move move = new Move(board, player.getFrame());
-        boolean validMove = move.makeMove(input, userInterface);
-
-        if (!validMove) {
-            move.undoMove(userInterface);
-            playerTurn(player, board, input, pool, userInterface);
-        } else{
-            player.getFrame().refill(pool);
-        }
-        player.setTurn(false);
-        userInterface.repaint();
-    }
-
-    // driver code
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        Pool pool = new Pool();
-        pool.fillPool();
-        Board board = new Board();
-        Player playerOne = initialisePlayer(pool, in);
-        Player playerTwo = initialisePlayer(pool, in);
-
-        UI userInterface = new UI(board,playerOne,playerTwo, in);
-        userInterface.intialize_screen();
-        userInterface.repaint();
-
-        System.out.println(board);
-        int turns = 0;
-        while (true) { //TODO: add end clause to game.
-            if (turns % 2 == 0) {
-                playerTurn(playerOne, board, in, pool, userInterface);
-            } else {
-                playerTurn(playerTwo, board, in, pool, userInterface);
-            }
-            System.out.println(board);
-            userInterface.repaint();
-            turns++;
-        }
+        scrabble = new Scrabble();
+        launch(args);
+        scrabble.runGame();
     }
 
+    @Override
+    public void start(Stage primaryStage) {
+        GridPane board = scrabble.getUi().boardDisplay();
+        HBox frame = scrabble.getUi().frameDisplay();
+        VBox screen = new VBox();
+        screen.getChildren().addAll(board, frame);
+        primaryStage.setScene(new Scene(screen, 1000, 1000));
+        primaryStage.show();
+    }
 }

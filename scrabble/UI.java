@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -43,9 +42,9 @@ public class UI extends JPanel {
 	int PIECE_SIZE = 34;										//Dimensions of Square Piece
 	int PIECE_GAP = 2;											//Gap between Pieces
 	int FRAME_DEPTH = 603; // Distance Frames are down the screen	//Y value of Player's Frames
-	Font SMALL_LETTER_FONT = new Font("San seif", Font.BOLD, 10);
-	Font NORMAL_LETTER_FONT = new Font("San seif", Font.BOLD, 15);
-	Font BIG_LETTER_FONT = new Font("San seif", Font.BOLD, 22);
+	Font SMALL_LETTER_FONT = new Font("san serif", Font.BOLD, 10);
+	Font NORMAL_LETTER_FONT = new Font("san serif", Font.BOLD, 15);
+	Font BIG_LETTER_FONT = new Font("san serif", Font.BOLD, 22);
 	Image starImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Star.png")).getImage();	//Resources
 	Image gooseImage = new ImageIcon(ClassLoader.getSystemResource("scrabble\\Goose.png")).getImage();
 	int FRAME_DISTANCE_FROM_LEFT_BORDER = 15;					

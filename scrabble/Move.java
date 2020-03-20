@@ -9,6 +9,7 @@ public class Move {
     public static final int NEUTRAL_DIRECTION = 0;
     public static final int HORIZONTAL = 1;
     public static final int VERTICAL = 2;
+    private int direction;
 
     private Frame playerFrame;
     private Board board;
@@ -110,12 +111,12 @@ public class Move {
     }
 
     /* make move driver */
-    public boolean makeMove(Scanner in, UI userInterface) {
+    public boolean makeMove(Scanner in) {
         boolean moveMade = false;
 
         final int THIRD_PLACEMENT = 3; // for ease of reading
 
-        int direction = NEUTRAL_DIRECTION;
+        direction = NEUTRAL_DIRECTION;
         while (!moveMade) {
             int row;
             int column;
@@ -152,7 +153,6 @@ public class Move {
             if (validPlacement) {
                 board.placeTile(row, column, chosenTile[tileCounter - 1]);
                 playerFrame.removeLetter(chosenTile[tileCounter - 1]);
-                userInterface.repaint();
             } else {
                 System.out.println(ERROR);
                 chosenTile[tileCounter] = null; // remove invalid move from history
@@ -167,9 +167,9 @@ public class Move {
                 movesMade++;
             } else if (playerChoice.toLowerCase().contentEquals("undo")) {
                 if (validPlacement) { // i.e if move is valid, undo current move, otherwise undo last valid move
-                    undoPlace(chosenTile, tileCounter, row, column, userInterface);
+                    undoPlace(chosenTile, tileCounter, row, column);
                 } else {
-                    undoPlace(chosenTile, tileCounter, previousRows[previousCounter - 1], previousColumns[previousCounter - 1], userInterface);
+                    undoPlace(chosenTile, tileCounter, previousRows[previousCounter - 1], previousColumns[previousCounter - 1]);
                 }
                 System.out.println("Previous row: " + previousRows[previousCounter] + " Previous column: " + previousColumns[previousCounter]);
                 undo = true;
@@ -192,19 +192,30 @@ public class Move {
     }
 
     /* undo move driver */
-    private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column, UI userInterface) {
+    private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column) {
         int workingTile = tileCounter - 1;
         System.out.println("Undo place: " + chosenTile[workingTile].getLetter() + " from " + row + " " + column);
         playerFrame.addTile(chosenTile[workingTile]);
         board.removeTile(row, column);
         chosenTile[workingTile] = null;
-        userInterface.repaint();
     }
 
-    public void undoMove(UI userInterface) {
+    public void undoMove() {
         while (tileCounter != 0) {
-            undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1], userInterface);
+            undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1]);
             previousCounter--;
         }
+    }
+
+    /* Scoring */
+    public int calculateScore(){
+        int score = 0;
+        for(Tile t: chosenTile){
+            score += t.getScore();
+        }
+        //for()
+        //TODO connecting tiles score
+        //TODO multipliers
+        return 1;
     }
 }

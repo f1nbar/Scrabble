@@ -49,6 +49,10 @@ public class Pool {
 	private static Tile Z = new Tile('Z', 10);
 	private static Tile Blank = new Tile('_', 0);
 
+	public Pool(){
+		this.fillPool();
+	}
+
 	/**
 	 * Fills the letters Hashmap with Object tile as the key and their quantity as
 	 * the value

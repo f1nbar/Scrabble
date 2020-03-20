@@ -145,4 +145,7 @@ public class Frame {
 		}
 	}
 
+	public LinkedList<Tile> getFrame(){
+		return frame;
+	}
 }
