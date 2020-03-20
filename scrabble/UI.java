@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class UI extends JPanel {
+public class UI extends JPanel  {
 
 	private Board board;
 	private Player player1;
@@ -64,6 +64,7 @@ public class UI extends JPanel {
 		this.player2 = player2;
 		this.in = in;
 		this.letterBoard = board.getBoard();
+		intializeScreen();
 
 	}
 
@@ -82,7 +83,7 @@ public class UI extends JPanel {
 
 	}
 
-	public void intialize_screen() {
+	public void intializeScreen() {
 
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setBackground(Color.BLACK);

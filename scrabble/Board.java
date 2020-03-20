@@ -25,74 +25,75 @@ public class Board {
         numTiles = 0;
         Board.tilePoints = new HashMap<>();
         // Triple word
-        tilePoints.put("00", "TW");
-        tilePoints.put("70", "TW");
-        tilePoints.put("07", "TW");
-        tilePoints.put("014", "TW");
-        tilePoints.put("140", "TW");
-        tilePoints.put("147", "TW");
-        tilePoints.put("714", "TW");
-        tilePoints.put("1414", "TW");
+        tilePoints.put("0 0", "TW");
+        tilePoints.put("7 0", "TW");
+        tilePoints.put("0 7", "TW");
+        tilePoints.put("0 14", "TW");
+        tilePoints.put("14 0", "TW");
+        tilePoints.put("14 7", "TW");
+        tilePoints.put("7 14", "TW");
+        tilePoints.put("14 14", "TW");
 
-        // Double letter
-        tilePoints.put("51", "TL");
-        tilePoints.put("91", "TL");
-        tilePoints.put("15", "TL");
-        tilePoints.put("55", "TL");
-        tilePoints.put("95", "TL");
-        tilePoints.put("135", "TL");
-        tilePoints.put("19", "TL");
-        tilePoints.put("59", "TL");
-        tilePoints.put("99", "TL");
-        tilePoints.put("13", "TL");
-        tilePoints.put("513", "TL");
-        tilePoints.put("913", "TL");
+        // Triple Letter
+        tilePoints.put("5 1", "TL");
+        tilePoints.put("9 1", "TL");
+        tilePoints.put("1 5", "TL");
+        tilePoints.put("5 5", "TL");
+        tilePoints.put("9 5", "TL");
+        tilePoints.put("13 5", "TL");
+        tilePoints.put("1 9", "TL");
+        tilePoints.put("5 9", "TL");
+        tilePoints.put("9 9", "TL");
+        tilePoints.put("13 9", "TL");
+        tilePoints.put("5 13", "TL");
+        tilePoints.put("9 13", "TL");
 
         // Double word
-        //tilePoints.put(11, "DW"); ERROR shouldnt be here
-        tilePoints.put("22", "DW");
-        tilePoints.put("33", "DW");
-        tilePoints.put("44", "DW");
-        tilePoints.put("113", "DW");
-        tilePoints.put("212", "DW");
-        tilePoints.put("311", "DW");
-        tilePoints.put("410", "DW");
-        tilePoints.put("131", "DW");
-        tilePoints.put("122", "DW");
-        tilePoints.put("104", "DW");
-        tilePoints.put("1010", "DW");
-        tilePoints.put("1111", "DW");
-        tilePoints.put("1212", "DW");
-        tilePoints.put("1313", "DW");
+        tilePoints.put("1 1", "DW");
+        tilePoints.put("2 2", "DW");
+        tilePoints.put("3 3", "DW");
+        tilePoints.put("4 4", "DW");
+        tilePoints.put("1 13", "DW");
+        tilePoints.put("11 3", "DW");
+        tilePoints.put("2 12", "DW");
+        tilePoints.put("3 11", "DW");
+        tilePoints.put("4 10", "DW");
+        tilePoints.put("13 1", "DW");
+        tilePoints.put("12 2", "DW");
+        tilePoints.put("10 4", "DW");
+        tilePoints.put("10 10", "DW");
+        tilePoints.put("11 11", "DW");
+        tilePoints.put("12 12", "DW");
+        tilePoints.put("13 13", "DW");
 
         // Double letter
-        tilePoints.put("11", "DL");  //error testing
-        tilePoints.put("30", "DL");
-        tilePoints.put("62", "DL");
-        tilePoints.put("82", "DL");
-        tilePoints.put("03", "DL");
-        tilePoints.put("73", "DL");
-        tilePoints.put("143", "DL");
-        tilePoints.put("26", "DL");
-        tilePoints.put("66", "DL");
-        tilePoints.put("86", "DL");
-        tilePoints.put("126", "DL");
-        tilePoints.put("37", "DL");
-        tilePoints.put("117", "DL");
-        tilePoints.put("28", "DL");
-        tilePoints.put("68", "DL");
-        tilePoints.put("88", "DL");
-        tilePoints.put("128", "DL");
-        tilePoints.put("011", "DL");
-        tilePoints.put("711", "DL");
-        tilePoints.put("1411", "DL");
-        tilePoints.put("612", "DL");
-        tilePoints.put("812", "DL");
-        tilePoints.put("314", "DL");
-        tilePoints.put("1114", "DL");
+        tilePoints.put("11 0", "DL");  //error testing
+        tilePoints.put("3 0", "DL");
+        tilePoints.put("6 2", "DL");
+        tilePoints.put("8 2", "DL");
+        tilePoints.put("0 3", "DL");
+        tilePoints.put("7 3", "DL");
+        tilePoints.put("14 3", "DL");
+        tilePoints.put("2 6", "DL");
+        tilePoints.put("6 6", "DL");
+        tilePoints.put("8 6", "DL");
+        tilePoints.put("12 6", "DL");
+        tilePoints.put("3 7", "DL");
+        tilePoints.put("11 7", "DL");
+        tilePoints.put("2 8", "DL");
+        tilePoints.put("6 8", "DL");
+        tilePoints.put("8 8", "DL");
+        tilePoints.put("12 8", "DL");
+        tilePoints.put("0 11", "DL");
+        tilePoints.put("7 11", "DL");
+        tilePoints.put("14 11", "DL");
+        tilePoints.put("6 12", "DL");
+        tilePoints.put("8 12", "DL");
+        tilePoints.put("3 14", "DL");
+        tilePoints.put("11 14", "DL");
 
         // Middle
-        tilePoints.put("77", "*");
+        tilePoints.put("7 7", "*");
     }
 
     public String getSquareValue(String location) {
@@ -169,7 +170,7 @@ public class Board {
     }
 
     public static String concatInt(int a, int b) { // concatenate integers rather than adding them
-        return "" + a + b;
+        return  a + " " + b;
     }
 
     public Tile[][] getBoard() {
