@@ -1,5 +1,11 @@
 package scrabble;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Scrabble {
@@ -8,14 +14,14 @@ public class Scrabble {
     private Player playerOne, playerTwo;
     private UIFX ui;
     private Scanner in;
+    private boolean isOver;
 
-    public Scrabble(){
-        this.in = new Scanner(System.in);
+    public Scrabble(Scanner input){
+        this.in = input;
         this.pool =  new Pool();
         this.board = new Board();
-        this.playerOne = initialisePlayer(this.pool, this.in);
-        this.playerTwo = initialisePlayer(this.pool, this.in);
-        this.ui = new UIFX(board,playerOne,playerTwo);
+
+        this.isOver = false;
     }
 
     //getters and setters
@@ -50,16 +56,26 @@ public class Scrabble {
     public Scanner getIn() {
         return in;
     }
+    public void setIsOver(boolean isOver){
+        this.isOver = isOver;
+    }
+    public boolean getIsOver() {
+        return this.isOver;
+    }
 
     public void setIn(Scanner in) {
         this.in = in;
     }
+    public Pool getPool() {
+        return this.pool;
+    }
 
     public Player initialisePlayer(Pool pool, Scanner input) {
+        this.in = input;
         System.out.print("Enter player name: ");
         String name = input.nextLine();
         Player player = new Player(name);
-        while (player.getFrame().frameSize() != player.getFrame().FRAME_SIZE) {
+        while (player.getFrame().frameSize() != Frame.FRAME_SIZE) {
             player.getFrame().fillFrame(pool.randomTile());
         }
         return player;
@@ -68,7 +84,7 @@ public class Scrabble {
     public void playerTurn(Player player, Board board, Scanner input, Pool pool) {
         player.setTurn(true);
         System.out.println(player.getName() + "'s turn:");
-        Move move = new Move(board, player.getFrame());
+        Move move = new Move(board, player.getFrame(), ui);
         boolean validMove = move.makeMove(input);
 
         if (!validMove) {
@@ -81,16 +97,5 @@ public class Scrabble {
     }
 
     public void runGame(){
-
-        int turns = 0;
-        while (true) { //TODO: add end clause to game.
-            if (turns % 2 == 0) {
-                this.playerTurn(playerOne, board, in, pool);
-            } else {
-                this.playerTurn(playerTwo, board, in, pool);
-            }
-            System.out.println(board);
-            turns++;
-        }
     }
 }

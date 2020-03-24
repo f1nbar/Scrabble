@@ -1,5 +1,7 @@
 package scrabble;
 
+import javafx.application.Platform;
+
 import java.util.Scanner;
 
 public class Move {
@@ -22,10 +24,13 @@ public class Move {
     int previousCounter = 0;
     int tileCounter = 0;
 
+    private UIFX ui;
 
-    public Move(Board board, Frame playerFrame) {
+
+    public Move(Board board, Frame playerFrame, UIFX ui) {
         this.board = board;
         this.playerFrame = playerFrame;
+        this.ui = ui;
     }
 
     /* getters */
