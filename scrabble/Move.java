@@ -36,14 +36,19 @@ public class Move {
     /* input getters */
     private int getRowInput(Scanner in) {
         int row;
-        System.out.print("Please enter row: ");
-        row = in.nextInt();
-        if (row < 0 || row > 15) {
-            System.out.println("Row out of range.");
-            getRowInput(in);
-        }
+        System.out.print("\n\nPlease enter row (letter): ");
+        char rowChar = in.next().charAt(0);
+        rowChar = Character.toUpperCase(rowChar);  
+ 	        row = (int)rowChar - 'A'+1;   
+ 	       if (row < 0 || row > 15) {
+ 	            System.out.println("Row out of range.");
+ 	            getColumnInput(in);
+   
+    }
         return row;
     }
+    
+
 
     private int getColumnInput(Scanner in) {
         int column;
@@ -54,6 +59,33 @@ public class Move {
             getColumnInput(in);
         }
         return column;
+    }
+    
+    private char getDirectionInput(Scanner in) {
+    	System.out.print("Enter your direction of choice, a for accross or d for down: ");
+    	char direction = in.next().charAt(0);
+
+        direction = Character.toLowerCase(direction);
+    	if(direction != 'a' && direction != 'd') {
+    		System.out.print("\nNot a valid direction, try again");
+    		getDirectionInput(in);
+    	}
+    	return direction;
+    }
+    
+    private String getWordInput(Scanner in) {
+    	String word;
+    	System.out.print("Enter your word to place: ");
+    	word =in.next().toUpperCase();
+    	for(int i =0; i < word.length();i++) {
+    		try {
+                playerFrame.getTileFromChar(word.charAt(i));
+            } catch (Exception e) {
+                System.out.println("Letter not in frame, pick again.");
+                getTileInput(in);
+            }
+    	}	
+    	return word;
     }
 
     private Tile getTileInput(Scanner in) {
@@ -93,7 +125,7 @@ public class Move {
             int boxBottom = Math.min(row + 1, board.BOARD_SIZE - 1);
             int boxLeft = Math.max(column - 1, 0);
             int boxRight = Math.min(column + 1, board.BOARD_SIZE - 1);
-            boolean foundConnection = false;
+            boolean foundConnection = true;
 
             for (int r = boxTop; r <= boxBottom && !foundConnection; r++) {
                 for (int c = boxLeft; c <= boxRight && !foundConnection; c++) {
@@ -102,7 +134,7 @@ public class Move {
                     }
                 }
             }
-            if (!foundConnection) {
+            if (!(foundConnection)) {
                 ERROR = "Cannot place a tile not connecting to any other tiles.";
             }
             return foundConnection;
@@ -115,50 +147,65 @@ public class Move {
         boolean moveMade = false;
 
         final int THIRD_PLACEMENT = 3; // for ease of reading
+        
+        
+        
 
         direction = NEUTRAL_DIRECTION;
         while (!moveMade) {
             int row;
             int column;
+            String word;
             boolean undo = false;
-            boolean validPlacement;
+            boolean validPlacement = true;
             System.out.print("Frame: " + playerFrame.toString());
+            
+            row = getRowInput(in);
+            column = getColumnInput(in);
+            direction = getDirectionInput(in);
+            word = getWordInput(in);
+            
 
-            chosenTile[tileCounter++] = getTileInput(in);
-
-            // Select position
-            if (tileCounter < THIRD_PLACEMENT) {
-                row = getRowInput(in);
-                column = getColumnInput(in);
-            } else {
-                if (direction == HORIZONTAL) {
-                    column = getColumnInput(in);
-                    row = previousRows[previousCounter - 1];
-                } else {
-                    row = getRowInput(in);
-                    column = previousColumns[previousCounter - 1];
-                }
-            }
-
-            // set Direction
-            if (tileCounter == 2) {
-                if (previousRows[previousCounter - 1] == row) {
-                    direction = HORIZONTAL;
-                } else {
-                    direction = VERTICAL;
-                }
-            }
-
-            validPlacement = isPlacementValid(row, column);
-            if (validPlacement) {
+           
+            	if(direction == 'd') {
+            		
+            	for(int j = 0;j < word.length(); j++) {
+            		
+            	validPlacement = isPlacementValid(row, column);
+            	if(validPlacement) {
+            		
+                chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(j)) ;	
                 board.placeTile(row, column, chosenTile[tileCounter - 1]);
                 playerFrame.removeLetter(chosenTile[tileCounter - 1]);
-            } else {
-                System.out.println(ERROR);
-                chosenTile[tileCounter] = null; // remove invalid move from history
-                tileCounter--;
-            }
+                row++;
+            	}
+            	
+            	else {
+            		System.out.println(ERROR);
+                    chosenTile[tileCounter] = null; // remove invalid move from history
+                    tileCounter--;
+            	}
+            	
+            	}}
+            	if(direction == 'a') {
+            		for(int j = 0;j < word.length(); j++) {
+            			
+            			validPlacement = isPlacementValid(row, column);
+                    	if(validPlacement) {
+                    		
+                        chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(j)) ;	
+                		board.placeTile(row, column, chosenTile[tileCounter - 1]);
+                	     playerFrame.removeLetter(chosenTile[tileCounter - 1]);
+                	     column++;
+            		}
+                    	else {
+                    		System.out.println(ERROR);
+                            chosenTile[tileCounter] = null; // remove invalid move from history
+                            tileCounter--;
+                    	}
 
+                }
+            	}
             // Break out
             System.out.println("Type: 'exit' to finish your turn, or 'undo' to undo your last placement. Press any other key to continue.");
             String playerChoice = in.next();
@@ -189,7 +236,9 @@ public class Move {
         }
 
         return true;
-    }
+    
+        }
+    
 
     /* undo move driver */
     private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column) {
