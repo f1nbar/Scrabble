@@ -10,6 +10,7 @@ public class Scrabble {
     private Scanner in;
 
 
+
     public Scrabble(Scanner input) {
         this.in = input;
         this.pool = new Pool();
@@ -77,6 +78,7 @@ public class Scrabble {
             player.increaseScore(move.calculateScore());
             return true;
         }
+      
         return false;
     }
 }
