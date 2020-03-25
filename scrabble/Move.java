@@ -39,16 +39,18 @@ public class Move {
     }
 
     private int getRowInput(String input) {
-    	System.out.print("Row input: " + input.charAt(0) );
+    	
         int row =  input.charAt(0) - 'A';
+        System.out.print("row: "+ row);
         if(row < 0 || row > 15) {
         	System.out.print("\nRow is not valid, please enter a letter between A and O: \n");
         	Scanner in = new Scanner(System.in);
             char newRow = in.nextLine().charAt(0);
             String replaceRow = input.replace(input.charAt(0),newRow);
             in.close();
-            getRowInput(replaceRow);
-        }      
+            row = getRowInput(replaceRow);
+        }
+        
         return row;
     }
 
@@ -68,7 +70,7 @@ public class Move {
         	 System.out.print("replacing: " +Integer.toString(column - 1));
         	 System.out.print("replacing with : " + Integer.toString(newColumn + 1));
             in.close();
-            getColumnInput(replaceColumn);    
+            column = getColumnInput(replaceColumn);    
          }
         return column;
     }
@@ -87,7 +89,7 @@ public class Move {
             char newDirection = Character.toUpperCase(in.nextLine().charAt(0)); 
             String replaceDirection = input.replace(direction, newDirection);
             in.close();
-            getDirectionInput(replaceDirection);
+            direction = getDirectionInput(replaceDirection);
         }
         return direction;
     }
