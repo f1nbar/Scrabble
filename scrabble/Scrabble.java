@@ -10,6 +10,7 @@ public class Scrabble {
     private Scanner in;
 
 
+
     public Scrabble(Scanner input) {
         this.in = input;
         this.pool = new Pool();
@@ -76,6 +77,7 @@ public class Scrabble {
             player.getFrame().refill(pool);
             return true;
         }
+      
         return false;
     }
 }

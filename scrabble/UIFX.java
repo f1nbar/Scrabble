@@ -224,6 +224,10 @@ public class UIFX {
                 break;
 
             default:
+            	if(currentPlayer.getFrame().isEmpty() && game.getPool().emptyPool()) {
+            		System.out.println("Ending game...");
+                     System.exit(0);
+            	}
                 if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+")) {
                     if(game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
                         Player.changeTurn();

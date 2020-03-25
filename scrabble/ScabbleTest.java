@@ -18,7 +18,10 @@ public class ScabbleTest {
   Board board = new Board();
   Frame playerFrame = new Frame();
   Move move = new Move(board, playerFrame);
+  UIFX ui = new UIFX();
   
   
+
   
+
 }
