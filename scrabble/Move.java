@@ -214,15 +214,191 @@ public class Move {
         }
     }
 
-    /* Scoring 
-    public int calculateScore() {
-        int score = 0;
-        for (Tile t : chosenTile) {
-            score += t.getScore();
-        }
-        //for()
-        //TODO connecting tiles score
-        //TODO multipliers
-        return 1;
-    }*/
+    	public int calculateScore() {
+		boolean isdoubleword = false;
+		boolean istripleword = false;
+		int temp = 0;
+
+		int score = 0;
+		int count = 0;
+		if (chosenTile != null)
+			for (int i = 0;i<chosenTile.length;i++) {
+				
+				Tile t = chosenTile[i];
+
+				if (t != null) {
+					count++;
+					int concat1 = columntemp + i;
+					int concat2 = rowtemp + i;
+					
+					String position = null;
+					
+					
+					
+					if(direction == 'A')
+					position = Board.concatInt(rowtemp, concat1);
+					
+					if(direction == 'D')
+					position = Board.concatInt(concat2, columntemp);
+					
+					
+					if(board.getSquareValue(position) != null) {
+					switch (board.getSquareValue(position)) {
+					case "TW":
+						istripleword = true;
+						temp += t.getScore();
+						System.out.println("TW");
+						break;
+					case "TL":
+						temp = temp + (t.getScore() * 3);
+						System.out.println("TL");
+						break;
+					case "DW":
+						isdoubleword = true;
+						temp += t.getScore();
+						System.out.println("DW");
+						break;
+					case "DL":
+						temp = temp + (t.getScore() * 2);
+						System.out.println("DL");
+						break;
+					default:
+						temp += t.getScore();
+
+					}
+					} else {temp += t.getScore();}
+					
+				}
+
+			}
+
+		score += temp;
+
+		
+
+		if (direction == 'D') {
+
+			if (rowtemp - 1 >= 0 && rowtemp - 1 <= 14)
+				if (board.getBoard()[rowtemp - 1][columntemp] != null) {
+					
+					score += calculateConnectedTileScore(rowtemp - 1, columntemp, 'u');
+				}
+
+			if (rowtemp + count >= 0 && rowtemp + count <= 14)
+				if (board.getBoard()[rowtemp + count][columntemp] != null) {
+					score += calculateConnectedTileScore(rowtemp + count, columntemp, 'd');
+				}
+
+			int i = 0;
+			while( i != 0) {
+
+				if (rowtemp + i >= 0 && rowtemp + i <= 14 && columntemp - 1 >= 0 && columntemp - 1 <= 14)
+					if (board.getBoard()[rowtemp + i][columntemp - 1] != null) {	
+						score += calculateConnectedTileScore(rowtemp + i, columntemp - 1, 'l');
+					}
+				
+				if (rowtemp + i >= 0 && rowtemp + i <= 14 && columntemp - 1 >= 0 && columntemp - 1 <= 14)
+					if (board.getBoard()[rowtemp + i][columntemp + 1] != null) {	
+						score += calculateConnectedTileScore(rowtemp + i, columntemp + 1, 'r');
+					}
+				
+				
+
+			}
+		
+		} else if (direction == 'A') {
+//
+			if (columntemp - 1 >= 0 && columntemp - 1 <= 14)
+				if (board.getBoard()[rowtemp][columntemp-1] != null) {
+					
+					score += calculateConnectedTileScore(rowtemp, columntemp - 1, 'l');
+				}
+
+			if (columntemp + count >= 0 && columntemp + count <= 14)
+				if (board.getBoard()[rowtemp][columntemp + count] != null) {
+					score += calculateConnectedTileScore(rowtemp, columntemp + count, 'r');
+				}
+
+			int i = 0;
+			while( i != 0) {
+
+				if (rowtemp   - 1  >= 0 && rowtemp - 1  <= 14 && columntemp + i >= 0 && columntemp + i <= 14)
+					if (board.getBoard()[rowtemp - 1][columntemp + i] != null) {	
+						score += calculateConnectedTileScore(rowtemp - 1, columntemp + i, 'u');
+					}
+				
+				if (rowtemp + 1 >= 0 && rowtemp + 1 <= 14 && columntemp + i >= 0 && columntemp + i <= 14)
+					if (board.getBoard()[rowtemp + 1][columntemp + i] != null) {	
+						score += calculateConnectedTileScore(rowtemp + 1, columntemp + i, 'd');
+					}
+				
+				
+
+			}
+
+		}
+		
+		if (isdoubleword)
+			score *= 2;
+
+		if (istripleword)
+			score *= 3;
+		
+		if(count == 7) {
+			score += 50;
+		}
+		
+		return score;
+	}
+
+	public int calculateConnectedTileScore(int rowtemp, int columntemp, char direction) { // direction: u = up,d =
+																							// down,r =
+		// right,l =left
+
+		int score = 0;
+
+		if (board.getBoard()[rowtemp][columntemp] != null) {
+			int i = 0;
+			if (direction == 'u') {
+				while (board.getBoard()[rowtemp - i][columntemp] != null) {
+					score += board.getBoard()[rowtemp - i][columntemp].getScore();
+					System.out.println(score);
+					i++;
+					if (rowtemp - i < 0 || rowtemp - i > 14)
+						break;
+
+				}
+			}
+			
+			if (direction == 'd') {
+				while (board.getBoard()[rowtemp + i][columntemp] != null) {
+					score += board.getBoard()[rowtemp + i][columntemp].getScore();
+					i++;
+					if (rowtemp + i < 0 || rowtemp + i > 14)
+						break;
+				}
+			}
+			if (direction == 'l') {
+				while (board.getBoard()[rowtemp][columntemp-i] != null) {
+					score += board.getBoard()[rowtemp][columntemp-i].getScore();
+					i++;
+					if (columntemp - i < 0 || columntemp - i > 14)
+						break;
+				}
+			}
+			if (direction == 'r') {
+				while (board.getBoard()[rowtemp][columntemp + i] != null ) {
+					score += board.getBoard()[rowtemp][columntemp + i].getScore();
+					i++;
+					if (columntemp + i < 0 || columntemp + i > 14)
+						break;
+				}
+			}
+
+		}
+		
+		
+		return score;
+	}
+    
 }
