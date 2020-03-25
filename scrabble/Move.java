@@ -39,12 +39,12 @@ public class Move {
     }
 
     private int getRowInput(String input) {
-    	System.out.println("Row input:" + input.charAt(0) );
+    	System.out.print("Row input: \n" + input.charAt(0) );
         int row =  input.charAt(0) - 'A';
         if(row < 0 || row > 15) {
-        	System.out.println("Row is not valid, please enter a number between A and O: ");
+        	System.out.print("Row is not valid, please enter a letter between A and O: \n");
         	Scanner in = new Scanner(System.in);
-            row = in.next().charAt(0) - 'A';
+            row = in.nextLine().charAt(0) - 'A';
             in.close();
         }
       
@@ -54,7 +54,7 @@ public class Move {
     private int getColumnInput(String input) {
     	 int column =   Character.getNumericValue(input.charAt(1)) - 1;
          if(column < 0 || column > 15) {
-         	System.out.println("Column is not valid, please enter a number between 1 and 15: ");
+         	System.out.print("Column is not valid, please enter a number between 1 and 15: \n");
          	Scanner in = new Scanner(System.in);
              column = in.nextInt();
              in.close();
@@ -65,9 +65,9 @@ public class Move {
     private char getDirectionInput(String input) {
         char direction = Character.toUpperCase(input.charAt(3));
         if(direction != 'A' && direction != 'D' ) {
-        	System.out.println("Direction not valid, please enter either A for accross or D for down: ");
+        	System.out.print("Direction not valid, please enter either A for accross or D for down: \n");
         	Scanner in = new Scanner(System.in);
-            direction = Character.toUpperCase(in.next().charAt(0));   
+            direction = Character.toUpperCase(in.nextLine().charAt(0));   
             in.close();
            
         }
@@ -93,12 +93,12 @@ public class Move {
    private String chooseBlank(String word) {
 		
 	    Scanner in = new Scanner(System.in);
-		System.out.println("\n\nChoose any letter to replace the blank with: ");
+		System.out.print("\n\nChoose any letter to replace the blank with: ");
 		Tile remove = playerFrame.getTileFromChar('_');
 		playerFrame.removeLetter(remove);
 		char letter = Character.toUpperCase(in.next(".").charAt(0));
 		if(!(Character.isLetter(letter))){
-			System.out.println("Enter a valid character in the alphabet!");
+			System.out.print("Enter a valid character in the alphabet!");
 			chooseBlank(word);
 		}
 		Tile add = new Tile(letter, 0);
