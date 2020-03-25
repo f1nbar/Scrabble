@@ -103,6 +103,7 @@ public class Frame {
 
     public Tile getTileFromChar(char letter) {
         for (Tile tile : frame) {
+            //System.out.println("tile get letter: " + tile.getLetter() + " letter: " + letter + " bool: " + (tile.getLetter() == letter));
             if (tile.getLetter() == letter) {
                 return tile;
             }

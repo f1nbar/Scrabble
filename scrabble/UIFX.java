@@ -30,6 +30,7 @@ public class UIFX {
         font = Font.font("Ariel", FontWeight.BOLD, height / 1.6);
 
         input = new Scanner(System.in);
+        input.useDelimiter("\\n");
         game = new Scrabble(input);
 
     }
@@ -185,7 +186,6 @@ public class UIFX {
         
 
     public void processCLI() {
-        //System.out.println("Turn:" + game.getPlayerOne().getTurn() );
         if (Player.turn == Player.playerOneTurn) {
             currentPlayer = game.getPlayerOne();
         } else {
@@ -195,7 +195,8 @@ public class UIFX {
         System.out.println("Frame: " + currentPlayer.getFrame());
 
         System.out.print("Enter command: ");
-        String commandInput = input.nextLine().trim().toUpperCase();
+
+        String commandInput = input.next().trim().toUpperCase();
         String command = commandInput.split(" ")[0];
        
        
@@ -209,8 +210,8 @@ public class UIFX {
                 break;
             case "EXCHANGE":
                 // gets character from input after space and calls exchangeTile function
-                boolean exchange = currentPlayer.getFrame().exchangeTile(Character.toUpperCase(commandInput.split(" ")[1].charAt(0)),game.getPool());
-                if(exchange){ // if exchange is valid
+                boolean exchange = currentPlayer.getFrame().exchangeTile(Character.toUpperCase(commandInput.split(" ")[1].charAt(0)), game.getPool());
+                if (exchange) { // if exchange is valid
                     Player.changeTurn();
                 }
                 break;
@@ -218,14 +219,15 @@ public class UIFX {
                 System.out.println("Passing turn...");
                 Player.changeTurn();
                 break;
-                
+
             default:
-            	game.checkInput(currentPlayer, game.getBoard(), commandInput);
-            	  if (!game.validInput) {
-  					System.out.print("works!");
-  				}
-                game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput);
-                Player.changeTurn();
+                if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+")) {
+                    if(game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
+                        Player.changeTurn();
+                    }
+                } else {
+                    System.out.println("ERROR: Invalid command: " + commandInput + " Check if your move matches the format: <ROW COLUMN> <DIRECTION> <WORD> (e.g A1 D HELLO)");
+                }
         }
     }
 }

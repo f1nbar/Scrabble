@@ -23,130 +23,60 @@ public class Move {
     private boolean checkIntersect; // for checking when if an inputted word does not contain a letter, the word it intersects does.
     private char checkIntersectLetter;
     private int[] intersectLocation = new int[2];
-    
-    public Boolean validInput;
-
+    private boolean letterInFrame;
 
     public Move(Board board, Frame playerFrame) {
         this.board = board;
         this.playerFrame = playerFrame;
         checkIntersect = false;
+        letterInFrame = true; //assumption
     }
 
     /* input getters */
-    private String getMoveInput(Scanner in) {
-        String input = in.nextLine();
-        System.out.println("M44: input " + input);
-        return input;
-    }
 
     private int getRowInput(String input) {
-    	
-        int row =  input.charAt(0) - 'A';
-        System.out.print("row: "+ row);
-        if(row < 0 || row > 15) {
-        	System.out.print("\nRow is not valid, please enter a letter between A and O: \n");
-        /*	Scanner in = new Scanner(System.in);
-        	while(in.hasNext()) {
-              char newRow = Character.toUpperCase(in.next().charAt(0));
-              String replaceRow = input.replace(input.charAt(0),newRow);
-              row = getRowInput(replaceRow);
-              in.close();
-        	}    */
-        }
-        
-        return row;
+        //TODO error checks
+        return input.charAt(0) - 'A';
     }
 
     private int getColumnInput(String input) {
-    	 int column;
-    	 if(input.charAt(2) != ' ') {
-    		column = Character.getNumericValue(input.charAt(1) + input.charAt(2)) - 1;
-         	 }
-    	 else {
-    	 column = Character.getNumericValue(input.charAt(1)) - 1;
-    	 }
-         	/*Scanner in = new Scanner(System.in);
-             int newColumn = in.nextInt();
-        	 String replaceColumn = input.replace(Integer.toString(column - 1),Integer.toString(newColumn + 1));
-        	 System.out.print("replacing: " +Integer.toString(column - 1));
-        	 System.out.print("replacing with : " + Integer.toString(newColumn + 1));
-            in.close();
-            column = getColumnInput(replaceColumn);*/    
-        return column;
+        //TODO error checks
+        int column = Integer.parseInt(input.replaceAll("[\\D]", ""));
+        return column -1; // -1 as columns start at 1 on board but 0 in array.
     }
-    
+
     private char getDirectionInput(String input) {
-    	char direction;
-    	if(input.charAt(3) == ' ') {
-    		direction = Character.toUpperCase(input.charAt(4));
-    	}
-    	else {
-        direction = Character.toUpperCase(input.charAt(3));
-    	}
-        	/*Scanner in = new Scanner(System.in);
-            char newDirection = Character.toUpperCase(in.nextLine().charAt(0)); 
-            String replaceDirection = input.replace(direction, newDirection);
-            in.close();
-            getDirectionInput(replaceDirection);*/
-
-        return direction;
+        //TODO error checks
+        return Character.toUpperCase(input.charAt(0));
     }
-    
-    public void validInput(String input) {
-    	int row = getColumnInput(input);
-    	int column = getColumnInput(input);
-    	int direction = getDirectionInput(input);
-    	 if(row < 0 && row > 15) {
-          	System.out.print("\nRow is not valid, please enter a letter between A and O: \n");
-          	validInput = false;
-     	 }
-    	  if(column < 0 || column > 15) {
-          	System.out.print("\nColumn is not valid, please enter a number between 1 and 15: \n");
-        	validInput = false;
-    	 }
-    	 if(direction != 'A' && direction != 'D' ) {
-          	System.out.print("Direction not valid, please enter either A for accross or D for down: \n");
-        	validInput = false;
-    	  }
-    }
-    
-
 
     private String getWordInput(String input, Scanner in) {
-        String word = input.substring(5).toUpperCase();
+        String word = input.toUpperCase();
         for (int i = 0; i < word.length(); i++) {
             try {
                 playerFrame.getTileFromChar(word.charAt(i));
             } catch (Exception e) {
-                System.out.println("Letter not in frame, pick again.");
-                String newWord = getMoveInput(in);
-                String replaceWord = input.replaceAll(word, newWord);
-                getWordInput(replaceWord, in);
-                checkIntersect = true;
-                checkIntersectLetter = word.charAt(i);
+                System.out.println("Letter: '" + word.charAt(i) + "' not in frame, pick again.");
+                letterInFrame = false;
             }
         }
         return word;
     }
-    
-   private String chooseBlank(String word) {
+
+   private String chooseBlank(String word, Scanner in) {
 		
-	    Scanner in = new Scanner(System.in);
 		System.out.print("\n\nChoose any letter to replace the blank with: ");
 		Tile remove = playerFrame.getTileFromChar('_');
 		playerFrame.removeLetter(remove);
-		char letter = Character.toUpperCase(in.next(".").charAt(0));
+		char letter = Character.toUpperCase(in.next().trim().charAt(0));
 		if(!(Character.isLetter(letter))){
 			System.out.print("Enter a valid character in the alphabet!");
-			chooseBlank(word);
+			chooseBlank(word, in);
 		}
 		Tile add = new Tile(letter, 0);
 		playerFrame.addTile(add);
-		String replaced = word.replace('_', letter);
-		in.close();
 
-		return replaced;
+       return word.replace('_', letter);
 	}
 	
 
@@ -154,17 +84,20 @@ public class Move {
     private boolean isPlacementValid(int row, int column) {
         if (row < 0 || row > 15 || column < 0 || column > 15) {
             ERROR = "Co-ordinates are out of bounds.";
+            System.out.println(ERROR);
             return false;
         }
         //Connection
-        if (!findConnection(row, column)) {
+        if (movesMade != 0 && !findConnection(row, column)) {
             ERROR = "Connection to tiles on board not found.";
+            System.out.println(ERROR);
             return false;
         }
 
         if (board.getBoard()[row][column] != null) {
             if(checkIntersect && (checkIntersectLetter != board.getBoard()[row][column].getLetter())){
                 ERROR = "Invalid tiles for inputted word.";
+                System.out.println(ERROR);
                 return false;
             } else if(checkIntersect){
                 intersectLocation[0] = row;
@@ -172,6 +105,7 @@ public class Move {
                 return true;
             }
             ERROR = "Cannot place a tile on a space already containing a tile.";
+            System.out.println(ERROR);
             return false;
         }
 
@@ -184,9 +118,11 @@ public class Move {
             int boxBottom = Math.min(row + 1, board.BOARD_SIZE - 1);
             int boxLeft = Math.max(column - 1, 0);
             int boxRight = Math.min(column + 1, board.BOARD_SIZE - 1);
-            boolean foundConnection = true;
+            boolean foundConnection = false;
 
+            System.out.println("Connection");
             for (int r = boxTop; r <= boxBottom && !foundConnection; r++) {
+                System.out.println("Connection2");
                 for (int c = boxLeft; c <= boxRight && !foundConnection; c++) {
                     if (board.getBoard()[r][c] != null) {
                         foundConnection = true;
@@ -203,72 +139,46 @@ public class Move {
 
     /* make move driver */
     public boolean makeMove(Scanner in, String inputString) {
-    	
-    	validInput(inputString);
-        boolean moveMade = false;
 
-        while (!moveMade) {
-            boolean validPlacement;
+        String[] splitInput = inputString.split(" ");
+        int row = getRowInput(splitInput[0]);
+        int column = getColumnInput(splitInput[0]);
+        direction = getDirectionInput(splitInput[1]);
+        String word = getWordInput(splitInput[2], in);
 
-            int row = getRowInput(inputString);
-            int column = getColumnInput(inputString);
-            System.out.println("Row: " + row + " column: " + column);
-            direction = getDirectionInput(inputString);
-            System.out.println("Direction: " + direction);
-            String word = getWordInput(inputString, in);
-            if(word.contains("_")) {
-            	word = chooseBlank(word);
-            }
-            for (int j = 0; j < word.length(); j++) {
-                validPlacement = isPlacementValid(row, column);
-                if (validPlacement && !checkIntersect) {
-                    chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(j));
-                    board.placeTile(row, column, chosenTile[tileCounter - 1]);
-                    playerFrame.removeLetter(chosenTile[tileCounter - 1]);
-                    if (direction == 'D') {
-                        row++;
-                    } else {
-                        column++;
-                    }
-                    System.out.println("Row: " + row + " column: " + column);
-                } else if(validPlacement && checkIntersect) {
-                    System.out.println("HERE");
-                    System.out.println("Row: " + row + " intersect row: " + intersectLocation[0] + " column: " + column + " intersect column: " + intersectLocation[1]); //TODO fix error where when intersecting word is placed the letters after intersection are not placed
-                    if(row != intersectLocation[0] && column != intersectLocation[1]) {
-                        System.out.println("HERE2");
-                        chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(j));
-                        board.placeTile(row, column, chosenTile[tileCounter - 1]);
-                        playerFrame.removeLetter(chosenTile[tileCounter - 1]);
-                        if (direction == 'D') {
-                            row++;
-                        } else {
-                            column++;
-                        }
-                        //System.out.println("Row: " + row + " column: " + column);
-                    }
+        if (word.contains("_")) {
+            word = chooseBlank(word, in);
+        }
+
+        if(!letterInFrame){
+            ERROR = "Letter not in frame";
+            return false;
+        }
+        for (int i = 0; i < word.length(); i++) {
+            boolean validPlacement = isPlacementValid(row, column);
+            if (validPlacement) {
+                chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i));
+                board.placeTile(row, column, chosenTile[tileCounter - 1]);
+                playerFrame.removeLetter(chosenTile[tileCounter - 1]);
+                if (direction == 'D') {
+                    row++;
+                } else if (direction == 'A') {
+                    column++;
                 } else {
-                    System.out.println(ERROR);
-                    chosenTile[tileCounter] = null; // remove invalid move from history
-                    tileCounter--;
+                    ERROR = "Shouldn't be possible to reach here; direction isnt across or down.";
                 }
-            }
-
-            // Break out
-            moveMade = true;
-            movesMade++;
-            if (movesMade == 1 && board.getBoard()[7][7] == null) {
-                movesMade--;
-                ERROR = "First move has to intersect middle tile.";
+            } else {
+                System.out.println(ERROR);
                 return false;
             }
-            /*if (!undo || validPlacement) { // undo check so that the undid move is not added into memory, validPlacement check to ensure that the invalid move is not added into memory.
-                previousRows[previousCounter] = row;
-                previousColumns[previousCounter++] = column;
-            }*/
         }
+        if (board.getBoard()[7][7] == null) {
+            ERROR = "First move has to intersect middle tile.";
+            return false;
+        }
+        movesMade++;
         return true;
     }
-
 
     /* undo move driver */
     private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column) {
@@ -280,9 +190,8 @@ public class Move {
     }
 
     public void undoMove() {
-        while (tileCounter != 0) {
-            undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1]);
-            previousCounter--;
+        for(int i = 0; i < previousCounter; i++) {
+            System.out.println("prevrows: " + previousRows[i] + "prevcol" + previousColumns[i]);
         }
     }
 
