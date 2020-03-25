@@ -53,7 +53,7 @@
 6. Created execuatable Jar and submitted executable 3.
 
 ## Executable Instructions:
-1. Launch .jar file (java -jar scrabble-assignment2.jar)
+1. Launch .jar file (java -jar scrabble-assignment3.jar)
 2. Enter names of both players.
 3. Console wil now display the command format for placing tiles and all other options such as "help","exit" and "undo"
 4. Continue with placing tiles game has ended, or you exit yourself.
