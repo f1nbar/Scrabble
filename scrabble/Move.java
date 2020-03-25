@@ -111,7 +111,7 @@ public class Move {
 
 
     /* move validation */
-    private boolean isPlacementValid(int row, int column) {
+    private boolean isPlacementValid(int row, int column, String word) {
         if (row < 0 || row > 15 || column < 0 || column > 15) {
             ERROR = "Co-ordinates are out of bounds.";
             return false;
@@ -119,6 +119,14 @@ public class Move {
 
         if (board.getBoard()[row][column] != null && !intersection) {
             ERROR = "Cannot place a tile on a space already containing a tile.";
+            return false;
+        }
+        if(direction == 'D' && column + word.length() > 15) {
+        	ERROR = "Cannot place a word going over the edge of the board";
+            return false;
+        }
+        if(direction == 'A' && row + word.length() > 15){
+        	ERROR = "Cannot place a word going over the edge of the board";
             return false;
         }
 
@@ -190,7 +198,7 @@ public class Move {
         }
         boolean foundConnection = findConnection(word);
         for (int i = 0; i < word.length(); i++) {
-            boolean validPlacement = isPlacementValid(row, column);
+            boolean validPlacement = isPlacementValid(row, column,word);
             if (validPlacement && foundConnection) {
                 if (board.getBoard()[row][column] != null && intersection) {
                     // do nothing as tile is already on board
@@ -218,6 +226,7 @@ public class Move {
         }
         if (board.getBoard()[7][7] == null) {
             ERROR = "First move has to intersect middle tile.";
+            undoMove();
             return false;
         }
         movesMade++;

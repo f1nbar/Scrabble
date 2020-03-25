@@ -43,6 +43,27 @@
 ![assignment_two_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_two_diagram.PNG)
 
 
+# Assignment 3
+## Approach:
+1. Assigned a new Scrum Master (Conor Knowles) for the assignment and designated tasks to team members.
+2. Implemented Scrabble and Move Classes which handle 2 human players playing a game and scoring.
+3. Created a UI in AWT at first but then rewrote to use JavaFX to avoid future incompatabilities with the bot competition.
+4. Rewrote Main class to run the UI class and create a game instance, not taking user input itself.
+5. Tested all Classes and Methods introduced in this Sprint.
+6. Created execuatable Jar and submitted executable 3.
+
+## Executable Instructions:
+1. Launch .jar file (java -jar scrabble-assignment3.jar)
+2. Enter names of both players.
+3. Console wil now display the command format for placing tiles and all other options such as "help","exit" and "undo"
+4. Continue with placing tiles game has ended, or you exit yourself.
+5. After each move the updated board will be displayed along with the frame of the player who's move it is and their respective score.
+
+## Class Diagram:
+//TODO
+
+
+
 
 
 
