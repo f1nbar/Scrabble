@@ -23,6 +23,10 @@ public class Move {
     int firstRow;
     int firstColumn;
 
+    int[] boardConnectionRow = new int[16];
+    int[] boardConnectionColumn = new int[16];
+    int connectionIncrement;
+
     private boolean letterInFrame;
     private boolean checkForIntersection; // triggers check
     private char checkLetterForIntersection;
@@ -34,23 +38,20 @@ public class Move {
         this.letterInFrame = true; //assumption
         this.checkForIntersection = false;
         this.intersection = false;
+        this.connectionIncrement = 0;
     }
 
     /* input getters */
-
     private int getRowInput(String input) {
-        //TODO error checks
         return input.charAt(0) - 'A';
     }
 
     private int getColumnInput(String input) {
-        //TODO error checks
         int column = Integer.parseInt(input.replaceAll("[\\D]", ""));
         return column - 1; // -1 as columns start at 1 on board but 0 in array.
     }
 
     private char getDirectionInput(String input) {
-        //TODO error checks
         return Character.toUpperCase(input.charAt(0));
     }
 
@@ -86,7 +87,6 @@ public class Move {
             System.out.println("row: " + i + " column: " + staticAxis);
             if (board.getBoard()[i][staticAxis] != null) {
                 if (board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) {
-                    System.out.println("here");
                     foundIntersection = true;
                 }
             }
@@ -116,11 +116,6 @@ public class Move {
             ERROR = "Co-ordinates are out of bounds.";
             return false;
         }
-        //Connection
-        if (!findConnection(row, column)) {
-            ERROR = "Connection to tiles on board not found.";
-            return false;
-        }
 
         if (board.getBoard()[row][column] != null && !intersection) {
             ERROR = "Cannot place a tile on a space already containing a tile.";
@@ -130,17 +125,36 @@ public class Move {
         return true;
     }
 
-    private boolean findConnection(int row, int column) {
+    private boolean findConnection(String word) {
         if (movesMade != 0) {
-            int boxTop = Math.max(row - 1, 0);
-            int boxBottom = Math.min(row + 1, board.BOARD_SIZE - 1);
-            int boxLeft = Math.max(column - 1, 0);
-            int boxRight = Math.min(column + 1, board.BOARD_SIZE - 1);
+
+            // finding last row and column of word
+            int lastColumn = 0, lastRow = 0;
+            for(int i = 0; i < word.length(); i++) {
+                if(direction == 'D'){
+                    lastColumn = firstColumn;
+                    if(i == word.length() - 1){
+                        lastRow = firstRow + i;
+                    }
+                } else if(direction == 'A') {
+                    lastRow = firstRow;
+                    if(i == word.length() - 1){
+                        lastColumn = firstColumn + i;
+                    }
+                }
+            }
+
+            int boxTop = Math.max(firstRow - 1, 0);
+            int boxBottom = Math.min(lastRow + 1, board.BOARD_SIZE - 1);
+            int boxLeft = Math.max(firstColumn - 1, 0);
+            int boxRight = Math.min(lastColumn + 1, board.BOARD_SIZE - 1);
             boolean foundConnection = false;
 
             for (int r = boxTop; r <= boxBottom && !foundConnection; r++) {
                 for (int c = boxLeft; c <= boxRight && !foundConnection; c++) {
                     if (board.getBoard()[r][c] != null) {
+                        boardConnectionRow[connectionIncrement] = r;
+                        boardConnectionColumn[connectionIncrement++] = c;
                         foundConnection = true;
                     }
                 }
@@ -174,9 +188,10 @@ public class Move {
             ERROR = "Letter not in frame";
             return false;
         }
+        boolean foundConnection = findConnection(word);
         for (int i = 0; i < word.length(); i++) {
             boolean validPlacement = isPlacementValid(row, column);
-            if (validPlacement) {
+            if (validPlacement && foundConnection) {
                 if (board.getBoard()[row][column] != null && intersection) {
                     // do nothing as tile is already on board
                 } else {
@@ -219,7 +234,6 @@ public class Move {
     }
 
     public void undoMove() {
-        System.out.println("Tile counter: " + tileCounter + " previous counter: " + previousCounter);
         while (tileCounter != 0) {
             undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1]);
             previousCounter--;

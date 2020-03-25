@@ -9,8 +9,6 @@ public class Scrabble {
     private UIFX ui;
     private Scanner in;
 
-
-
     public Scrabble(Scanner input) {
         this.in = input;
         this.pool = new Pool();
@@ -18,14 +16,6 @@ public class Scrabble {
     }
 
     //getters and setters
-    public UIFX getUi() {
-        return ui;
-    }
-
-    public void setUi(UIFX ui) {
-        this.ui = ui;
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -78,7 +68,6 @@ public class Scrabble {
             player.increaseScore(move.calculateScore());
             return true;
         }
-      
         return false;
     }
 }
