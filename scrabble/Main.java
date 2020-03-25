@@ -37,6 +37,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Goose.png")));
         primaryStage.show();
+        
     }
 
     @Override

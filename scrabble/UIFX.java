@@ -11,6 +11,8 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.Scanner;
 
+import com.sun.media.jfxmediaimpl.platform.Platform;
+
 public class UIFX {
     private double width = 30;
     private double height = 30;
@@ -204,6 +206,7 @@ public class UIFX {
             case "QUIT":
                 game.setIsOver(true);
                 System.out.println("Quitting...");
+                System.exit(0);
                 break;
             case "HELP":
                 printHelpMessage();
