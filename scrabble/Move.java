@@ -88,6 +88,25 @@ public class Move {
         }
         return word;
     }
+    
+   private String chooseBlank(String word) {
+		
+	    Scanner in = new Scanner(System.in);
+		System.out.println("\n\nChoose any letter to replace the blank with: ");
+		Tile remove = playerFrame.getTileFromChar('_');
+		playerFrame.removeLetter(remove);
+		char letter = Character.toUpperCase(in.next(".").charAt(0));
+		if(!(Character.isLetter(letter))){
+			System.out.println("Enter a valid character in the alphabet!");
+			chooseBlank(word);
+		}
+		Tile add = new Tile(letter, 0);
+		playerFrame.addTile(add);
+		String replaced = word.replace('_', letter);
+
+		return replaced;
+	}
+	
 
     /* move validation */
     private boolean isPlacementValid(int row, int column) {
@@ -153,7 +172,9 @@ public class Move {
             direction = getDirectionInput(inputString);
             System.out.println("Direction: " + direction);
             String word = getWordInput(inputString, in);
-
+            if(word.contains("_")) {
+            	word = chooseBlank(word);
+            }
             for (int j = 0; j < word.length(); j++) {
                 validPlacement = isPlacementValid(row, column);
                 if (validPlacement && !checkIntersect) {

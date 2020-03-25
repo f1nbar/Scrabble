@@ -30,6 +30,7 @@ public class UIFX {
 
         input = new Scanner(System.in);
         game = new Scrabble(input);
+
     }
 
     // empty tile methods
