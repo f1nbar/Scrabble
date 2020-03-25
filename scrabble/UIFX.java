@@ -205,8 +205,8 @@ public class UIFX {
         switch (command) {
             case "QUIT":
                 game.setIsOver(true);
-                System.exit(0);
                 System.out.println("Quitting...");
+                System.exit(0);
                 break;
             case "HELP":
                 printHelpMessage();
