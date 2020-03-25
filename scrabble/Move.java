@@ -42,9 +42,9 @@ public class Move {
     	System.out.println("Row input:" + input.charAt(0) );
         int row =  input.charAt(0) - 'A';
         if(row < 0 || row > 15) {
-        	System.out.println("Row is not valid, please enter a number between 1 and 15: ");
+        	System.out.println("Row is not valid, please enter a number between A and O: ");
         	Scanner in = new Scanner(System.in);
-            row = in.nextInt();
+            row = in.next().charAt(0) - 'A';
             in.close();
         }
       
@@ -54,7 +54,7 @@ public class Move {
     private int getColumnInput(String input) {
     	 int column =   Character.getNumericValue(input.charAt(1)) - 1;
          if(column < 0 || column > 15) {
-         	System.out.println("Row is not valid, please enter a number between 1 and 15: ");
+         	System.out.println("Column is not valid, please enter a number between 1 and 15: ");
          	Scanner in = new Scanner(System.in);
              column = in.nextInt();
              in.close();
@@ -69,6 +69,7 @@ public class Move {
         	Scanner in = new Scanner(System.in);
             direction = Character.toUpperCase(in.next().charAt(0));   
             in.close();
+           
         }
         return direction;
     }
