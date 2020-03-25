@@ -2,15 +2,15 @@ package scrabble;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class Main extends Application {
     public boolean gameGo = true;
@@ -21,24 +21,30 @@ public class Main extends Application {
     }
 
     private void updateStage(){
+        HBox score = ui.makeScoreDisplay();
+        score.setAlignment(Pos.CENTER);
         GridPane boardMain = ui.makeBoardDisplay();
-        VBox frame = ui.getFrameDisplay();
+        VBox frame = ui.makeFrameDisplay();
+        frame.setAlignment(Pos.CENTER);
         VBox screen = new VBox();
-        screen.getChildren().addAll(boardMain, frame);
-        Scene scene = new Scene(screen, 1000, 1000);
+        screen.setAlignment(Pos.CENTER);
+        screen.setPadding(new Insets(20, 20, 20, 0));
+        screen.getChildren().addAll(score, boardMain, frame);
+        Scene scene = new Scene(screen, 700, 730, Color.ANTIQUEWHITE);
         primaryStage.setTitle("Scrabble");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        updateStage();
+        ui.initializePlayers();
 
         Thread cliCommands = new Thread(() -> {
             while(gameGo) {
-                ui.processCLI();
                 Platform.runLater(this::updateStage);
+                ui.processCLI();
             }
         });
 

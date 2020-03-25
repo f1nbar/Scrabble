@@ -1,60 +1,38 @@
 package scrabble;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 
-import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 
-public class UIFX implements Initializable {
-    private double width = 50;
-    private double height = 50;
-    private ObservableList<Tile[]> observableBoardArray;
-    @FXML
-    public GridPane boardDisplay;
-
-    public VBox frameDisplay;
+public class UIFX {
+    private double width = 30;
+    private double height = 30;
 
     private Scrabble game;
     private Scanner input;
     private Rectangle blank;
-    private boolean playersInitialized;
+    private Font font;
 
     public UIFX() {
         blank = new Rectangle(width, height);
-        blank.setFill(Color.WHITE);
+        blank.setFill(Color.ANTIQUEWHITE);
         blank.setStrokeWidth(4);
-        blank.setStroke(Color.WHITE);
-        playersInitialized = false;
+        blank.setStroke(Color.ANTIQUEWHITE);
+
+        font = Font.font("Ariel", FontWeight.BOLD, height / 1.6);
 
         input = new Scanner(System.in);
         game = new Scrabble(input);
-        this.boardDisplay = makeBoardDisplay();
-        this.frameDisplay = makeFrameDisplay();
-    }
-
-    public GridPane getBoardDisplay() {
-        return this.boardDisplay;
-    }
-
-    public VBox getFrameDisplay() {
-        return this.frameDisplay;
     }
 
     // empty tile methods
-    @FXML
     private Rectangle emptyTile(int row, int column) {
         Rectangle rectangle = new Rectangle(width, height);
         rectangle.setFill(getTileColor(row, column));
@@ -63,34 +41,50 @@ public class UIFX implements Initializable {
         return rectangle;
     }
 
-    @FXML
-    private StackPane letterTile(Tile tile) {
-        Rectangle rectangle = new Rectangle(width, height);
+    private StackPane frameTile(Tile tile) {
+        Rectangle rectangle = new Rectangle(width*2, height*2);
         rectangle.setFill(Color.PERU);
-        rectangle.setStrokeWidth(4);
+        rectangle.setStrokeWidth(3.9);
         rectangle.setStroke(Color.BLACK);
 
-        HBox tileTextValue = makeTileText(tile);
+        HBox tileTextValue = makeFrameTileText(tile);
 
         StackPane placedTileOnBoard = new StackPane();
         placedTileOnBoard.getChildren().addAll(rectangle, tileTextValue);
         return placedTileOnBoard;
     }
 
-    @FXML
-    private HBox makeTileText(Tile tile) {
-        Text tileChar = new Text("  " + tile.getLetter());
+    private StackPane boardTile(Tile tile) {
+        Rectangle rectangle = new Rectangle(width, height);
+        rectangle.setFill(Color.PERU);
+        rectangle.setStrokeWidth(4);
+        rectangle.setStroke(Color.BLACK);
+
+        Text tileChar = new Text("" + tile.getLetter());
+        Font semiFont = Font.font("Ariel", FontWeight.BOLD, height / 1.5);
+        tileChar.setFont(semiFont);
+        tileChar.setTextAlignment(TextAlignment.CENTER);
+        StackPane placedTileOnBoard = new StackPane();
+        placedTileOnBoard.getChildren().addAll(rectangle, tileChar);
+        return placedTileOnBoard;
+    }
+
+    private HBox makeFrameTileText(Tile tile) {
+        Text tileChar = new Text("" + tile.getLetter());
         Text points = new Text(String.valueOf(tile.getScore()));
-        Font font = Font.font("Ariel", FontWeight.SEMI_BOLD, height / 1.6);
-        tileChar.setFont(font);
-        points.setTranslateY(tileChar.getFont().getSize() * 1);
+        Font semiFont = Font.font("Ariel", FontWeight.SEMI_BOLD, height);
+        tileChar.setFont(semiFont);
+        points.setFont(semiFont);
+        points.setFont(Font.font("Ariel", FontWeight.SEMI_BOLD, height / 2));
+        points.setTranslateY(tileChar.getFont().getSize() / 1.5);
+        points.setTextAlignment(TextAlignment.RIGHT);
 
         HBox tileTextValue = new HBox();
+        tileTextValue.setAlignment(Pos.CENTER);
         tileTextValue.getChildren().addAll(tileChar, points);
         return tileTextValue;
     }
 
-    @FXML
     private Color getTileColor(int row, int column) {
         String position = Board.concatInt(row, column);
         if (game.getBoard().getSquareValue(position) != null) {
@@ -100,7 +94,7 @@ public class UIFX implements Initializable {
                 case "TL":
                     return Color.SALMON;
                 case "DW":
-                    return Color.BLUE;
+                    return Color.CORNFLOWERBLUE;
                 case "DL":
                     return Color.LIGHTBLUE;
                 default:
@@ -111,17 +105,12 @@ public class UIFX implements Initializable {
         }
     }
 
-    @FXML
     public GridPane makeBoardDisplay() {
         GridPane gameBoard = new GridPane();
         gameBoard.setPrefSize(755, 755);
         for (int x = 0; x <= game.getBoard().BOARD_SIZE; x++) {
             for (int y = 0; y <= game.getBoard().BOARD_SIZE; y++) {
                 if (x == 0 && y == 0) {
-                    Rectangle blank = new Rectangle(width, height);
-                    blank.setFill(Color.WHITE);
-                    blank.setStrokeWidth(4);
-                    blank.setStroke(Color.WHITE);
                     gameBoard.add(blank, y, x);
                 } else if (x == 0) {
                     Text guide = new Text(y + "");
@@ -129,17 +118,13 @@ public class UIFX implements Initializable {
                     placedTileOnBoard.getChildren().addAll(blank, guide);
                     gameBoard.add(placedTileOnBoard, y, x);
                 } else if (y == 0) {
-                    Rectangle blank = new Rectangle(width, height);
-                    blank.setFill(Color.WHITE);
-                    blank.setStrokeWidth(4);
-                    blank.setStroke(Color.WHITE);
                     Text guide = new Text(Character.toString((char) (64 + x)));
                     StackPane placedTileOnBoard = new StackPane();
                     placedTileOnBoard.getChildren().addAll(blank, guide);
                     gameBoard.add(placedTileOnBoard, y, x);
                 } else if (game.getBoard().getBoard()[x - 1][y - 1] != null) {
                     Tile tile = game.getBoard().getBoard()[x - 1][y - 1];
-                    StackPane tileDisplay = letterTile(tile);
+                    StackPane tileDisplay = boardTile(tile);
 
                     gameBoard.add(tileDisplay, y, x);
                 } else {
@@ -148,8 +133,20 @@ public class UIFX implements Initializable {
                 }
             }
         }
+        gameBoard.setAlignment(Pos.CENTER);
         return gameBoard;
 
+    }
+
+    public HBox makeScoreDisplay() {
+        HBox scoreBox = new HBox(20);
+        Text playerOneScore = new Text(game.getPlayerOne().getName() + ": " + game.getPlayerOne().getScore());
+        Text playerTwoScore = new Text(game.getPlayerTwo().getName() + ": " + game.getPlayerTwo().getScore());
+
+        playerOneScore.setFont(font);
+        playerTwoScore.setFont(font);
+        scoreBox.getChildren().addAll(playerOneScore, playerTwoScore);
+        return scoreBox;
     }
 
     public VBox makeFrameDisplay() {
@@ -157,58 +154,60 @@ public class UIFX implements Initializable {
         VBox frame = new VBox();
         Text frameTitle;
         Frame playerFrame;
-        if (playersInitialized) {
-            if (!game.getPlayerOne().getTurn()) {
-                playerFrame = game.getPlayerOne().getFrame();
-                frameTitle = new Text(game.getPlayerOne().getName() + "'s frame:");
-            } else {
-                playerFrame = game.getPlayerOne().getFrame();
-                frameTitle = new Text(game.getPlayerTwo().getName() + "'s frame:");
-            }
-            frameBox.getChildren().clear();
-            for (Tile tile : playerFrame.getFrame()) {
-                StackPane tileObject = letterTile(tile);
-                frameBox.getChildren().add(tileObject);
-            }
+        if (!game.getPlayerOne().getTurn()) {
+            playerFrame = game.getPlayerOne().getFrame();
+            frameTitle = new Text(game.getPlayerOne().getName() + "'s frame:");
         } else {
-            for (int i = 0; i < Frame.FRAME_SIZE; i++) {
-                Rectangle emptyFramePlaceholder = new Rectangle(width * 7, height);
-                emptyFramePlaceholder.setFill(Color.BLACK);
-                frameBox.getChildren().add(emptyFramePlaceholder);
-            }
-            frameTitle = new Text("Frame:");
+            playerFrame = game.getPlayerTwo().getFrame();
+            frameTitle = new Text(game.getPlayerTwo().getName() + "'s frame:");
         }
+        frameBox.getChildren().clear();
+        for (Tile tile : playerFrame.getFrame()) {
+            StackPane tileObject = frameTile(tile);
+            frameBox.getChildren().add(tileObject);
+        }
+        frameBox.setAlignment(Pos.CENTER);
+        frameTitle.setFont(font);
         frame.getChildren().addAll(frameTitle, frameBox);
         return frame;
     }
 
+    public void initializePlayers() {
+        game.setPlayerOne(game.initialisePlayer(game.getPool(), this.input));
+        game.setPlayerTwo(game.initialisePlayer(game.getPool(), this.input));
+        printHelpMessage();
+    }
+
+    private void printHelpMessage() {
+        System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n4:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A1 D HELLO' (note. not case-sensitive).\n5:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
+    }
 
     public void processCLI() {
-        if(!playersInitialized) {
-            game.setPlayerOne(game.initialisePlayer(game.getPool(), this.input));
-            game.setPlayerTwo(game.initialisePlayer(game.getPool(), this.input));
-            this.playersInitialized = true;
+        if (!game.getPlayerOne().getTurn()) {
+            System.out.println("\n" + game.getPlayerOne().getName() + "'s turn");
+            System.out.println("Frame: " + game.getPlayerOne().getFrame().toString());
+        } else {
+            System.out.println("\n" + game.getPlayerTwo().getName() + "'s turn");
+            System.out.println("Frame: " + game.getPlayerTwo().getFrame().toString());
         }
         System.out.print("Enter command: ");
-        String commandInput = input.next().trim().toUpperCase();
+        String commandInput = input.nextLine().trim().toUpperCase();
         switch (commandInput) {
             case "QUIT":
                 game.setIsOver(true);
                 System.out.println("Quitting...");
                 break;
+            case "HELP":
+                printHelpMessage();
+                break;
             default:
-                if (game.getPlayerOne().getTurn()) {
-                    game.playerTurn(game.getPlayerOne(), game.getBoard(), input, game.getPool());
-                    game.getPlayerOne().setTurn(false);
-                } else {
-                    game.playerTurn(game.getPlayerTwo(), game.getBoard(), input, game.getPool());
+                if (!game.getPlayerOne().getTurn()) {
+                    game.playerTurn(game.getPlayerOne(), game.getBoard(), input, game.getPool(), commandInput);
                     game.getPlayerOne().setTurn(true);
+                } else {
+                    game.playerTurn(game.getPlayerTwo(), game.getBoard(), input, game.getPool(), commandInput);
+                    game.getPlayerOne().setTurn(false);
                 }
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.boardDisplay = makeBoardDisplay();
     }
 }

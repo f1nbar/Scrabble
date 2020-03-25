@@ -81,21 +81,17 @@ public class Scrabble {
         return player;
     }
 
-    public void playerTurn(Player player, Board board, Scanner input, Pool pool) {
+    public void playerTurn(Player player, Board board, Scanner input, Pool pool, String inputString) {
         player.setTurn(true);
-        System.out.println(player.getName() + "'s turn:");
-        Move move = new Move(board, player.getFrame(), ui);
-        boolean validMove = move.makeMove(input);
+        Move move = new Move(board, player.getFrame());
+        boolean validMove = move.makeMove(input, inputString);
 
         if (!validMove) {
             move.undoMove();
-            playerTurn(player, board, input, pool);
+            playerTurn(player, board, input, pool, inputString);
         } else{
             player.getFrame().refill(pool);
         }
         player.setTurn(false);
-    }
-
-    public void runGame(){
     }
 }
