@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -22,16 +23,30 @@ public class Main extends Application {
     }
 
     private void updateStage(){
-        HBox score = ui.makeScoreDisplay();
+        StackPane indicator = ui.makePlayerTurnIndicator();
+        indicator.setAlignment(Pos.CENTER);
+
+        HBox score = new HBox(120);
+        score.getChildren().addAll(indicator, ui.makeScoreDisplay());
         score.setAlignment(Pos.CENTER);
+
         GridPane boardMain = ui.makeBoardDisplay();
+        boardMain.setAlignment(Pos.CENTER);
+
         VBox frame = ui.makeFrameDisplay();
         frame.setAlignment(Pos.CENTER);
+
+        HBox middle = new HBox();
+        middle.getChildren().addAll(boardMain, frame);
+        middle.setAlignment(Pos.CENTER_RIGHT);
+
         VBox screen = new VBox();
         screen.setAlignment(Pos.CENTER);
         screen.setPadding(new Insets(20, 20, 20, 0));
-        screen.getChildren().addAll(score, boardMain, frame);
-        Scene scene = new Scene(screen, 700, 730, Color.ANTIQUEWHITE);
+        screen.getChildren().addAll(score,middle);
+
+        Scene scene = new Scene(screen, 750, 620, Color.ANTIQUEWHITE);
+
         primaryStage.setTitle("Scrabble");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);

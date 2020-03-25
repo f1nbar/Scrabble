@@ -145,23 +145,27 @@ public class UIFX {
 
     public HBox makeScoreDisplay() {
         HBox scoreBox = new HBox(20);
+        StackPane scorePaneOne = new StackPane();
+        StackPane scorePaneTwo = new StackPane();
         Text playerOneScore = new Text(game.getPlayerOne().getName() + ": " + game.getPlayerOne().getScore());
         Text playerTwoScore = new Text(game.getPlayerTwo().getName() + ": " + game.getPlayerTwo().getScore());
 
         playerOneScore.setFont(font);
         playerTwoScore.setFont(font);
-        scoreBox.getChildren().addAll(playerOneScore, playerTwoScore);
+
+        scorePaneOne.setStyle("-fx-background-color: white; -fx-border-color: gray; -fx-border-width: 3px; -fx-padding: 8px;");
+        scorePaneTwo.setStyle("-fx-background-color: white; -fx-border-color: gray; -fx-border-width: 3px; -fx-padding: 8px;");
+        scorePaneOne.getChildren().add(playerOneScore);
+        scorePaneTwo.getChildren().add(playerTwoScore);
+
+        scoreBox.getChildren().addAll(scorePaneOne, scorePaneTwo);
         return scoreBox;
     }
 
     public VBox makeFrameDisplay() {
-        HBox frameBox = new HBox();
-        VBox frame = new VBox();
+        VBox frameBox = new VBox();
 
-        Text frameTitle;
         Frame playerFrame = currentPlayer.getFrame();
-        frameTitle = new Text(currentPlayer.getName() + "'s frame:");
-        frameBox.getChildren().clear();
 
         for (Tile tile : playerFrame.getFrame()) {
             StackPane tileObject = frameTile(tile);
@@ -169,9 +173,20 @@ public class UIFX {
         }
 
         frameBox.setAlignment(Pos.CENTER);
-        frameTitle.setFont(font);
-        frame.getChildren().addAll(frameTitle, frameBox);
-        return frame;
+        return frameBox;
+    }
+
+    public StackPane makePlayerTurnIndicator() {
+        StackPane indicator = new StackPane();
+
+        Text playerIndicator = new Text(currentPlayer.getName() + "'s Turn");
+        playerIndicator.setFont(font);
+
+        indicator.setStyle("-fx-background-color: white; -fx-border-color: red; -fx-border-width: 3px; -fx-padding: 8px;");
+        indicator.setMaxWidth(40);
+
+        indicator.getChildren().add(playerIndicator);
+        return indicator;
     }
 
     public void initializePlayers() {
@@ -185,7 +200,7 @@ public class UIFX {
     private void printHelpMessage() {
         System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n4:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A1 D HELLO' (note. not case-sensitive).\n5:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
     }
-        
+
 
     public void processCLI() {
         if (Player.turn == Player.playerOneTurn) {
@@ -200,10 +215,12 @@ public class UIFX {
 
         String commandInput = input.next().trim().toUpperCase();
         String command = commandInput.split(" ")[0];
-       
-       
+
+
         switch (command) {
             case "QUIT":
+                // do same as exit
+            case "EXIT":
                 game.setIsOver(true);
                 System.out.println("Quitting...");
                 System.exit(0);
@@ -225,7 +242,7 @@ public class UIFX {
 
             default:
                 if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+")) {
-                    if(game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
+                    if (game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
                         Player.changeTurn();
                     }
                 } else {

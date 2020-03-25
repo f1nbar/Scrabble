@@ -74,6 +74,7 @@ public class Scrabble {
         boolean validMove = move.makeMove(input, inputString);
         if (validMove) {
             player.getFrame().refill(pool);
+            player.increaseScore(move.calculateScore());
             return true;
         }
         return false;
