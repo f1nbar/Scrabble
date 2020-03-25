@@ -20,15 +20,12 @@ public class Move {
     int previousCounter = 0;
     int tileCounter = 0;
 
-    private boolean checkIntersect; // for checking when if an inputted word does not contain a letter, the word it intersects does.
-    private char checkIntersectLetter;
     private int[] intersectLocation = new int[2];
     private boolean letterInFrame;
 
     public Move(Board board, Frame playerFrame) {
         this.board = board;
         this.playerFrame = playerFrame;
-        checkIntersect = false;
         letterInFrame = true; //assumption
     }
 
@@ -42,7 +39,7 @@ public class Move {
     private int getColumnInput(String input) {
         //TODO error checks
         int column = Integer.parseInt(input.replaceAll("[\\D]", ""));
-        return column -1; // -1 as columns start at 1 on board but 0 in array.
+        return column - 1; // -1 as columns start at 1 on board but 0 in array.
     }
 
     private char getDirectionInput(String input) {
@@ -63,49 +60,37 @@ public class Move {
         return word;
     }
 
-   private String chooseBlank(String word, Scanner in) {
-		
-		System.out.print("\n\nChoose any letter to replace the blank with: ");
-		Tile remove = playerFrame.getTileFromChar('_');
-		playerFrame.removeLetter(remove);
-		char letter = Character.toUpperCase(in.next().trim().charAt(0));
-		if(!(Character.isLetter(letter))){
-			System.out.print("Enter a valid character in the alphabet!");
-			chooseBlank(word, in);
-		}
-		Tile add = new Tile(letter, 0);
-		playerFrame.addTile(add);
+    private String chooseBlank(String word, Scanner in) {
 
-       return word.replace('_', letter);
-	}
-	
+        System.out.print("\n\nChoose any letter to replace the blank with: ");
+        Tile remove = playerFrame.getTileFromChar('_');
+        playerFrame.removeLetter(remove);
+        char letter = Character.toUpperCase(in.next().trim().charAt(0));
+        if (!(Character.isLetter(letter))) {
+            System.out.print("Enter a valid character in the alphabet!");
+            chooseBlank(word, in);
+        }
+        Tile add = new Tile(letter, 0);
+        playerFrame.addTile(add);
+
+        return word.replace('_', letter);
+    }
+
 
     /* move validation */
     private boolean isPlacementValid(int row, int column) {
         if (row < 0 || row > 15 || column < 0 || column > 15) {
             ERROR = "Co-ordinates are out of bounds.";
-            System.out.println(ERROR);
             return false;
         }
         //Connection
-        if (movesMade != 0 && !findConnection(row, column)) {
+        if (!findConnection(row, column)) {
             ERROR = "Connection to tiles on board not found.";
-            System.out.println(ERROR);
             return false;
         }
 
         if (board.getBoard()[row][column] != null) {
-            if(checkIntersect && (checkIntersectLetter != board.getBoard()[row][column].getLetter())){
-                ERROR = "Invalid tiles for inputted word.";
-                System.out.println(ERROR);
-                return false;
-            } else if(checkIntersect){
-                intersectLocation[0] = row;
-                intersectLocation[1] = column;
-                return true;
-            }
             ERROR = "Cannot place a tile on a space already containing a tile.";
-            System.out.println(ERROR);
             return false;
         }
 
@@ -113,16 +98,14 @@ public class Move {
     }
 
     private boolean findConnection(int row, int column) {
-        if (tileCounter != 1) {
+        if (movesMade != 0) {
             int boxTop = Math.max(row - 1, 0);
             int boxBottom = Math.min(row + 1, board.BOARD_SIZE - 1);
             int boxLeft = Math.max(column - 1, 0);
             int boxRight = Math.min(column + 1, board.BOARD_SIZE - 1);
             boolean foundConnection = false;
 
-            System.out.println("Connection");
             for (int r = boxTop; r <= boxBottom && !foundConnection; r++) {
-                System.out.println("Connection2");
                 for (int c = boxLeft; c <= boxRight && !foundConnection; c++) {
                     if (board.getBoard()[r][c] != null) {
                         foundConnection = true;
@@ -150,7 +133,7 @@ public class Move {
             word = chooseBlank(word, in);
         }
 
-        if(!letterInFrame){
+        if (!letterInFrame) {
             ERROR = "Letter not in frame";
             return false;
         }
@@ -190,7 +173,7 @@ public class Move {
     }
 
     public void undoMove() {
-        for(int i = 0; i < previousCounter; i++) {
+        for (int i = 0; i < previousCounter; i++) {
             System.out.println("prevrows: " + previousRows[i] + "prevcol" + previousColumns[i]);
         }
     }
