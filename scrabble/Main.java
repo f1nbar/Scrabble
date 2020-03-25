@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,6 +34,7 @@ public class Main extends Application {
         Scene scene = new Scene(screen, 700, 730, Color.ANTIQUEWHITE);
         primaryStage.setTitle("Scrabble");
         primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Goose.png")));
         primaryStage.show();
     }
 
