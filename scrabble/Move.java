@@ -23,6 +23,8 @@ public class Move {
     private boolean checkIntersect; // for checking when if an inputted word does not contain a letter, the word it intersects does.
     private char checkIntersectLetter;
     private int[] intersectLocation = new int[2];
+    
+    public Boolean validInput;
 
 
     public Move(Board board, Frame playerFrame) {
@@ -44,11 +46,13 @@ public class Move {
         System.out.print("row: "+ row);
         if(row < 0 || row > 15) {
         	System.out.print("\nRow is not valid, please enter a letter between A and O: \n");
-        	Scanner in = new Scanner(System.in);
-            char newRow = in.nextLine().charAt(0);
-            String replaceRow = input.replace(input.charAt(0),newRow);
-            in.close();
-            row = getRowInput(replaceRow);
+        /*	Scanner in = new Scanner(System.in);
+        	while(in.hasNext()) {
+              char newRow = Character.toUpperCase(in.next().charAt(0));
+              String replaceRow = input.replace(input.charAt(0),newRow);
+              row = getRowInput(replaceRow);
+              in.close();
+        	}    */
         }
         
         return row;
@@ -62,19 +66,16 @@ public class Move {
     	 else {
     	 column = Character.getNumericValue(input.charAt(1)) - 1;
     	 }
-         if(column < 0 || column > 15) {
-         	System.out.print("\nColumn is not valid, please enter a number between 1 and 15: \n");
-         	Scanner in = new Scanner(System.in);
-            int newColumn = in.nextInt();
+         	/*Scanner in = new Scanner(System.in);
+             int newColumn = in.nextInt();
         	 String replaceColumn = input.replace(Integer.toString(column - 1),Integer.toString(newColumn + 1));
         	 System.out.print("replacing: " +Integer.toString(column - 1));
         	 System.out.print("replacing with : " + Integer.toString(newColumn + 1));
             in.close();
-            column = getColumnInput(replaceColumn);    
-         }
+            column = getColumnInput(replaceColumn);*/    
         return column;
     }
-
+    
     private char getDirectionInput(String input) {
     	char direction;
     	if(input.charAt(3) == ' ') {
@@ -83,16 +84,33 @@ public class Move {
     	else {
         direction = Character.toUpperCase(input.charAt(3));
     	}
-        if(direction != 'A' && direction != 'D' ) {
-        	System.out.print("Direction not valid, please enter either A for accross or D for down: \n");
-        	Scanner in = new Scanner(System.in);
+        	/*Scanner in = new Scanner(System.in);
             char newDirection = Character.toUpperCase(in.nextLine().charAt(0)); 
             String replaceDirection = input.replace(direction, newDirection);
             in.close();
-            direction = getDirectionInput(replaceDirection);
-        }
+            getDirectionInput(replaceDirection);*/
+
         return direction;
     }
+    
+    public void validInput(String input) {
+    	int row = getColumnInput(input);
+    	int column = getColumnInput(input);
+    	int direction = getDirectionInput(input);
+    	 if(row < 0 && row > 15) {
+          	System.out.print("\nRow is not valid, please enter a letter between A and O: \n");
+          	validInput = false;
+     	 }
+    	  if(column < 0 || column > 15) {
+          	System.out.print("\nColumn is not valid, please enter a number between 1 and 15: \n");
+        	validInput = false;
+    	 }
+    	 if(direction != 'A' && direction != 'D' ) {
+          	System.out.print("Direction not valid, please enter either A for accross or D for down: \n");
+        	validInput = false;
+    	  }
+    }
+    
 
 
     private String getWordInput(String input, Scanner in) {
@@ -185,6 +203,8 @@ public class Move {
 
     /* make move driver */
     public boolean makeMove(Scanner in, String inputString) {
+    	
+    	validInput(inputString);
         boolean moveMade = false;
 
         while (!moveMade) {

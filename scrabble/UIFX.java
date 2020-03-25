@@ -182,6 +182,7 @@ public class UIFX {
     private void printHelpMessage() {
         System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n4:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A1 D HELLO' (note. not case-sensitive).\n5:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
     }
+        
 
     public void processCLI() {
         //System.out.println("Turn:" + game.getPlayerOne().getTurn() );
@@ -196,6 +197,8 @@ public class UIFX {
         System.out.print("Enter command: ");
         String commandInput = input.nextLine().trim().toUpperCase();
         String command = commandInput.split(" ")[0];
+       
+       
         switch (command) {
             case "QUIT":
                 game.setIsOver(true);
@@ -215,7 +218,12 @@ public class UIFX {
                 System.out.println("Passing turn...");
                 Player.changeTurn();
                 break;
+                
             default:
+            	game.checkInput(currentPlayer, game.getBoard(), commandInput);
+            	  if (!game.validInput) {
+  					System.out.print("works!");
+  				}
                 game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput);
                 Player.changeTurn();
         }

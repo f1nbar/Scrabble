@@ -15,12 +15,14 @@ public class Scrabble {
     private UIFX ui;
     private Scanner in;
     private boolean isOver;
+    public boolean validInput;
+   
 
     public Scrabble(Scanner input){
         this.in = input;
         this.pool =  new Pool();
         this.board = new Board();
-
+        this.validInput = true;
         this.isOver = false;
     }
 
@@ -63,6 +65,11 @@ public class Scrabble {
     public Pool getPool() {
         return this.pool;
     }
+    public void setValidInput(boolean validInput) {
+    	this.validInput = validInput;
+    }
+    
+  
 
     public Player initialisePlayer(Pool pool, Scanner input) {
         this.in = input;
@@ -74,11 +81,20 @@ public class Scrabble {
         }
         return player;
     }
+    
+    public void checkInput(Player player,Board board, String CLI) {
+    	 Move move = new Move(board, player.getFrame());
+    	  move.validInput(CLI);
+    	  validInput = move.validInput;
+    
+    }
 
     public void playerTurn(Player player, Board board, Scanner input, Pool pool, String inputString) {
+    	
+    	
         Move move = new Move(board, player.getFrame());
+        
         boolean validMove = move.makeMove(input, inputString);
-
         if (!validMove) {
             move.undoMove();
             playerTurn(player, board, input, pool, inputString);
@@ -86,6 +102,4 @@ public class Scrabble {
             player.getFrame().refill(pool);
         }
     }
-    
-    
 }
