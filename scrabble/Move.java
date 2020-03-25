@@ -20,13 +20,17 @@ public class Move {
     int previousCounter = 0;
     int tileCounter = 0;
 
-    private int[] intersectLocation = new int[2];
     private boolean letterInFrame;
+    private boolean checkForIntersection; // triggers check
+    private char checkLetterForIntersection;
+    private boolean intersection; // return value of if intersection is valid or not
 
     public Move(Board board, Frame playerFrame) {
         this.board = board;
         this.playerFrame = playerFrame;
-        letterInFrame = true; //assumption
+        this.letterInFrame = true; //assumption
+        this.checkForIntersection = false;
+        this.intersection = false;
     }
 
     /* input getters */
@@ -54,20 +58,46 @@ public class Move {
                 playerFrame.getTileFromChar(word.charAt(i));
             } catch (Exception e) {
                 System.out.println("Letter: '" + word.charAt(i) + "' not in frame, pick again.");
-                letterInFrame = false;
+                checkForIntersection = true;
+                checkLetterForIntersection = word.charAt(i);
             }
         }
         return word;
     }
 
-    private String chooseBlank(String word, Scanner in) {
+    private boolean isIntersectionValid(int startingRow, int startingColumn, char direction, String word) {
+        int changingAxis = 0;
+        int staticAxis = 0;
+        boolean foundIntersection = false;
 
-        System.out.print("\n\nChoose any letter to replace the blank with: ");
+        if (direction == 'D') {
+            changingAxis = startingRow;
+            staticAxis = startingColumn;
+        } else if (direction == 'A') {
+            changingAxis = startingColumn;
+            staticAxis = startingRow;
+        } else {
+            ERROR = "Shouldn't be possible to reach here: direction isn't a or d. Move.java Line 74";
+        }
+        for (int i = changingAxis; i < changingAxis + word.length(); i++) {
+            System.out.println("row: " + i + " column: " + staticAxis);
+            if (board.getBoard()[i][staticAxis] != null)  {
+                if(board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) {
+                    System.out.println("here");
+                    foundIntersection = true;
+                }
+            }
+        }
+        return foundIntersection;
+    }
+
+    private String chooseBlank(String word, Scanner in) {
+        System.out.print("Choose any letter to replace the blank with: ");
         Tile remove = playerFrame.getTileFromChar('_');
         playerFrame.removeLetter(remove);
         char letter = Character.toUpperCase(in.next().trim().charAt(0));
         if (!(Character.isLetter(letter))) {
-            System.out.print("Enter a valid character in the alphabet!");
+            System.out.print("\nEnter a valid character in the alphabet!");
             chooseBlank(word, in);
         }
         Tile add = new Tile(letter, 0);
@@ -89,7 +119,7 @@ public class Move {
             return false;
         }
 
-        if (board.getBoard()[row][column] != null) {
+        if (board.getBoard()[row][column] != null && !intersection) {
             ERROR = "Cannot place a tile on a space already containing a tile.";
             return false;
         }
@@ -122,7 +152,6 @@ public class Move {
 
     /* make move driver */
     public boolean makeMove(Scanner in, String inputString) {
-
         String[] splitInput = inputString.split(" ");
         int row = getRowInput(splitInput[0]);
         int column = getColumnInput(splitInput[0]);
@@ -132,6 +161,9 @@ public class Move {
         if (word.contains("_")) {
             word = chooseBlank(word, in);
         }
+        if(checkForIntersection){
+            intersection = isIntersectionValid(row, column, direction, word);
+        }
 
         if (!letterInFrame) {
             ERROR = "Letter not in frame";
@@ -140,9 +172,13 @@ public class Move {
         for (int i = 0; i < word.length(); i++) {
             boolean validPlacement = isPlacementValid(row, column);
             if (validPlacement) {
-                chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i));
-                board.placeTile(row, column, chosenTile[tileCounter - 1]);
-                playerFrame.removeLetter(chosenTile[tileCounter - 1]);
+                if(board.getBoard()[row][column] != null && intersection){
+
+                } else {
+                    chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i));
+                    board.placeTile(row, column, chosenTile[tileCounter - 1]);
+                    playerFrame.removeLetter(chosenTile[tileCounter - 1]);
+                }
                 if (direction == 'D') {
                     row++;
                 } else if (direction == 'A') {
