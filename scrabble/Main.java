@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    public boolean gameGo = true;
+    public static boolean gameGo = true;
     private UIFX ui = new UIFX();
     private Stage primaryStage;
     public static void main(String[] args) {
@@ -33,6 +33,7 @@ public class Main extends Application {
         screen.getChildren().addAll(score, boardMain, frame);
         Scene scene = new Scene(screen, 700, 730, Color.ANTIQUEWHITE);
         primaryStage.setTitle("Scrabble");
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Goose.png")));
         primaryStage.show();

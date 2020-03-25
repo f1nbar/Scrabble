@@ -19,6 +19,7 @@ public class UIFX {
     private Scanner input;
     private Rectangle blank;
     private Font font;
+    private Player currentPlayer;
 
     public UIFX() {
         blank = new Rectangle(width, height);
@@ -43,7 +44,7 @@ public class UIFX {
     }
 
     private StackPane frameTile(Tile tile) {
-        Rectangle rectangle = new Rectangle(width*2, height*2);
+        Rectangle rectangle = new Rectangle(width * 2, height * 2);
         rectangle.setFill(Color.PERU);
         rectangle.setStrokeWidth(3.9);
         rectangle.setStroke(Color.BLACK);
@@ -153,20 +154,17 @@ public class UIFX {
     public VBox makeFrameDisplay() {
         HBox frameBox = new HBox();
         VBox frame = new VBox();
+
         Text frameTitle;
-        Frame playerFrame;
-        if (!game.getPlayerOne().getTurn()) {
-            playerFrame = game.getPlayerOne().getFrame();
-            frameTitle = new Text(game.getPlayerOne().getName() + "'s frame:");
-        } else {
-            playerFrame = game.getPlayerTwo().getFrame();
-            frameTitle = new Text(game.getPlayerTwo().getName() + "'s frame:");
-        }
+        Frame playerFrame = currentPlayer.getFrame();
+        frameTitle = new Text(currentPlayer.getName() + "'s frame:");
         frameBox.getChildren().clear();
+
         for (Tile tile : playerFrame.getFrame()) {
             StackPane tileObject = frameTile(tile);
             frameBox.getChildren().add(tileObject);
         }
+
         frameBox.setAlignment(Pos.CENTER);
         frameTitle.setFont(font);
         frame.getChildren().addAll(frameTitle, frameBox);
@@ -176,6 +174,8 @@ public class UIFX {
     public void initializePlayers() {
         game.setPlayerOne(game.initialisePlayer(game.getPool(), this.input));
         game.setPlayerTwo(game.initialisePlayer(game.getPool(), this.input));
+        Player.turn = Player.playerOneTurn;
+        this.currentPlayer = game.getPlayerOne();
         printHelpMessage();
     }
 
@@ -184,16 +184,19 @@ public class UIFX {
     }
 
     public void processCLI() {
-        if (!game.getPlayerOne().getTurn()) {
-            System.out.println("\n" + game.getPlayerOne().getName() + "'s turn");
-            System.out.println("Frame: " + game.getPlayerOne().getFrame().toString());
+        //System.out.println("Turn:" + game.getPlayerOne().getTurn() );
+        if (Player.turn == Player.playerOneTurn) {
+            currentPlayer = game.getPlayerOne();
         } else {
-            System.out.println("\n" + game.getPlayerTwo().getName() + "'s turn");
-            System.out.println("Frame: " + game.getPlayerTwo().getFrame().toString());
+            currentPlayer = game.getPlayerTwo();
         }
+        System.out.println("\n" + currentPlayer.getName() + "'s turn");
+        System.out.println("Frame: " + currentPlayer.getFrame());
+
         System.out.print("Enter command: ");
         String commandInput = input.nextLine().trim().toUpperCase();
-        switch (commandInput) {
+        String command = commandInput.split(" ")[0];
+        switch (command) {
             case "QUIT":
                 game.setIsOver(true);
                 System.out.println("Quitting...");
@@ -201,14 +204,20 @@ public class UIFX {
             case "HELP":
                 printHelpMessage();
                 break;
-            default:
-                if (!game.getPlayerOne().getTurn()) {
-                    game.playerTurn(game.getPlayerOne(), game.getBoard(), input, game.getPool(), commandInput);
-                    game.getPlayerOne().setTurn(true);
-                } else {
-                    game.playerTurn(game.getPlayerTwo(), game.getBoard(), input, game.getPool(), commandInput);
-                    game.getPlayerOne().setTurn(false);
+            case "EXCHANGE":
+                // gets character from input after space and calls exchangeTile function
+                boolean exchange = currentPlayer.getFrame().exchangeTile(Character.toUpperCase(commandInput.split(" ")[1].charAt(0)),game.getPool());
+                if(exchange){ // if exchange is valid
+                    Player.changeTurn();
                 }
+                break;
+            case "PASS":
+                System.out.println("Passing turn...");
+                Player.changeTurn();
+                break;
+            default:
+                game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput);
+                Player.changeTurn();
         }
     }
 }

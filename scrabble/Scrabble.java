@@ -58,13 +58,7 @@ public class Scrabble {
     }
     public void setIsOver(boolean isOver){
         this.isOver = isOver;
-    }
-    public boolean getIsOver() {
-        return this.isOver;
-    }
-
-    public void setIn(Scanner in) {
-        this.in = in;
+        Main.gameGo = isOver;
     }
     public Pool getPool() {
         return this.pool;
@@ -82,7 +76,6 @@ public class Scrabble {
     }
 
     public void playerTurn(Player player, Board board, Scanner input, Pool pool, String inputString) {
-        player.setTurn(true);
         Move move = new Move(board, player.getFrame());
         boolean validMove = move.makeMove(input, inputString);
 
@@ -92,7 +85,6 @@ public class Scrabble {
         } else{
             player.getFrame().refill(pool);
         }
-        player.setTurn(false);
     }
     
     

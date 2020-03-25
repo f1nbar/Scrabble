@@ -5,147 +5,156 @@ import java.util.LinkedList;
 
 /**
  * Frame class which stores and allows manipulation of Player's frames.
- * 
- * @author Peter O'Donnell
- * 
  *
+ * @author Peter O'Donnell
  */
 public class Frame {
 
-	public static int FRAME_SIZE = 7;
+    public static int FRAME_SIZE = 7;
 
-	private LinkedList<Tile> frame = new LinkedList<>(); // linked list to store tile objects
+    private LinkedList<Tile> frame = new LinkedList<>(); // linked list to store tile objects
 
-	/**
-	 * Removes letter from frame
-	 * 
-	 * @param c,tile object to be removed
-	 */
-	public void removeLetter(Tile... c) { // This function removes the tiles from the frame
-		for (Tile tile : c) {
+    /**
+     * Removes letter from frame
+     *
+     * @param c,tile object to be removed
+     */
+    public void removeLetter(Tile... c) { // This function removes the tiles from the frame
+        for (Tile tile : c) {
 
-			if (checkLetters(tile))
-				frame.remove(tile);
-		}
-	}
+            if (checkLetters(tile))
+                frame.remove(tile);
+        }
+    }
 
-	/**
-	 * checks if letter is in frame or not
-	 * 
-	 * @param c,tile object to be checked
-	 * @return true,if letter is in frame
-	 */
+    /**
+     * checks if letter is in frame or not
+     *
+     * @param c,tile object to be checked
+     * @return true, if letter is in frame
+     */
 
-	public boolean checkLetters(Tile c) { // This checks if the letters are avalaible or not returning a suitable
-												// boolean
-		for (Tile tile : frame) {
-			if (tile.getLetter() == c.getLetter()) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
+    public boolean checkLetters(Tile c) { // This checks if the letters are avalaible or not returning a suitable
+        // boolean
+        for (Tile tile : frame) {
+            if (tile.getLetter() == c.getLetter()) {
+                return true;
+            }
+        }
 
-	/**
-	 * checks if frame is empty or not
-	 * 
-	 * @return true, if frame is empty
-	 */
+        return false;
+    }
 
-	public boolean isEmpty() { // returns true if frame is empty
-		return frame.isEmpty();
-	}
+    /**
+     * checks if frame is empty or not
+     *
+     * @return true, if frame is empty
+     */
 
-	@Override
-	public String toString() { // returns the string
-		StringBuilder result = null;
-		for (Tile tile : frame) {
-			if (result == null) {
-				result = new StringBuilder("" + tile.getLetter());
-			} else {
-				result.append(", ").append(tile.getLetter());
-			}
-		}
-		result = new StringBuilder(("[ " + result + " ]"));
-		return result.toString();
-	}
+    public boolean isEmpty() { // returns true if frame is empty
+        return frame.isEmpty();
+    }
 
-	/**
-	 * fills frame with tile objects
-	 * 
-	 * @param t, Tile objects
-	 * 
-	 * @return true, if the fillFrame is successful
-	 */
+    @Override
+    public String toString() { // returns the string
+        StringBuilder result = null;
+        for (Tile tile : frame) {
+            if (result == null) {
+                result = new StringBuilder("" + tile.getLetter());
+            } else {
+                result.append(", ").append(tile.getLetter());
+            }
+        }
+        result = new StringBuilder(("[ " + result + " ]"));
+        return result.toString();
+    }
 
-	public boolean fillFrame(Tile... t) {
+    /**
+     * fills frame with tile objects
+     *
+     * @param t, Tile objects
+     * @return true, if the fillFrame is successful
+     */
 
-		if (t.length <= FRAME_SIZE - frame.size()) {
-			Collections.addAll(frame, t);
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public boolean fillFrame(Tile... t) {
 
-	/**
-	 * gets tile from frame using index
-	 * 
-	 * @param i,index of tile
-	 * 
-	 * @return Tile, returns tile at index i
-	 */
+        if (t.length <= FRAME_SIZE - frame.size()) {
+            Collections.addAll(frame, t);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public Tile getTile(int i) { // returns letter in index i
-		if (i >= 0 && i < frame.size()) {
-			return frame.get(i);
-		} else {
-			throw new IllegalArgumentException("INDEX OUT OF BOUNDS:getTile");
-		}
-	}
-	
-	public Tile getTileFromChar(char letter) {
-		for (Tile tile : frame) {
-			if (tile.getLetter() == letter) {
-				return tile;
-			}
-		}
-		throw new IllegalArgumentException("Letter not found: getTileFromChar");
-	}
+    /**
+     * gets tile from frame using index
+     *
+     * @param i,index of tile
+     * @return Tile, returns tile at index i
+     */
 
-	/**
-	 * returns frames size
-	 * 
-	 * @return int,frame.size
-	 */
+    public Tile getTile(int i) { // returns letter in index i
+        if (i >= 0 && i < frame.size()) {
+            return frame.get(i);
+        } else {
+            throw new IllegalArgumentException("INDEX OUT OF BOUNDS:getTile");
+        }
+    }
 
-	public int frameSize() { // returns size of frame
-		return frame.size();
-	}
+    public Tile getTileFromChar(char letter) {
+        for (Tile tile : frame) {
+            if (tile.getLetter() == letter) {
+                return tile;
+            }
+        }
+        throw new IllegalArgumentException("Letter not found: getTileFromChar");
+    }
 
-	/**
-	 * refills frame until reaches max capacity
-	 * 
-	 * @param p,Pool object where tiles are accessed from
-	 */
+    /**
+     * returns frames size
+     *
+     * @return int, frame.size
+     */
 
-	public void refill(Pool p) {
-		while (frame.size() < 7 && !p.emptyPool()) {
-			this.fillFrame(p.randomTile());
-		}
-		if(p.emptyPool()){
-			System.out.println("Pool is empty.");
-		}
-	}
+    public int frameSize() { // returns size of frame
+        return frame.size();
+    }
 
-	public void addTile(Tile tile){
-		if(frame.size() < 7) {
-			frame.add(tile);
-		}
-	}
+    /**
+     * refills frame until reaches max capacity
+     *
+     * @param p,Pool object where tiles are accessed from
+     */
 
-	public LinkedList<Tile> getFrame(){
-		return frame;
-	}
+    public void refill(Pool p) {
+        while (frame.size() < 7 && !p.emptyPool()) {
+            this.fillFrame(p.randomTile());
+        }
+        if (p.emptyPool()) {
+            System.out.println("Pool is empty.");
+        }
+    }
+
+    public void addTile(Tile tile) {
+        if (frame.size() < 7) {
+            frame.add(tile);
+        }
+    }
+
+    public boolean exchangeTile(char c, Pool pool) {
+        Tile tile;
+        try {
+             tile = this.getTileFromChar(c);
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Tile not in frame.");
+            return false;
+        }
+		removeLetter(tile);
+        addTile(pool.randomTile());
+        return true;
+    }
+
+    public LinkedList<Tile> getFrame() {
+        return frame;
+    }
 }

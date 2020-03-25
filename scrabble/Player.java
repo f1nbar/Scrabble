@@ -11,7 +11,9 @@ public class Player {
 	private String name;
 	private int score;
 	private Frame playerFrame;
-	private boolean turn;
+	public static int  turn;
+	public static  final int  playerOneTurn = 0;
+	public static final int playerTwoTurn = 1;
 
 	private final String nameRegex = "[a-zA-Z]*(\\s[a-zA-Z]*)?"; // checks to see if the string contains a word made of
 																	// only alphabet characters for a maximum of two
@@ -79,12 +81,12 @@ public class Player {
 		sanitizeScore(points);
 		this.score += points;
 	}
-	
-	public boolean getTurn() {
-		return turn;
-	}
-  
-	public void setTurn(boolean turn){
-		this.turn = turn;
+
+	public static void changeTurn(){
+		if(turn == playerOneTurn){
+			turn = playerTwoTurn;
+		} else {
+			turn = playerOneTurn;
+		}
 	}
 }
