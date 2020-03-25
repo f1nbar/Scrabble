@@ -43,7 +43,7 @@
 ![assignment_two_diagram](https://github.com/UCD-COMP20050/gooses/blob/master/images/assignment_two_diagram.PNG)
 
 
- Assignment 3
+# Assignment 3
 ## Approach:
 1. Assigned a new Scrum Master (Conor Knowles) for the assignment and designated tasks to team members.
 2. Implemented Scrabble and Move Classes which handle 2 human players playing a game and scoring.
