@@ -260,7 +260,7 @@ public class UIFX {
     }
 
     public Scene makeIntroScene(){
-        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar O Deaghaidh");
+        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar Ó Deaghaidh");
         scrabbleText.setFont(font);
         scrabbleText.setTextAlignment(TextAlignment.CENTER);
 
