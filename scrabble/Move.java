@@ -12,12 +12,13 @@ public class Move {
     private Frame playerFrame;
     private Board board;
 
-    // History arrays
+    // History arrays for placement
     int[] previousRows = new int[7];
     int[] previousColumns = new int[7];
-    Tile[] chosenTile = new Tile[7];
-
     int previousCounter = 0;
+
+    // placed tiles
+    Tile[] chosenTile = new Tile[7];
     int tileCounter = 0;
 
     // word positions
@@ -26,14 +27,18 @@ public class Move {
     int lastColumn;
     int lastRow;
 
+    // history arrays for connections
     int[] boardConnectionRow = new int[16];
     int[] boardConnectionColumn = new int[16];
     int connectionIncrement;
 
-    private boolean letterInFrame;
+    private boolean letterInFrame; // says if a played letter is in frame or not, for use in intersection
+
     private boolean checkForIntersection; // triggers check
-    private char checkLetterForIntersection;
+    private char checkLetterForIntersection; // letter to be checked
     private boolean intersection; // return value of if intersection is valid or not
+    private boolean extremityIntersection; // if intersection is at extremity
+    private boolean extremityIntersectionFirst; // if above is true, if the intersection is at the top extremity or the bottom
 
     public Move(Board board, Frame playerFrame) {
         this.board = board;
@@ -41,6 +46,7 @@ public class Move {
         this.letterInFrame = true; //assumption
         this.checkForIntersection = false;
         this.intersection = false;
+        this.extremityIntersection = false;
         this.connectionIncrement = 0;
     }
 
@@ -58,14 +64,15 @@ public class Move {
         return Character.toUpperCase(input.charAt(0));
     }
 
+    // take in word, make upper case and make sure that all tiles are present in frame
     private String getWordInput(String input) {
         String word = input.toUpperCase();
         for (int i = 0; i < word.length(); i++) {
             try {
                 playerFrame.getTileFromChar(word.charAt(i));
             } catch (Exception e) {
-                System.out.println("Letter: '" + word.charAt(i) + "' not in frame, pick again.");
                 checkForIntersection = true;
+                letterInFrame = false;
                 checkLetterForIntersection = word.charAt(i);
             }
         }
@@ -77,6 +84,7 @@ public class Move {
         int staticAxis = 0;
         boolean foundIntersection = false;
 
+        // set axis
         if (direction == 'D') {
             changingAxis = startingRow;
             staticAxis = startingColumn;
@@ -88,16 +96,29 @@ public class Move {
         }
         for (int i = changingAxis; i < changingAxis + word.length(); i++) {
             if (direction == 'D') {
-                if (board.getBoard()[i][staticAxis] != null) {
-                    if (board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) {
+                if (board.getBoard()[i][staticAxis] != null) { //TODO: remove duplicate code block
+                    if (board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) { // check if the position of missing tile corresponds to intersecting tile inputted
                         foundIntersection = true;
+                        if((i == firstRow) && (staticAxis == firstColumn)){ // check if intersection is in the first tile or last tile of the word
+                            extremityIntersection = true;
+                            extremityIntersectionFirst = true;
+                        } else if ((i == lastRow) && (staticAxis == lastColumn)) {
+                            extremityIntersection = true;
+                            extremityIntersectionFirst = false;
+                        }
                     }
                 }
             } else {
-
                 if (board.getBoard()[staticAxis][i] != null) {
                     if (board.getBoard()[staticAxis][i].getLetter() == checkLetterForIntersection) {
                         foundIntersection = true;
+                        if((i == firstColumn) && (staticAxis == firstRow)){
+                            extremityIntersection = true;
+                            extremityIntersectionFirst = true;
+                        } else if ((i == lastColumn) && (staticAxis == lastRow)) {
+                            extremityIntersection = true;
+                            extremityIntersectionFirst = false;
+                        }
                     }
                 }
             }
@@ -105,6 +126,7 @@ public class Move {
         return foundIntersection;
     }
 
+    // changes blank display
     private String chooseBlank(String word, Scanner in) {
         System.out.print("Choose any letter to replace the blank with: ");
         Tile remove = playerFrame.getTileFromChar('_');
@@ -121,7 +143,7 @@ public class Move {
     }
 
 
-    /* move validation */
+    // gets last potential coordinates for word placement
     private void setLastCoords(String word) {
         for (int i = 0; i < word.length(); i++) {
             if (direction == 'D') {
@@ -138,8 +160,8 @@ public class Move {
         }
     }
 
+    /* move validation */
     private boolean isPlacementValid(int row, int column) {
-
         if (direction == 'D' && lastRow > 15) {
             ERROR = "Cannot place a word going over the edge of the board";
             return false;
@@ -157,26 +179,28 @@ public class Move {
             ERROR = "Cannot place a tile on a space already containing a tile.";
             return false;
         }
-
-
         return true;
     }
 
     private boolean findConnection() {
-        if (movesMade != 0) {
+        if (movesMade != 0 && !extremityIntersection) {
 
+            // ensure that board bounds aren't exceeded
             int boxTop = Math.max(firstRow - 1, 0);
             int boxBottom = Math.min(lastRow + 1, board.BOARD_SIZE - 1);
             int boxLeft = Math.max(firstColumn - 1, 0);
             int boxRight = Math.min(lastColumn + 1, board.BOARD_SIZE - 1);
             boolean foundConnection = false;
 
-            for (int r = boxTop; r <= boxBottom && !foundConnection; r++) {
-                for (int c = boxLeft; c <= boxRight && !foundConnection; c++) {
+            for (int r = boxTop; r <= boxBottom; r++) {
+                for (int c = boxLeft; c <= boxRight; c++) {
                     if (board.getBoard()[r][c] != null) {
-                        boardConnectionRow[connectionIncrement] = r;
-                        boardConnectionColumn[connectionIncrement++] = c;
-                        foundConnection = true;
+                        if (!(r == boxTop && c == boxLeft) && !(r == boxBottom && c == boxRight)) { // ignore corners
+                            foundConnection = true;
+                            // add connections to history arrays for score calculating
+                            boardConnectionRow[++connectionIncrement] = r;
+                            boardConnectionColumn[connectionIncrement] = c;
+                        }
                     }
                 }
             }
@@ -193,34 +217,40 @@ public class Move {
         String[] splitInput = inputString.split(" ");
         int row = getRowInput(splitInput[0]);
         int column = getColumnInput(splitInput[0]);
-        firstRow = row;
-        firstColumn = column;
-        direction = getDirectionInput(splitInput[1]);
+
+        this.firstRow = row;
+        this.firstColumn = column;
+        this. direction = getDirectionInput(splitInput[1]);
+
         String word = getWordInput(splitInput[2]);
         setLastCoords(word);
 
+        // updates blank
         while (word.contains("_")) {
             word = chooseBlank(word, in);
         }
+        // checks to see if player is making an intersecting move
         if (checkForIntersection) {
             intersection = isIntersectionValid(row, column, direction, word);
         }
-
-        if (!letterInFrame) {
-            ERROR = "Letter not in frame";
-            return false;
+        if(!intersection) {
+            if(!letterInFrame) {
+                ERROR = "Letter not in frame";
+                return false;
+            }
         }
+
         boolean foundConnection = findConnection();
         for (int i = 0; i < word.length(); i++) {
             boolean validPlacement = isPlacementValid(row, column);
             if (validPlacement && foundConnection) {
                 if (!(board.getBoard()[row][column] != null && intersection)) {
-                    chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i));
+                    chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i)); // add tile to chosenTile array for undoing move and score calculation
                     board.placeTile(row, column, chosenTile[tileCounter - 1]);
                     playerFrame.removeLetter(chosenTile[tileCounter - 1]);
                 }
 
-                previousRows[previousCounter] = row;
+                previousRows[previousCounter] = row; // track previous placements
                 previousColumns[previousCounter++] = column;
 
                 if (direction == 'D') {
@@ -231,6 +261,7 @@ public class Move {
                     ERROR = "Shouldn't be possible to reach here; direction isn't across or down.";
                 }
             } else {
+                // move not valid
                 System.out.println(ERROR);
                 undoMove();
                 return false;
@@ -248,7 +279,6 @@ public class Move {
     /* undo move driver */
     private void undoPlace(Tile[] chosenTile, int tileCounter, int row, int column) {
         int workingTile = tileCounter - 1;
-        System.out.println("Undo place: " + chosenTile[workingTile].getLetter() + " from " + row + " " + column);
         playerFrame.addTile(chosenTile[workingTile]);
         board.removeTile(row, column);
         chosenTile[workingTile] = null;
@@ -261,231 +291,156 @@ public class Move {
         }
     }
 
- public int calculateScore() {
-		boolean isDoubleWord = false;
-		boolean isTripleWord = false;
-		int temp = 0;
+    public int calculateScore() {
+        boolean isDoubleWord = false;
+        boolean isTripleWord = false;
+        int multiplier = 0;
 
-		int score = 0;
-		int count = 0;
-		if (chosenTile != null)
-			for (int i = 0; i < chosenTile.length; i++) {
+        int score = 0;
+        int count = 0;
+        if (chosenTile != null)
+            for (int i = 0; i < chosenTile.length; i++) {
 
-				Tile t = chosenTile[i];
+                Tile t = chosenTile[i];
 
-				if (t != null) {
-					count++;
-					int concat1 = firstColumn + i;
-					int concat2 = firstRow + i;
+                // add points for tile
+                if (t != null) {
+                    count++;
+                    int concatColumn = firstColumn + i;
+                    int concatRow = firstRow + i;
 
-					String position = null;
+                    String position = null;
 
-					if (direction == 'A')
-						position = Board.concatInt(firstRow, concat1);
+                    if (direction == 'A')
+                        position = Board.concatInt(firstRow, concatColumn);
 
-					if (direction == 'D')
-						position = Board.concatInt(concat2, firstColumn);
+                    if (direction == 'D')
+                        position = Board.concatInt(concatRow, firstColumn);
 
-					if (board.getSquareValue(position) != null) {
-						switch (board.getSquareValue(position)) {
-						case "TW":
-							isTripleWord = true;
-							temp += t.getScore();
-							System.out.println("TW");
-							break;
-						case "TL":
-							temp = temp + (t.getScore() * 3);
-							System.out.println("TL");
-							break;
-						case "DW":
-							isDoubleWord = true;
-							temp += t.getScore();
-							System.out.println("DW");
-							break;
-						case "DL":
-							temp = temp + (t.getScore() * 2);
-							System.out.println("DL");
-							break;
-						default:
-							temp += t.getScore();
+                    if (board.getSquareValue(position) != null) {
+                        switch (board.getSquareValue(position)) {
+                            case "TW":
+                                isTripleWord = true;
+                                multiplier += t.getScore();
+                                break;
+                            case "TL":
+                                multiplier = multiplier + (t.getScore() * 3);
+                                break;
+                            case "DW":
+                                isDoubleWord = true;
+                                multiplier += t.getScore();
+                                break;
+                            case "DL":
+                                multiplier = multiplier + (t.getScore() * 2);
+                                break;
+                            default:
+                                multiplier += t.getScore();
 
-						}
-					} else {
-						temp += t.getScore();
-					}
-
-				}
-
-			}
-
-		score += temp;
-		System.out.println("PLACED TILE SCORE: " + score);
-
-        if (direction == 'D') {
-
-            if (firstRow - 1 >= 0 && firstRow - 1 <= 14)
-                if (board.getBoard()[firstRow - 1][firstColumn] != null) {
-
-                    score += calculateConnectedTileScore(firstRow - 1, firstColumn, 'u');
-                }
-
-            if (firstRow + count >= 0 && firstRow + count <= 14)
-                if (board.getBoard()[firstRow + count][firstColumn] != null) {
-                    score += calculateConnectedTileScore(firstRow + count, firstColumn, 'd');
-                }
-
-            int i = 0;
-            while (i != count) {
-                if (firstRow + i >= 0 && firstRow + i <= 14 && firstColumn - 1 >= 0 && firstColumn - 1 <= 14)
-                    if (board.getBoard()[firstRow + i][firstColumn - 1] != null) {
-                        score += calculateConnectedTileScore(firstRow + i, firstColumn - 1, 'l');
+                        }
+                    } else {
+                        multiplier += t.getScore();
                     }
 
-                if (firstRow + i >= 0 && firstRow + i <= 14 && firstColumn - 1 >= 0 && firstColumn - 1 <= 14)
-                    if (board.getBoard()[firstRow + i][firstColumn + 1] != null) {
-                        score += calculateConnectedTileScore(firstRow + i, firstColumn + 1, 'r');
-                    }
-                i++;
+                }
+
             }
-        } else if (direction == 'A') {
-            if (firstColumn - 1 >= 0 && firstColumn - 1 <= 14)
-                if (board.getBoard()[firstRow][firstColumn - 1] != null) {
 
-                    score += calculateConnectedTileScore(firstRow, firstColumn - 1, 'l');
-                }
+        score += multiplier;
 
-            if (firstColumn + count >= 0 && firstColumn + count <= 14)
-                if (board.getBoard()[firstRow][firstColumn + count] != null) {
-                    score += calculateConnectedTileScore(firstRow, firstColumn + count, 'r');
-                }
-
-            int i = 0;
-            while (i != count) {
-                if (firstRow - 1 >= 0 && firstRow - 1 <= 14 && firstColumn + i >= 0 && firstColumn + i <= 14)
-                    if (board.getBoard()[firstRow - 1][firstColumn + i] != null) {
-                        score += calculateConnectedTileScore(firstRow - 1, firstColumn + i, 'u');
-                    }
-
-                if (firstRow + 1 >= 0 && firstRow + 1 <= 14 && firstColumn + i >= 0 && firstColumn + i <= 14)
-                    if (board.getBoard()[firstRow + 1][firstColumn + i] != null) {
-                        score += calculateConnectedTileScore(firstRow + 1, firstColumn + i, 'd');
-                    }
-                
-                i++;
+        if (movesMade > 1) {
+            //check if connection is only once on first or last position
+            boolean extremityConnection = false;
+            if (connectionIncrement == 1 && (((boardConnectionRow[connectionIncrement] + 1) == firstRow) || ((boardConnectionRow[connectionIncrement] - 1) == firstRow) || ((boardConnectionRow[connectionIncrement] + 1) == lastRow) || ((boardConnectionRow[connectionIncrement] - 1) == lastRow))) {
+                extremityConnection = true;
             }
-           
+            if (connectionIncrement == 1 && (((boardConnectionColumn[connectionIncrement] + 1) == firstColumn) || ((boardConnectionColumn[connectionIncrement] - 1) == firstColumn) || ((boardConnectionColumn[connectionIncrement] + 1) == lastColumn) || ((boardConnectionColumn[connectionIncrement] - 1) == lastColumn))) {
+                extremityConnection = true;
+            }
 
+            // adds up words made by connections with existing tiles; note if the connections are only at the first or last tile of the word, in different directions, then a new word isnt created so the points of the connection are not added.
+            if (!extremityConnection && connectionIncrement >= 1) {
+                for (int i = 1; i <= connectionIncrement; i++) {
+                    if (direction == 'D') {
+                        if (board.getBoard()[boardConnectionRow[i]][boardConnectionColumn[i] + 1] != null) {
+                            score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'r');
+                        }
+
+                        if (board.getBoard()[boardConnectionRow[i]][boardConnectionColumn[i] - 1] != null) {
+                            score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'l');
+                        }
+                    } else if (direction == 'A') {
+                        if (board.getBoard()[boardConnectionRow[i] + 1][boardConnectionColumn[i]] != null) {
+                            score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'd');
+                        }
+                        if (board.getBoard()[boardConnectionRow[i] - 1][boardConnectionColumn[i] - 1] != null) {
+                            score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'u');
+                        }
+                    }
+                }
+            }
+
+            // adding on intersection letter points if the intersection comes at the start or the end of the word
+            if(extremityIntersection){
+                if(extremityIntersectionFirst){
+                    score += board.getBoard()[firstRow][firstColumn].getScore();
+                } else {
+                    score += board.getBoard()[lastRow][lastColumn].getScore();
+                }
+            }
         }
 
-//		findConnection(firstWord);
-		
+        // adding word multipliers
+        if (isDoubleWord)
+            score *= 2;
 
-			
-//			if (direction == 'D')
-//				for (int i = 1; i < connectionIncrement; i++) {
-//
-//					if (firstColumn == boardConnectionColumn[i] && firstRow > boardConnectionRow[i]) {
-//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'u');
-//						System.out.println("DUp:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//					if (firstColumn > boardConnectionColumn[i]) {
-//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'l');
-//						System.out.println("Dleft:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//					if (firstColumn < boardConnectionColumn[i]) {
-//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'r');
-//						System.out.println("Dright:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//					if (firstColumn == boardConnectionColumn[i] && firstRow < boardConnectionRow[i]) {
-//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'd');
-//						System.out.println("Ddown:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//				}
-//			else if(direction == 'A') {
-//				for (int i = 0; i < connectionIncrement; i++) {
-//
-//					if (firstRow == boardConnectionRow[i] && firstColumn < boardConnectionColumn[i]) {
-//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'r');
-//						System.out.println("Aright:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//					if (firstRow > boardConnectionRow[i]) {
-//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'd');
-//						System.out.println("Adown:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//					if (firstRow < boardConnectionRow[i]) {
-//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'u');
-//						System.out.println("AUp:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//
-//					if (firstRow == boardConnectionRow[i] && firstColumn > boardConnectionColumn[i]) {
-//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'l');
-//						System.out.println("Aleft:" + boardConnectionRow[i] + boardConnectionColumn[i]);
-//					}
-//				}
-//
-//			}
-		
+        if (isTripleWord)
+            score *= 3;
 
-		if (isDoubleWord)
-			score *= 2;
+        if (count == 7) {
+            score += 50;
+        }
 
-		if (isTripleWord)
-			score *= 3;
+        return score;
+    }
 
-		if (count == 7) {
-			score += 50;
-		}
-		return score;
-	}
+    public int calculateConnectedTileScore(int row, int column, char direction) { // direction: u = up etc.
+        int score = 0;
 
-	public int calculateConnectedTileScore(int rowtemp, int columntemp, char direction) { // direction: u = up,d =
-		int score = 0;
-
-		if (board.getBoard()[rowtemp][columntemp] != null) {
-			int i = 0;
-			if (direction == 'u') {
-				while (board.getBoard()[rowtemp - i][columntemp] != null) {
-					score += board.getBoard()[rowtemp - i][columntemp].getScore();
-					System.out.println(score);
-					i++;
-					if (rowtemp - i < 0 || rowtemp - i > 14)
-						break;
-				}
-			}
-			if (direction == 'd') {
-				while (board.getBoard()[rowtemp + i][columntemp] != null) {
-					score += board.getBoard()[rowtemp + i][columntemp].getScore();
-					i++;
-					if (rowtemp + i < 0 || rowtemp + i > 14)
-						break;
-				}
-			}
-			if (direction == 'l') {
-				while (board.getBoard()[rowtemp][columntemp - i] != null) {
-					score += board.getBoard()[rowtemp][columntemp - i].getScore();
-					i++;
-					if (columntemp - i < 0 || columntemp - i > 14)
-						break;
-				}
-			}
-			if (direction == 'r') {
-				while (board.getBoard()[rowtemp][columntemp + i] != null) {
-					score += board.getBoard()[rowtemp][columntemp + i].getScore();
-					i++;
-					if (columntemp + i < 0 || columntemp + i > 14)
-						break;
-				}
-			}
-		}
-		
-		System.out.println(score);
-		return score;
-	}
-
+        if (board.getBoard()[row][column] != null) {
+            int i = 0;
+            if (direction == 'u') {
+                while (board.getBoard()[row - i][column] != null) {
+                    score += board.getBoard()[row - i][column].getScore();
+                    i++;
+                    if (row - i < 0 || row - i > 14)
+                        break;
+                }
+            }
+            if (direction == 'd') {
+                while (board.getBoard()[row + i][column] != null) {
+                    score += board.getBoard()[row + i][column].getScore();
+                    i++;
+                    if (row + i < 0 || row + i > 14)
+                        break;
+                }
+            }
+            if (direction == 'l') {
+                while (board.getBoard()[row][column - i] != null) {
+                    score += board.getBoard()[row][column - i].getScore();
+                    i++;
+                    if (column - i < 0 || column - i > 14)
+                        break;
+                }
+            }
+            if (direction == 'r') {
+                while (board.getBoard()[row][column + i] != null) {
+                    score += board.getBoard()[row][column + i].getScore();
+                    i++;
+                    if (column + i < 0 || column + i > 14)
+                        break;
+                }
+            }
+        }
+        return score;
+    }
 }
