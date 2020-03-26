@@ -41,13 +41,13 @@ public class Main extends Application {
         sleep(2000);
 
         Thread cliCommands = new Thread(() -> {
-            while (gameGo) {
+            while (gameGo) { // backend thread updates the stage before every cli input
                 Platform.runLater(this::updateStage);
                 ui.processCLI();
             }
         });
 
-        cliCommands.setDaemon(true);
+        cliCommands.setDaemon(true); // sets cli thread to child thread essentially
         cliCommands.start();
     }
 }
