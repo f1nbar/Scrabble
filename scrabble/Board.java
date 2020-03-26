@@ -8,8 +8,6 @@ public class Board {
 
     private static HashMap<String, String> tilePoints;
 
-    private boolean firstMove;
-
     private int numTiles = 0;
 
     public final int BOARD_SIZE = 15;
@@ -17,7 +15,6 @@ public class Board {
 
     public Board() {
         letterBoard = new Tile[15][15];
-        firstMove = true;
         initBoardScores();
     }
 
@@ -150,11 +147,6 @@ public class Board {
         return (boardDisplay.toString());
     }
 
-    public static void displayLegend() {
-        System.out
-                .print("Triple Word: '#'\tDouble Word: '$'\tTriple Letter: '+'\tDouble Letter: '^'\tMiddle: '*''\n\n");
-    }
-
     public void placeTile(int row, int column, Tile chosenTile) {
         letterBoard[row][column] = chosenTile;
         numTiles++;
@@ -170,7 +162,7 @@ public class Board {
     }
 
     public static String concatInt(int a, int b) { // concatenate integers rather than adding them
-        return  a + " " + b;
+        return a + " " + b;
     }
 
     public Tile[][] getBoard() {

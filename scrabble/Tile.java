@@ -1,13 +1,5 @@
 package scrabble;
 
-
-
-/**
- * Tile class which creates Tile objects for the game Scrabble.
- *
- * @author Finbar Ó Deaghaidh - 18410234
- */
-
 public class Tile {
 
     private char letter;

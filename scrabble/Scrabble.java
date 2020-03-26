@@ -6,7 +6,6 @@ public class Scrabble {
     private Pool pool;
     private Board board;
     private Player playerOne, playerTwo;
-    private UIFX ui;
     private Scanner in;
 
     public Scrabble(Scanner input) {

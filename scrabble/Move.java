@@ -20,8 +20,11 @@ public class Move {
     int previousCounter = 0;
     int tileCounter = 0;
 
+    // word positions
     int firstRow;
     int firstColumn;
+    int lastColumn;
+    int lastRow;
 
     int[] boardConnectionRow = new int[16];
     int[] boardConnectionColumn = new int[16];
@@ -55,7 +58,7 @@ public class Move {
         return Character.toUpperCase(input.charAt(0));
     }
 
-    private String getWordInput(String input, Scanner in) {
+    private String getWordInput(String input) {
         String word = input.toUpperCase();
         for (int i = 0; i < word.length(); i++) {
             try {
@@ -84,7 +87,7 @@ public class Move {
             ERROR = "Shouldn't be possible to reach here: direction isn't a or d. Move.java Line 74";
         }
         for (int i = changingAxis; i < changingAxis + word.length(); i++) {
-            if(direction == 'D') {
+            if (direction == 'D') {
                 if (board.getBoard()[i][staticAxis] != null) {
                     if (board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) {
                         foundIntersection = true;
@@ -119,32 +122,33 @@ public class Move {
 
 
     /* move validation */
-    private boolean isPlacementValid(int row, int column, String word) {
-        
-    	 int lastColumn = 0, lastRow = 0;
-         for(int i = 0; i < word.length(); i++) {
-             if(direction == 'D'){
-                 lastColumn = firstColumn;
-                 if(i == word.length() - 1){
-                     lastRow = firstRow + i;
-                 }
-             } else if(direction == 'A') {
-                 lastRow = firstRow;
-                 if(i == word.length() - 1){
-                     lastColumn = firstColumn + i;
-                 }
-             }
-         }
-         
-         if(direction == 'D' && lastRow > 15) {
-         	ERROR = "Cannot place a word going over the edge of the board";
-             return false;
-         }
-         
-         if(direction == 'A' && lastColumn > 15){
-         	ERROR = "Cannot place a word going over the edge of the board";
-             return false;
-         }
+    private void setLastCoords(String word) {
+        for (int i = 0; i < word.length(); i++) {
+            if (direction == 'D') {
+                lastColumn = firstColumn;
+                if (i == word.length() - 1) {
+                    lastRow = firstRow + i;
+                }
+            } else if (direction == 'A') {
+                lastRow = firstRow;
+                if (i == word.length() - 1) {
+                    lastColumn = firstColumn + i;
+                }
+            }
+        }
+    }
+
+    private boolean isPlacementValid(int row, int column) {
+
+        if (direction == 'D' && lastRow > 15) {
+            ERROR = "Cannot place a word going over the edge of the board";
+            return false;
+        }
+
+        if (direction == 'A' && lastColumn > 15) {
+            ERROR = "Cannot place a word going over the edge of the board";
+            return false;
+        }
         if (row < 0 || row > 15 || column < 0 || column > 15) {
             ERROR = "Co-ordinates are out of bounds.";
             return false;
@@ -153,29 +157,13 @@ public class Move {
             ERROR = "Cannot place a tile on a space already containing a tile.";
             return false;
         }
-       
+
 
         return true;
     }
 
-    private boolean findConnection(String word) {
+    private boolean findConnection() {
         if (movesMade != 0) {
-
-            // finding last row and column of word
-            int lastColumn = 0, lastRow = 0;
-            for(int i = 0; i < word.length(); i++) {
-                if(direction == 'D'){
-                    lastColumn = firstColumn;
-                    if(i == word.length() - 1){
-                        lastRow = firstRow + i;
-                    }
-                } else if(direction == 'A') {
-                    lastRow = firstRow;
-                    if(i == word.length() - 1){
-                        lastColumn = firstColumn + i;
-                    }
-                }
-            }
 
             int boxTop = Math.max(firstRow - 1, 0);
             int boxBottom = Math.min(lastRow + 1, board.BOARD_SIZE - 1);
@@ -208,7 +196,8 @@ public class Move {
         firstRow = row;
         firstColumn = column;
         direction = getDirectionInput(splitInput[1]);
-        String word = getWordInput(splitInput[2], in);
+        String word = getWordInput(splitInput[2]);
+        setLastCoords(word);
 
         while (word.contains("_")) {
             word = chooseBlank(word, in);
@@ -221,11 +210,11 @@ public class Move {
             ERROR = "Letter not in frame";
             return false;
         }
-        boolean foundConnection = findConnection(word);
+        boolean foundConnection = findConnection();
         for (int i = 0; i < word.length(); i++) {
-            boolean validPlacement = isPlacementValid(row, column,word);
+            boolean validPlacement = isPlacementValid(row, column);
             if (validPlacement && foundConnection) {
-                if(!(board.getBoard()[row][column] != null && intersection)){
+                if (!(board.getBoard()[row][column] != null && intersection)) {
                     chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i));
                     board.placeTile(row, column, chosenTile[tileCounter - 1]);
                     playerFrame.removeLetter(chosenTile[tileCounter - 1]);

@@ -15,9 +15,7 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.Scanner;
 
-import com.sun.media.jfxmediaimpl.platform.Platform;
-
-public class UIFX {
+public class UI {
     private double width = 30;
     private double height = 30;
 
@@ -27,7 +25,7 @@ public class UIFX {
     private Font font;
     private Player currentPlayer;
 
-    public UIFX() {
+    public UI() {
         blank = new Rectangle(width, height);
         blank.setFill(Color.ANTIQUEWHITE);
         blank.setStrokeWidth(4);

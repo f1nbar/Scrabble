@@ -1,13 +1,8 @@
 package scrabble;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import javafx.application.Application;
 
 import java.util.Scanner;
-
-import org.junit.jupiter.api.Test;
-
-import javafx.application.Platform;
 
 public class ScabbleTest {
   
@@ -18,7 +13,7 @@ public class ScabbleTest {
   Board board = new Board();
   Frame playerFrame = new Frame();
   Move move = new Move(board, playerFrame);
-  UIFX ui = new UIFX();
+  UI ui = new UI();
   
   
 
