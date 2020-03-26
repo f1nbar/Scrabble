@@ -1,6 +1,10 @@
 package scrabble;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -253,5 +257,49 @@ public class UIFX {
                     System.out.println("ERROR: Invalid command: " + commandInput + " Check if your move matches the format: <ROW COLUMN> <DIRECTION> <WORD> (e.g A1 D HELLO)");
                 }
         }
+    }
+
+    public Scene makeIntroScene(){
+        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar O Deaghaidh");
+        scrabbleText.setFont(font);
+        scrabbleText.setTextAlignment(TextAlignment.CENTER);
+
+        Image goose = new Image(getClass().getResourceAsStream("goose.png"));
+        ImageView gooseView = new ImageView(goose);
+        gooseView.setPreserveRatio(true);
+        gooseView.setFitHeight(300);
+        gooseView.setFitWidth(300);
+
+        VBox textPane = new VBox(20);
+        textPane.setMaxWidth(100);
+        textPane.getChildren().addAll(scrabbleText, gooseView);
+        textPane.setAlignment(Pos.CENTER);
+
+        return new Scene(textPane,750, 620, Color.ANTIQUEWHITE);
+    }
+    public Scene makeStage(){
+        StackPane indicator = this.makePlayerTurnIndicator();
+        indicator.setAlignment(Pos.CENTER);
+
+        HBox score = new HBox(120);
+        score.getChildren().addAll(indicator, this.makeScoreDisplay());
+        score.setAlignment(Pos.CENTER);
+
+        GridPane boardMain = this.makeBoardDisplay();
+        boardMain.setAlignment(Pos.CENTER);
+
+        VBox frame = this.makeFrameDisplay();
+        frame.setAlignment(Pos.CENTER);
+
+        HBox middle = new HBox();
+        middle.getChildren().addAll(boardMain, frame);
+        middle.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox screen = new VBox();
+        screen.setAlignment(Pos.CENTER);
+        screen.setPadding(new Insets(20, 20, 20, 0));
+        screen.getChildren().addAll(score,middle);
+
+        return new Scene(screen, 750, 620, Color.ANTIQUEWHITE);
     }
 }

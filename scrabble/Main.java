@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import static java.lang.Thread.sleep;
+
 
 public class Main extends Application {
     public static boolean gameGo = true;
@@ -22,43 +24,29 @@ public class Main extends Application {
         launch(args);
     }
 
-    private void updateStage(){
-        StackPane indicator = ui.makePlayerTurnIndicator();
-        indicator.setAlignment(Pos.CENTER);
-
-        HBox score = new HBox(120);
-        score.getChildren().addAll(indicator, ui.makeScoreDisplay());
-        score.setAlignment(Pos.CENTER);
-
-        GridPane boardMain = ui.makeBoardDisplay();
-        boardMain.setAlignment(Pos.CENTER);
-
-        VBox frame = ui.makeFrameDisplay();
-        frame.setAlignment(Pos.CENTER);
-
-        HBox middle = new HBox();
-        middle.getChildren().addAll(boardMain, frame);
-        middle.setAlignment(Pos.CENTER_RIGHT);
-
-        VBox screen = new VBox();
-        screen.setAlignment(Pos.CENTER);
-        screen.setPadding(new Insets(20, 20, 20, 0));
-        screen.getChildren().addAll(score,middle);
-
-        Scene scene = new Scene(screen, 750, 620, Color.ANTIQUEWHITE);
-
+    private void openingStage(){
+        Scene scene = ui.makeIntroScene();
         primaryStage.setTitle("Scrabble");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Goose.png")));
         primaryStage.show();
-        
+    }
+    private void updateStage(){
+        Scene scene = ui.makeStage();
+        primaryStage.setTitle("Scrabble");
+        primaryStage.setResizable(false);
+        primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Goose.png")));
+        primaryStage.show();
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InterruptedException {
         this.primaryStage = primaryStage;
         ui.initializePlayers();
+        openingStage();
+        sleep(2000);
 
         Thread cliCommands = new Thread(() -> {
             while(gameGo) {
