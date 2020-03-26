@@ -84,10 +84,18 @@ public class Move {
             ERROR = "Shouldn't be possible to reach here: direction isn't a or d. Move.java Line 74";
         }
         for (int i = changingAxis; i < changingAxis + word.length(); i++) {
-            System.out.println("row: " + i + " column: " + staticAxis);
-            if (board.getBoard()[i][staticAxis] != null) {
-                if (board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) {
-                    foundIntersection = true;
+            if(direction == 'D') {
+                if (board.getBoard()[i][staticAxis] != null) {
+                    if (board.getBoard()[i][staticAxis].getLetter() == checkLetterForIntersection) {
+                        foundIntersection = true;
+                    }
+                }
+            } else {
+
+                if (board.getBoard()[staticAxis][i] != null) {
+                    if (board.getBoard()[staticAxis][i].getLetter() == checkLetterForIntersection) {
+                        foundIntersection = true;
+                    }
                 }
             }
         }
@@ -200,9 +208,7 @@ public class Move {
         for (int i = 0; i < word.length(); i++) {
             boolean validPlacement = isPlacementValid(row, column,word);
             if (validPlacement && foundConnection) {
-                if (board.getBoard()[row][column] != null && intersection) {
-                    // do nothing as tile is already on board
-                } else {
+                if(!(board.getBoard()[row][column] != null && intersection)){
                     chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i));
                     board.placeTile(row, column, chosenTile[tileCounter - 1]);
                     playerFrame.removeLetter(chosenTile[tileCounter - 1]);
