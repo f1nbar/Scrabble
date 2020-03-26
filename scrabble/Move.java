@@ -111,7 +111,7 @@ public class Move {
 
 
     /* move validation */
-    private boolean isPlacementValid(int row, int column, String word) {
+    private boolean isPlacementValid(int row, int column, String word,char direction) {
         
     	 int lastColumn = 0, lastRow = 0;
          for(int i = 0; i < word.length(); i++) {
@@ -215,7 +215,7 @@ public class Move {
         }
         boolean foundConnection = findConnection(word);
         for (int i = 0; i < word.length(); i++) {
-            boolean validPlacement = isPlacementValid(row, column,word);
+            boolean validPlacement = isPlacementValid(row, column,word,direction);
             if (validPlacement && foundConnection) {
                 if (board.getBoard()[row][column] != null && intersection) {
                     // do nothing as tile is already on board
