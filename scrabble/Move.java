@@ -120,23 +120,40 @@ public class Move {
 
     /* move validation */
     private boolean isPlacementValid(int row, int column, String word) {
+        
+    	 int lastColumn = 0, lastRow = 0;
+         for(int i = 0; i < word.length(); i++) {
+             if(direction == 'D'){
+                 lastColumn = firstColumn;
+                 if(i == word.length() - 1){
+                     lastRow = firstRow + i;
+                 }
+             } else if(direction == 'A') {
+                 lastRow = firstRow;
+                 if(i == word.length() - 1){
+                     lastColumn = firstColumn + i;
+                 }
+             }
+         }
+         
+         if(direction == 'D' && lastRow > 15) {
+         	ERROR = "Cannot place a word going over the edge of the board";
+             return false;
+         }
+         
+         if(direction == 'A' && lastColumn > 15){
+         	ERROR = "Cannot place a word going over the edge of the board";
+             return false;
+         }
         if (row < 0 || row > 15 || column < 0 || column > 15) {
             ERROR = "Co-ordinates are out of bounds.";
             return false;
         }
-
         if (board.getBoard()[row][column] != null && !intersection) {
             ERROR = "Cannot place a tile on a space already containing a tile.";
             return false;
         }
-        if(direction == 'D' && column + word.length() > 15) {
-        	ERROR = "Cannot place a word going over the edge of the board";
-            return false;
-        }
-        if(direction == 'A' && row + word.length() > 15){
-        	ERROR = "Cannot place a word going over the edge of the board";
-            return false;
-        }
+       
 
         return true;
     }
@@ -193,7 +210,7 @@ public class Move {
         direction = getDirectionInput(splitInput[1]);
         String word = getWordInput(splitInput[2], in);
 
-        if (word.contains("_")) {
+        while (word.contains("_")) {
             word = chooseBlank(word, in);
         }
         if (checkForIntersection) {
