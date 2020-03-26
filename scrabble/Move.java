@@ -261,65 +261,65 @@ public class Move {
         }
     }
 
-    public int calculateScore() {
-        boolean isDoubleWord = false;
-        boolean isTripleWord = false;
-        int temp = 0;
+ public int calculateScore() {
+		boolean isDoubleWord = false;
+		boolean isTripleWord = false;
+		int temp = 0;
 
-        int score = 0;
-        int count = 0;
-        if (chosenTile != null)
-            for (int i = 0; i < chosenTile.length; i++) {
+		int score = 0;
+		int count = 0;
+		if (chosenTile != null)
+			for (int i = 0; i < chosenTile.length; i++) {
 
-                Tile t = chosenTile[i];
+				Tile t = chosenTile[i];
 
-                if (t != null) {
-                    count++;
-                    int concat1 = firstColumn + i;
-                    int concat2 = firstRow + i;
+				if (t != null) {
+					count++;
+					int concat1 = firstColumn + i;
+					int concat2 = firstRow + i;
 
-                    String position = null;
+					String position = null;
 
-                    if (direction == 'A')
-                        position = Board.concatInt(firstRow, concat1);
+					if (direction == 'A')
+						position = Board.concatInt(firstRow, concat1);
 
-                    if (direction == 'D')
-                        position = Board.concatInt(concat2, firstColumn);
+					if (direction == 'D')
+						position = Board.concatInt(concat2, firstColumn);
 
+					if (board.getSquareValue(position) != null) {
+						switch (board.getSquareValue(position)) {
+						case "TW":
+							isTripleWord = true;
+							temp += t.getScore();
+							System.out.println("TW");
+							break;
+						case "TL":
+							temp = temp + (t.getScore() * 3);
+							System.out.println("TL");
+							break;
+						case "DW":
+							isDoubleWord = true;
+							temp += t.getScore();
+							System.out.println("DW");
+							break;
+						case "DL":
+							temp = temp + (t.getScore() * 2);
+							System.out.println("DL");
+							break;
+						default:
+							temp += t.getScore();
 
-                    if (board.getSquareValue(position) != null) {
-                        switch (board.getSquareValue(position)) {
-                            case "TW":
-                                isTripleWord = true;
-                                temp += t.getScore();
-                                System.out.println("TW");
-                                break;
-                            case "TL":
-                                temp = temp + (t.getScore() * 3);
-                                System.out.println("TL");
-                                break;
-                            case "DW":
-                                isDoubleWord = true;
-                                temp += t.getScore();
-                                System.out.println("DW");
-                                break;
-                            case "DL":
-                                temp = temp + (t.getScore() * 2);
-                                System.out.println("DL");
-                                break;
-                            default:
-                                temp += t.getScore();
+						}
+					} else {
+						temp += t.getScore();
+					}
 
-                        }
-                    } else {
-                        temp += t.getScore();
-                    }
+				}
 
-                }
+			}
 
-            }
-
-        score += temp;
+		score += temp;
+		System.out.println("PLACED TILE SCORE: " + score);
 
         if (direction == 'D') {
 
@@ -335,7 +335,7 @@ public class Move {
                 }
 
             int i = 0;
-            while (i != 0) {
+            while (i != count) {
                 if (firstRow + i >= 0 && firstRow + i <= 14 && firstColumn - 1 >= 0 && firstColumn - 1 <= 14)
                     if (board.getBoard()[firstRow + i][firstColumn - 1] != null) {
                         score += calculateConnectedTileScore(firstRow + i, firstColumn - 1, 'l');
@@ -345,6 +345,7 @@ public class Move {
                     if (board.getBoard()[firstRow + i][firstColumn + 1] != null) {
                         score += calculateConnectedTileScore(firstRow + i, firstColumn + 1, 'r');
                     }
+                i++;
             }
         } else if (direction == 'A') {
             if (firstColumn - 1 >= 0 && firstColumn - 1 <= 14)
@@ -359,7 +360,7 @@ public class Move {
                 }
 
             int i = 0;
-            while (i != 0) {
+            while (i != count) {
                 if (firstRow - 1 >= 0 && firstRow - 1 <= 14 && firstColumn + i >= 0 && firstColumn + i <= 14)
                     if (board.getBoard()[firstRow - 1][firstColumn + i] != null) {
                         score += calculateConnectedTileScore(firstRow - 1, firstColumn + i, 'u');
@@ -369,64 +370,122 @@ public class Move {
                     if (board.getBoard()[firstRow + 1][firstColumn + i] != null) {
                         score += calculateConnectedTileScore(firstRow + 1, firstColumn + i, 'd');
                     }
-
-
+                
+                i++;
             }
+           
 
         }
 
-        if (isDoubleWord)
-            score *= 2;
+//		findConnection(firstWord);
+		
 
-        if (isTripleWord)
-            score *= 3;
+			
+//			if (direction == 'D')
+//				for (int i = 1; i < connectionIncrement; i++) {
+//
+//					if (firstColumn == boardConnectionColumn[i] && firstRow > boardConnectionRow[i]) {
+//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'u');
+//						System.out.println("DUp:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//					if (firstColumn > boardConnectionColumn[i]) {
+//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'l');
+//						System.out.println("Dleft:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//					if (firstColumn < boardConnectionColumn[i]) {
+//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'r');
+//						System.out.println("Dright:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//					if (firstColumn == boardConnectionColumn[i] && firstRow < boardConnectionRow[i]) {
+//						score += calculateConnectedTileScore(boardConnectionRow[i], boardConnectionColumn[i], 'd');
+//						System.out.println("Ddown:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//				}
+//			else if(direction == 'A') {
+//				for (int i = 0; i < connectionIncrement; i++) {
+//
+//					if (firstRow == boardConnectionRow[i] && firstColumn < boardConnectionColumn[i]) {
+//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'r');
+//						System.out.println("Aright:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//					if (firstRow > boardConnectionRow[i]) {
+//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'd');
+//						System.out.println("Adown:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//					if (firstRow < boardConnectionRow[i]) {
+//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'u');
+//						System.out.println("AUp:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//
+//					if (firstRow == boardConnectionRow[i] && firstColumn > boardConnectionColumn[i]) {
+//						score += calculateConnectedTileScore(boardConnectionColumn[i], boardConnectionRow[i], 'l');
+//						System.out.println("Aleft:" + boardConnectionRow[i] + boardConnectionColumn[i]);
+//					}
+//				}
+//
+//			}
+		
 
-        if (count == 7) {
-            score += 50;
-        }
-        return score;
-    }
+		if (isDoubleWord)
+			score *= 2;
 
-    public int calculateConnectedTileScore(int rowtemp, int columntemp, char direction) { // direction: u = up,d =
-        int score = 0;
+		if (isTripleWord)
+			score *= 3;
 
-        if (board.getBoard()[rowtemp][columntemp] != null) {
-            int i = 0;
-            if (direction == 'u') {
-                while (board.getBoard()[rowtemp - i][columntemp] != null) {
-                    score += board.getBoard()[rowtemp - i][columntemp].getScore();
-                    System.out.println(score);
-                    i++;
-                    if (rowtemp - i < 0 || rowtemp - i > 14)
-                        break;
-                }
-            }
-            if (direction == 'd') {
-                while (board.getBoard()[rowtemp + i][columntemp] != null) {
-                    score += board.getBoard()[rowtemp + i][columntemp].getScore();
-                    i++;
-                    if (rowtemp + i < 0 || rowtemp + i > 14)
-                        break;
-                }
-            }
-            if (direction == 'l') {
-                while (board.getBoard()[rowtemp][columntemp - i] != null) {
-                    score += board.getBoard()[rowtemp][columntemp - i].getScore();
-                    i++;
-                    if (columntemp - i < 0 || columntemp - i > 14)
-                        break;
-                }
-            }
-            if (direction == 'r') {
-                while (board.getBoard()[rowtemp][columntemp + i] != null) {
-                    score += board.getBoard()[rowtemp][columntemp + i].getScore();
-                    i++;
-                    if (columntemp + i < 0 || columntemp + i > 14)
-                        break;
-                }
-            }
-        }
-        return score;
-    }
+		if (count == 7) {
+			score += 50;
+		}
+		return score;
+	}
+
+	public int calculateConnectedTileScore(int rowtemp, int columntemp, char direction) { // direction: u = up,d =
+		int score = 0;
+
+		if (board.getBoard()[rowtemp][columntemp] != null) {
+			int i = 0;
+			if (direction == 'u') {
+				while (board.getBoard()[rowtemp - i][columntemp] != null) {
+					score += board.getBoard()[rowtemp - i][columntemp].getScore();
+					System.out.println(score);
+					i++;
+					if (rowtemp - i < 0 || rowtemp - i > 14)
+						break;
+				}
+			}
+			if (direction == 'd') {
+				while (board.getBoard()[rowtemp + i][columntemp] != null) {
+					score += board.getBoard()[rowtemp + i][columntemp].getScore();
+					i++;
+					if (rowtemp + i < 0 || rowtemp + i > 14)
+						break;
+				}
+			}
+			if (direction == 'l') {
+				while (board.getBoard()[rowtemp][columntemp - i] != null) {
+					score += board.getBoard()[rowtemp][columntemp - i].getScore();
+					i++;
+					if (columntemp - i < 0 || columntemp - i > 14)
+						break;
+				}
+			}
+			if (direction == 'r') {
+				while (board.getBoard()[rowtemp][columntemp + i] != null) {
+					score += board.getBoard()[rowtemp][columntemp + i].getScore();
+					i++;
+					if (columntemp + i < 0 || columntemp + i > 14)
+						break;
+				}
+			}
+		}
+		
+		System.out.println(score);
+		return score;
+	}
 
 }
