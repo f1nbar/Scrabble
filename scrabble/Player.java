@@ -66,6 +66,10 @@ public class Player {
         sanitizeScore(points);
         this.score += points;
     }
+    public void decreaseScore(int points) {
+        sanitizeScore(points);
+        this.score -= points;
+    }
 
     public static void changeTurn() {
         if (turn == playerOneTurn) {

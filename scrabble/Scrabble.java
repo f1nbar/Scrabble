@@ -1,15 +1,27 @@
 package scrabble;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Scrabble {
     private Pool pool;
     private Board board;
     private Player playerOne, playerTwo;
-    private Scanner in;
+    public static HashSet<String> dictionary = null;
 
-    public Scrabble(Scanner input) {
-        this.in = input;
+    static {
+        try {
+            dictionary = initializeDictionary();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Move previousMove;
+
+    public Scrabble() {
         this.pool = new Pool();
         this.board = new Board();
     }
@@ -35,10 +47,6 @@ public class Scrabble {
         this.playerTwo = playerTwo;
     }
 
-    public Scanner getIn() {
-        return in;
-    }
-
     public void setIsOver(boolean isOver) {
         Main.gameGo = isOver;
     }
@@ -47,8 +55,16 @@ public class Scrabble {
         return this.pool;
     }
 
+    private static HashSet<String> initializeDictionary() throws FileNotFoundException {
+        Scanner file = new Scanner(new File("scrabble/sowpods.txt"));
+        HashSet<String> dictionary = new HashSet<>();
+        while(file.hasNext()) {
+            dictionary.add(file.next().trim());
+        }
+        return dictionary;
+    }
+
     public Player initialisePlayer(Pool pool, Scanner input) {
-        this.in = input;
         System.out.print("Enter player name: ");
         String name = input.nextLine();
         Player player = new Player(name);
@@ -65,6 +81,7 @@ public class Scrabble {
         if (validMove) {
             player.getFrame().refill(pool);
             player.increaseScore(move.calculateScore());
+            previousMove = move;
             return true;
         }
         return false;

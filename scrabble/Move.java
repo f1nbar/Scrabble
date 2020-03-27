@@ -22,10 +22,11 @@ public class Move {
     int tileCounter = 0;
 
     // word positions
-    int firstRow;
-    int firstColumn;
-    int lastColumn;
-    int lastRow;
+    private int firstRow;
+    private int firstColumn;
+    private int lastColumn;
+    private int lastRow;
+    private String word;
 
     // history arrays for connections
     int[] boardConnectionRow = new int[16];
@@ -40,6 +41,8 @@ public class Move {
     private boolean extremityIntersection; // if intersection is at extremity
     private boolean extremityIntersectionFirst; // if above is true, if the intersection is at the top extremity or the bottom
 
+    public int totalScore;
+
     public Move(Board board, Frame playerFrame) {
         this.board = board;
         this.playerFrame = playerFrame;
@@ -48,6 +51,10 @@ public class Move {
         this.intersection = false;
         this.extremityIntersection = false;
         this.connectionIncrement = 0;
+
+        if(movesMade < 0) {
+            movesMade = 0;
+        }
     }
 
     /* input getters */
@@ -220,9 +227,9 @@ public class Move {
 
         this.firstRow = row;
         this.firstColumn = column;
-        this. direction = getDirectionInput(splitInput[1]);
+        this.direction = getDirectionInput(splitInput[1]);
 
-        String word = getWordInput(splitInput[2]);
+        this.word = getWordInput(splitInput[2]);
         setLastCoords(word);
 
         // updates blank
@@ -269,6 +276,7 @@ public class Move {
         }
         if (board.getBoard()[7][7] == null) {
             ERROR = "First move has to intersect middle tile.";
+            System.out.println(ERROR);
             undoMove();
             return false;
         }
@@ -289,6 +297,7 @@ public class Move {
             undoPlace(chosenTile, tileCounter--, previousRows[previousCounter - 1], previousColumns[previousCounter - 1]);
             previousCounter--;
         }
+        movesMade--;
     }
 
     public int calculateScore() {
@@ -400,6 +409,7 @@ public class Move {
             score += 50;
         }
 
+        this.totalScore = score;
         return score;
     }
 
@@ -442,5 +452,8 @@ public class Move {
             }
         }
         return score;
+    }
+    public boolean checkDictionary(){
+        return Scrabble.dictionary.contains(word);
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class UI {
@@ -35,8 +36,7 @@ public class UI {
 
         input = new Scanner(System.in);
         input.useDelimiter("\\n");
-        game = new Scrabble(input);
-
+        game = new Scrabble();
     }
 
     // empty tile methods
@@ -200,7 +200,7 @@ public class UI {
     }
 
     private void printHelpMessage() {
-        System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n4:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A1 D HELLO' (note. not case-sensitive).\n5:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
+        System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tCHALLENGE:\t\t\t\t\t\t\t Challenges the last move played on the board. If it's not found in the dictionary, the move is removed.\n4:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n5:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A2 D HELLO' (note. not case-sensitive).\n5:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
     }
 
 
@@ -241,12 +241,26 @@ public class UI {
                 System.out.println("Passing turn...");
                 Player.changeTurn();
                 break;
+            case "CHALLENGE":
+                System.out.println("Challenging last move...");
+                if (!game.previousMove.checkDictionary()) {
+                    System.out.println("Challenge successful!");
+                    game.previousMove.undoMove();
+                    if (Player.turn == Player.playerOneTurn) {
+                        game.getPlayerTwo().decreaseScore(game.previousMove.totalScore);
+                    } else {
+                        game.getPlayerOne().decreaseScore(game.previousMove.totalScore);
+                    }
+                } else {
+                    System.out.println("Challenge unsuccessful. Previous word exists in dictionary.");
 
+                }
+                break;
             default:
-            	if(currentPlayer.getFrame().isEmpty() && game.getPool().emptyPool()) {
-            		System.out.println("Ending game...");
-                     System.exit(0);
-            	}
+                if (currentPlayer.getFrame().isEmpty() && game.getPool().emptyPool()) {
+                    System.out.println("Ending game...");
+                    System.exit(0);
+                }
                 if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+")) {
                     if (game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
                         Player.changeTurn();
@@ -257,7 +271,7 @@ public class UI {
         }
     }
 
-    public Scene makeIntroScene(){
+    public Scene makeIntroScene() {
         Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar Deaghaidh");
         scrabbleText.setFont(font);
         scrabbleText.setTextAlignment(TextAlignment.CENTER);
@@ -273,9 +287,10 @@ public class UI {
         textPane.getChildren().addAll(scrabbleText, gooseView);
         textPane.setAlignment(Pos.CENTER);
 
-        return new Scene(textPane,750, 620, Color.ANTIQUEWHITE);
+        return new Scene(textPane, 750, 620, Color.ANTIQUEWHITE);
     }
-    public Scene makeStage(){
+
+    public Scene makeStage() {
         StackPane indicator = this.makePlayerTurnIndicator();
         indicator.setAlignment(Pos.CENTER);
 
@@ -296,7 +311,7 @@ public class UI {
         VBox screen = new VBox();
         screen.setAlignment(Pos.CENTER);
         screen.setPadding(new Insets(20, 20, 20, 0));
-        screen.getChildren().addAll(score,middle);
+        screen.getChildren().addAll(score, middle);
 
         return new Scene(screen, 750, 620, Color.ANTIQUEWHITE);
     }
