@@ -2,6 +2,7 @@ package scrabble;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -17,7 +18,7 @@ public class Pool {
 	// create a Hashmap for pool, using the tile letter as a key and number of tiles
 	// as the value
 
-	static HashMap<Tile, Integer> letters = new HashMap<>();
+//	static HashMap<Tile, Integer> letters = new HashMap<>();
 
 	int sum;
 	// creating tile objects with letter and points per tile
@@ -49,7 +50,14 @@ public class Pool {
 	private static Tile Z = new Tile('Z', 10);
 	private static Tile Blank = new Tile('_', 0);
 
-	public Pool(){
+//	private static Tile[] letters = { A, A, A, A, A, A, A, A, A, B, B, C, C, D, D, D, D, E, E, E, E, E, E, E, E, E, E,
+//			E, E, F, F, G, G, G, H, H, I, I, I, I, I, I, I, I, I, J, K, L, L, L, L, M, M, N, N, N, N, N, N, O, O, O, O,
+//			O, O, O, O, P, P, Q, R, R, R, R, R, R, S, S, S, S, T, T, T, T, T, T, U, U, U, U, V, V, W, W, X, Y, Y, Z,
+//			Blank, Blank };
+	
+	private static LinkedList<Tile> letters = new LinkedList<Tile>();
+
+	public Pool() {
 		this.fillPool();
 	}
 
@@ -58,36 +66,82 @@ public class Pool {
 	 * the value
 	 */
 	public void fillPool() {
-
-		letters.put(A, 9);
-		letters.put(B, 2);
-		letters.put(C, 2);
-		letters.put(D, 4);
-		letters.put(E, 12);
-		letters.put(F, 2);
-		letters.put(G, 3);
-		letters.put(H, 2);
-		letters.put(I, 9);
-		letters.put(J, 1);
-		letters.put(K, 1);
-		letters.put(L, 4);
-		letters.put(M, 2);
-		letters.put(N, 6);
-		letters.put(O, 8);
-		letters.put(P, 2);
-		letters.put(Q, 1);
-		letters.put(R, 6);
-		letters.put(S, 4);
-		letters.put(T, 6);
-		letters.put(U, 4);
-		letters.put(V, 2);
-		letters.put(W, 2);
-		letters.put(X, 1);
-		letters.put(Y, 2);
-		letters.put(Z, 1);
-		letters.put(Blank, 2);
+		
+		for(int i = 0;i<100;i++) {
+			
+		if(i < 9)
+		letters.add(A);
+		else if(i < 11)
+			letters.add(B);
+		else if(i < 13)
+			letters.add(C);
+		else if(i < 17)
+			letters.add(D);
+		else if(i < 29)
+			letters.add(E);
+		else if(i < 31)
+			letters.add(F);
+		else if(i < 34)
+			letters.add(G);
+		else if(i < 36)
+			letters.add(H);
+		else if(i < 45)
+			letters.add(I);
+		else if(i < 46)
+			letters.add(J);
+		else if(i < 47)
+			letters.add(K);
+		else if(i < 51)
+			letters.add(L);
+		else if(i < 53)
+			letters.add(M);
+		else if(i < 59)
+			letters.add(N);
+		else if(i < 67)
+			letters.add(O);
+		else if(i < 69)
+			letters.add(P);
+		else if(i < 70)
+			letters.add(Q);
+		else if(i < 76)
+			letters.add(R);
+		else if(i < 80)
+			letters.add(S);
+		else if(i < 86)
+			letters.add(T);
+		else if(i < 90)
+			letters.add(U);
+		else if(i < 92)
+			letters.add(V);
+		else if(i < 94)
+			letters.add(W);
+		else if(i < 95)
+			letters.add(X);
+		else if(i < 97)
+			letters.add(Y);
+		else if(i < 98)
+			letters.add(Z);
+		else if(i < 100)
+			letters.add(Blank);
+		
+		
+		}
+		
+		Random ran = new Random();
+		
+		Tile temp;
+		
+		for(int i = 0;i<letters.size();i++) {
+			int randomIndex = ran.nextInt(letters.size());
+			temp =letters.set(i, letters.get(randomIndex));
+			letters.set(randomIndex,temp);
+			
+		}
+		
 
 	}
+	
+	
 
 	/**
 	 * Checks if the pool has any tiles or not
@@ -97,14 +151,6 @@ public class Pool {
 	public boolean emptyPool() {
 		// TODO think about what should happen when pool is emptied
 		return checkNumTiles() == 0;
-	}
-
-	/**
-	 * Reinitialize Hashmap and then fill it, thus resetting the pool
-	 */
-	public void resetPool() {
-		HashMap<Tile, Integer> letters = new HashMap<>();
-		fillPool();
 	}
 
 	/**
@@ -131,11 +177,7 @@ public class Pool {
 	 * @return sum
 	 */
 	public int checkNumTiles() {
-		sum = 0;
-		for (int value : letters.values()) {
-			sum += value;
-		}
-		return sum;
+		return letters.size();
 	}
 
 	/**
@@ -144,21 +186,10 @@ public class Pool {
 	 * @return selected, tile object
 	 */
 	public Tile randomTile() {
-		// converts the letters hashmap in order to randomly select by the key, in this
-		// case the letters
-		List<Tile> keys = new ArrayList<>(letters.keySet());
-		// creating a tile to temporarily store the randomly selected tile and randomly
-		// chooses a Tile from the list keys
-		Tile selected = keys.get(new Random().nextInt(keys.size()));
-		// int to store the amount of the tile selected in the pool and decreases by one
-		// as the tile is taken out by a player
-		int decrement = letters.get(selected) - 1;
-		// removes all cases of the tile and puts back in the ones not taken (n -1)
-		letters.remove(selected);
-		if (decrement > 0) {
-			letters.put(selected, decrement);
-		}
-		return selected;
+		
+		return  letters.removeFirst();      
+		
+
 	}
 
 }

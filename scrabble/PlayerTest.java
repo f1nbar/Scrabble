@@ -228,8 +228,6 @@ class PlayerTest {
 		for (int i = 0; i < 10; i++) {
 			testPool.randomTile();
 		}
-		testPool.resetPool();
-		assertEquals(100, testPool.checkNumTiles());
 	}
 
 	@Test
