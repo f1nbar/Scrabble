@@ -149,8 +149,8 @@ public class UI {
         HBox scoreBox = new HBox(20);
         StackPane scorePaneOne = new StackPane();
         StackPane scorePaneTwo = new StackPane();
-        Text playerOneScore = new Text(game.getPlayerOne().getName() + ": " + game.getPlayerOne().getScore());
-        Text playerTwoScore = new Text(game.getPlayerTwo().getName() + ": " + game.getPlayerTwo().getScore());
+        Text playerOneScore = new Text("Player: " +game.getPlayerOne().getName() + " - " + game.getPlayerOne().getScore());
+        Text playerTwoScore = new Text("Player: " +game.getPlayerTwo().getName() + " - " + game.getPlayerTwo().getScore());
 
         playerOneScore.setFont(font);
         playerTwoScore.setFont(font);
@@ -181,7 +181,7 @@ public class UI {
     public StackPane makePlayerTurnIndicator() {
         StackPane indicator = new StackPane();
 
-        Text playerIndicator = new Text(currentPlayer.getName() + "'s Turn");
+        Text playerIndicator = new Text("Player: " + currentPlayer.getName() + "'s Turn");
         playerIndicator.setFont(font);
 
         indicator.setStyle("-fx-background-color: white; -fx-border-color: red; -fx-border-width: 3px; -fx-padding: 8px;");
@@ -192,15 +192,15 @@ public class UI {
     }
 
     public void initializePlayers() {
-        game.setPlayerOne(game.initialisePlayer(game.getPool(), this.input));
-        game.setPlayerTwo(game.initialisePlayer(game.getPool(), this.input));
+        game.setPlayerOne(game.initialisePlayer(game.getPool()));
+        game.setPlayerTwo(game.initialisePlayer(game.getPool()));
         Player.turn = Player.playerOneTurn;
         this.currentPlayer = game.getPlayerOne();
         printHelpMessage();
     }
 
     private void printHelpMessage() {
-        System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tCHALLENGE:\t\t\t\t\t\t\t Challenges the last move played on the board. If it's not found in the dictionary, the move is removed.\n4:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n5:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A2 D HELLO' (note. not case-sensitive).\n5:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
+        System.out.println("Valid commands are:\n1:\tQUIT\t\t\t\t\t\t\t\t Exit the game.\n2:\tPASS:\t\t\t\t\t\t\t\t Ends your turn without making a move.\n3:\tCHALLENGE:\t\t\t\t\t\t\t Challenges the last move played on the board. If it's not found in the dictionary, the move is removed.\n4:\tEXCHANGE <tile>:\t\t\t\t\t Exchanges a tile from your hand with one in the pool, then ends your turn.\n5:\t<ROW COLUMN> <DIRECTION> <WORD>:\t Makes a move, direction can be either 'a' (across) or 'd' (down). Format must be as shown in the example: 'A2 D HELLO' (note. not case-sensitive).\n5:\tNAME:\t\t\t\t\t\t\t\t Lets current player set their name.\n6:\tHELP:\t\t\t\t\t\t\t\t Displays help message.");
     }
 
 
@@ -210,7 +210,7 @@ public class UI {
         } else {
             currentPlayer = game.getPlayerTwo();
         }
-        System.out.println("\n" + currentPlayer.getName() + "'s turn");
+        System.out.println("\nPlayer: " + currentPlayer.getName() + "'s turn");
         System.out.println("Frame: " + currentPlayer.getFrame());
 
         System.out.print("Enter command: ");
@@ -241,19 +241,26 @@ public class UI {
                 System.out.println("Passing turn...");
                 Player.changeTurn();
                 break;
+            case "NAME":
+                while(!game.setPlayerName(currentPlayer, input)) {System.out.println("loop");}
+                break;
             case "CHALLENGE":
-                System.out.println("Challenging last move...");
-                if (!game.previousMove.checkDictionary()) {
-                    System.out.println("Challenge successful!");
-                    game.previousMove.undoMove();
-                    if (Player.turn == Player.playerOneTurn) {
-                        game.getPlayerTwo().decreaseScore(game.previousMove.totalScore);
-                    } else {
-                        game.getPlayerOne().decreaseScore(game.previousMove.totalScore);
-                    }
+                if(Move.movesMade == 0){
+                    System.out.println("Cannot challenge before any moves have been played.");
                 } else {
-                    System.out.println("Challenge unsuccessful. Previous word exists in dictionary.");
+                    System.out.println("Challenging last move...");
+                    if (!game.previousMove.checkDictionary()) {
+                        System.out.println("Challenge successful!");
+                        game.previousMove.undoMove();
+                        if (Player.turn == Player.playerOneTurn) {
+                            game.getPlayerTwo().decreaseScore(game.previousMove.totalScore);
+                        } else {
+                            game.getPlayerOne().decreaseScore(game.previousMove.totalScore);
+                        }
+                    } else {
+                        System.out.println("Challenge unsuccessful. Previous word exists in dictionary.");
 
+                    }
                 }
                 break;
             default:

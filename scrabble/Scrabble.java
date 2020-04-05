@@ -9,6 +9,7 @@ public class Scrabble {
     private Pool pool;
     private Board board;
     private Player playerOne, playerTwo;
+    private int numOfPlayers;
     public static HashSet<String> dictionary = null;
 
     static {
@@ -24,6 +25,7 @@ public class Scrabble {
     public Scrabble() {
         this.pool = new Pool();
         this.board = new Board();
+        numOfPlayers = 0;
     }
 
     //getters and setters
@@ -64,14 +66,23 @@ public class Scrabble {
         return dictionary;
     }
 
-    public Player initialisePlayer(Pool pool, Scanner input) {
-        System.out.print("Enter player name: ");
-        String name = input.nextLine();
-        Player player = new Player(name);
+    public Player initialisePlayer(Pool pool) {
+        Player player = new Player("" + (numOfPlayers++ + 1));
         while (player.getFrame().frameSize() != Frame.FRAME_SIZE) {
             player.getFrame().fillFrame(pool.randomTile());
         }
         return player;
+    }
+    public boolean setPlayerName(Player player, Scanner input) {
+        System.out.print("Enter player name: ");
+        try {
+            while(!input.nextLine().isEmpty()){}
+            player.setName(input.nextLine());
+            return true;
+        } catch(IllegalArgumentException ex) {
+            System.out.println(ex);
+            return false;
+        }
     }
 
     public boolean playerTurn(Player player, Board board, Scanner input, Pool pool, String inputString) {

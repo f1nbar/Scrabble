@@ -43,7 +43,7 @@ public class Player {
 
     // Sanitizers
     private void sanitizeName(String name) {
-        if (!(name.matches(nameRegex)) || name.isEmpty() || name.contentEquals(" ")) {
+        if (!name.equals("1") && !name.equals("2") && (!(name.matches(nameRegex)) || name.isEmpty() || name.contentEquals(" "))) {
             throw new IllegalArgumentException("Incorrect format for name, can only contain letters A-Z a-z.");
         }
     }

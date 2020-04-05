@@ -4,7 +4,7 @@ package scrabble;
 import java.util.Scanner;
 
 public class Move {
-    private static int movesMade;
+    public static int movesMade;
 
     public String ERROR;
     private char direction;
@@ -13,13 +13,13 @@ public class Move {
     private Board board;
 
     // History arrays for placement
-    int[] previousRows = new int[7];
-    int[] previousColumns = new int[7];
-    int previousCounter = 0;
+    private int[] previousRows = new int[7];
+    private int[] previousColumns = new int[7];
+    private int previousCounter = 0;
 
     // placed tiles
-    Tile[] chosenTile = new Tile[7];
-    int tileCounter = 0;
+    private Tile[] chosenTile = new Tile[7];
+    private int tileCounter = 0;
 
     // word positions
     private int firstRow;
@@ -29,9 +29,9 @@ public class Move {
     private String word;
 
     // history arrays for connections
-    int[] boardConnectionRow = new int[16];
-    int[] boardConnectionColumn = new int[16];
-    int connectionIncrement;
+    private int[] boardConnectionRow = new int[16];
+    private int[] boardConnectionColumn = new int[16];
+    private int connectionIncrement;
 
     private boolean letterInFrame; // says if a played letter is in frame or not, for use in intersection
 
