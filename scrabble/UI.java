@@ -277,7 +277,7 @@ public class UI {
                         Player.changeTurn();
                     }
                 } else {
-                    System.out.println("ERROR: Invalid command: " + commandInput + " Check if your move matches the format: <ROW COLUMN> <DIRECTION> <WORD> (e.g A1 D HELLO)");
+                    System.out.println("ERROR: Invalid command: " + commandInput + " Check if your move matches the format: <ROW COLUMN> <DIRECTION> <WORD> (e.g A1 D HELLO). One tile words not allowed.");
                 }
         }
     }
