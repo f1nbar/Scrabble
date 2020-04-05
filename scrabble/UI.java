@@ -279,7 +279,9 @@ public class UI {
     }
 
     public Scene makeIntroScene() {
-        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar Deaghaidh");
+    	String name =  "00D3";
+    	String name2 = String.valueOf(Character.toChars(Integer.parseInt(name, 16)));
+        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar" + " " + name2 + " " + "Deaghaidh");
         scrabbleText.setFont(font);
         scrabbleText.setTextAlignment(TextAlignment.CENTER);
 
