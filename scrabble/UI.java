@@ -250,7 +250,8 @@ public class UI {
                     System.out.println("Cannot challenge before any moves have been played.");
                 } else {
                     System.out.println("Challenging last move...");
-                    if (!game.previousMove.checkDictionary()) {
+                ;
+                    if (!game.previousMove.checkDictionary() || !game.previousMove.checkDictionaryConnect()) {
                         System.out.println("Challenge successful!");
                         game.previousMove.undoMove();
                         if (Player.turn == Player.playerOneTurn) {
