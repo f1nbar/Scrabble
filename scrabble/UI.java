@@ -217,6 +217,7 @@ public class UI {
 
         String commandInput = input.next().trim().toUpperCase();
         String command = commandInput.split(" ")[0];
+        
 
 
         switch (command) {
@@ -268,7 +269,7 @@ public class UI {
                     System.out.println("Ending game...");
                     System.exit(0);
                 }
-                if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+")) {
+                if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+") && commandInput.length() >= 7) {
                     if (game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
                         Player.changeTurn();
                     }
