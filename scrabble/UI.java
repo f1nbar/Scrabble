@@ -217,6 +217,7 @@ public class UI {
 
         String commandInput = input.next().trim().toUpperCase();
         String command = commandInput.split(" ")[0];
+        
 
 
         switch (command) {
@@ -251,7 +252,8 @@ public class UI {
                     System.out.println("Cannot challenge before any moves have been played.");
                 } else {
                     System.out.println("Challenging last move...");
-                    if (!game.previousMove.checkDictionary()) {
+                ;
+                    if (!game.previousMove.checkDictionary() || !game.previousMove.checkDictionaryConnect()) {
                         System.out.println("Challenge successful!");
                         game.previousMove.undoMove();
                         if (Player.turn == Player.playerOneTurn) {
@@ -270,7 +272,7 @@ public class UI {
                     System.out.println("Ending game...");
                     System.exit(0);
                 }
-                if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+")) {
+                if (commandInput.matches("^([A-O])\\d\\d?\\s[A/D]\\s\\w+") && commandInput.length() >= 7) {
                     if (game.playerTurn(currentPlayer, game.getBoard(), input, game.getPool(), commandInput)) {
                         Player.changeTurn();
                     }
@@ -281,7 +283,9 @@ public class UI {
     }
 
     public Scene makeIntroScene() {
-        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar Deaghaidh");
+    	String name =  "00D3";
+    	String name2 = String.valueOf(Character.toChars(Integer.parseInt(name, 16)));
+        Text scrabbleText = new Text("SCRABBLE\nBy Conor Knowles, Peter O'Donnell, Finbar" + " " + name2 + " " + "Deaghaidh");
         scrabbleText.setFont(font);
         scrabbleText.setTextAlignment(TextAlignment.CENTER);
 

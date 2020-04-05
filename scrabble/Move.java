@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Move {
     public static int movesMade;
-
+    public String connectedWord;
     public String ERROR;
     private char direction;
 
@@ -72,7 +72,7 @@ public class Move {
     }
 
     // take in word, make upper case and make sure that all tiles are present in frame
-    private String getWordInput(String input) {
+    public String getWordInput(String input) {
         String word = input.toUpperCase();
         for (int i = 0; i < word.length(); i++) {
             try {
@@ -233,7 +233,7 @@ public class Move {
 
         this.word = getWordInput(splitInput[2]);
         setLastCoords(word);
-
+       
         // updates blank
         while (word.contains("_")) {
             word = chooseBlank(word, in);
@@ -402,7 +402,7 @@ public class Move {
                 if(extremityIntersectionFirst){
                     score += board.getBoard()[firstRow][firstColumn].getScore();
                 } else {
-                    score += board.getBoard()[lastRow][lastColumn].getScore();
+                    score += board.getBoard()[lastRow][lastColumn].getScore(); 	
                 }
             }
         }
@@ -462,7 +462,21 @@ public class Move {
         }
         return score;
     }
+    public boolean checkDictionaryConnect(){
+    	setLastCoords(word);
+    	if(board.getBoard()[lastRow + 1][lastColumn] != null) {
+    		word = word + board.getBoard()[lastRow + 1][lastColumn].getLetter();
+    	}
+    	else if(board.getBoard()[lastRow][lastColumn + 1] != null) {
+    		word = word + board.getBoard()[lastRow][lastColumn + 1].getLetter();
+    	}
+    	System.out.println("connected word is: " + word);
+    	
+        return Scrabble.dictionary.contains(word);
+    }
+
     public boolean checkDictionary(){
         return Scrabble.dictionary.contains(word);
     }
+
 }
