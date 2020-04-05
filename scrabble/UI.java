@@ -149,8 +149,8 @@ public class UI {
         HBox scoreBox = new HBox(20);
         StackPane scorePaneOne = new StackPane();
         StackPane scorePaneTwo = new StackPane();
-        Text playerOneScore = new Text("Player: " +game.getPlayerOne().getName() + " - " + game.getPlayerOne().getScore());
-        Text playerTwoScore = new Text("Player: " +game.getPlayerTwo().getName() + " - " + game.getPlayerTwo().getScore());
+        Text playerOneScore = new Text("Player: " + game.getPlayerOne().getName() + " - " + game.getPlayerOne().getScore());
+        Text playerTwoScore = new Text("Player: " + game.getPlayerTwo().getName() + " - " + game.getPlayerTwo().getScore());
 
         playerOneScore.setFont(font);
         playerTwoScore.setFont(font);
@@ -242,10 +242,12 @@ public class UI {
                 Player.changeTurn();
                 break;
             case "NAME":
-                while(!game.setPlayerName(currentPlayer, input)) {System.out.println("loop");}
+                while (!game.setPlayerName(currentPlayer, input)) {
+                    System.out.println("loop");
+                }
                 break;
             case "CHALLENGE":
-                if(Move.movesMade == 0){
+                if (Move.movesMade == 0) {
                     System.out.println("Cannot challenge before any moves have been played.");
                 } else {
                     System.out.println("Challenging last move...");

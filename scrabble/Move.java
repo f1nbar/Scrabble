@@ -117,6 +117,7 @@ public class Move {
                 }
             } else {
                 if (board.getBoard()[staticAxis][i] != null) {
+                    System.out.println(board.getBoard()[staticAxis][i].getLetter() + " : " + checkLetterForIntersection);
                     if (board.getBoard()[staticAxis][i].getLetter() == checkLetterForIntersection) {
                         foundIntersection = true;
                         if((i == firstColumn) && (staticAxis == firstRow)){
@@ -184,6 +185,7 @@ public class Move {
         }
         if (board.getBoard()[row][column] != null && !intersection) {
             ERROR = "Cannot place a tile on a space already containing a tile.";
+            checkForIntersection = true;
             return false;
         }
         return true;
@@ -239,6 +241,7 @@ public class Move {
         // checks to see if player is making an intersecting move
         if (checkForIntersection) {
             intersection = isIntersectionValid(row, column, direction, word);
+            checkForIntersection = false;
         }
         if(!intersection) {
             if(!letterInFrame) {
@@ -250,6 +253,12 @@ public class Move {
         boolean foundConnection = findConnection();
         for (int i = 0; i < word.length(); i++) {
             boolean validPlacement = isPlacementValid(row, column);
+            if(!validPlacement && checkForIntersection) {
+                intersection = isIntersectionValid(row, column, direction, word);
+                if(intersection){
+                    validPlacement = true;
+                }
+            }
             if (validPlacement && foundConnection) {
                 if (!(board.getBoard()[row][column] != null && intersection)) {
                     chosenTile[tileCounter++] = playerFrame.getTileFromChar(word.charAt(i)); // add tile to chosenTile array for undoing move and score calculation
